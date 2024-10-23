@@ -28,7 +28,7 @@ application = Application.builder().token(BOT_API_TOKEN).build()
 bot = application.bot
 
 async def update_message_reply_text(update: Update, text, reply_markup=None, disable_web_page_preview = True):
-    message = await update.message.reply_text(
+    message = await update.effective_message.reply_text(
         text,
         reply_markup=reply_markup,
         parse_mode = ParseMode.HTML,
@@ -39,7 +39,7 @@ async def update_message_reply_text(update: Update, text, reply_markup=None, dis
 async def bot_send_message(update: Update, context: ContextTypes.DEFAULT_TYPE, text, reply_markup=None, disable_web_page_preview = True):
     bot = context.bot
     message = await bot.send_message(
-        update.message.chat.id, 
+        update.effective_user.id, 
         text,
         reply_markup=reply_markup,
         parse_mode = ParseMode.HTML,
@@ -50,7 +50,7 @@ async def bot_send_message(update: Update, context: ContextTypes.DEFAULT_TYPE, t
 async def bot_send_document(update: Update, context: ContextTypes.DEFAULT_TYPE, document, reply_markup=None, caption=None):
     bot = context.bot
     message = await bot.send_document(
-        update.message.chat.id,
+        update.effective_user.id,
         document,
         caption=caption,
         reply_markup=reply_markup,
@@ -106,30 +106,30 @@ async def send_newsletter(bot: Bot, chat_id, text, photo=None, video=None, docum
 
 async def bot_delete_message(update: Update, context: ContextTypes.DEFAULT_TYPE, message_id=None):
     if not message_id:
-        message_id = update.message.message_id
+        message_id = update.effective_message.message_id
     bot = context.bot
     try:
-        await bot.delete_message(update.message.chat.id, message_id)
+        await bot.delete_message(update.effective_user.id, message_id)
     except:
         return
 
 async def bot_send_and_delete_message(update: Update, context: ContextTypes.DEFAULT_TYPE, text, reply_markup=None):
     bot = context.bot
     message = await bot.send_message(
-        update.message.chat.id, 
+        update.effective_user.id, 
         text,
         reply_markup=reply_markup,
         parse_mode = ParseMode.HTML
         )
-    await bot.delete_message(update.message.chat.id, message.message_id)
+    await bot.delete_message(update.effective_user.id, message.message_id)
     return
 
 async def bot_edit_message_text(update: Update, context: ContextTypes.DEFAULT_TYPE, text, msg_id=None):
     bot = context.bot
     if not msg_id:
-        msg_id = update.message.message_id
+        msg_id = update.effective_message.message_id
     await bot.edit_message_text(
-        chat_id=update.message.chat.id,
+        chat_id=update.effective_user.id,
         message_id=msg_id,
         text=text, 
         parse_mode=ParseMode.HTML
@@ -138,9 +138,9 @@ async def bot_edit_message_text(update: Update, context: ContextTypes.DEFAULT_TY
 async def bot_edit_message_reply_markup(update: Update, context: ContextTypes.DEFAULT_TYPE, msg_id=None, reply_markup=None):
     bot = context.bot
     if not msg_id:
-        msg_id = update.message.message_id
+        msg_id = update.effective_message.message_id
     await bot.edit_message_reply_markup(
-        chat_id=update.message.chat.id,
+        chat_id=update.effective_user.id,
         message_id=msg_id,
         reply_markup=reply_markup
     )
@@ -180,7 +180,7 @@ async def bot_answer_callback_query(update: Update, context: ContextTypes.DEFAUL
 
 async def bot_send_chat_action(update: Update, context: ContextTypes.DEFAULT_TYPE, chat_action=ChatAction.TYPING):
     bot = context.bot
-    await bot.sendChatAction(update.message.chat.id, chat_action)
+    await bot.sendChatAction(update.effective_user.id, chat_action)
 
 async def send_media_group(bot: Bot, chat_id, photos):
 
