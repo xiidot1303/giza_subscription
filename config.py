@@ -20,3 +20,9 @@ DB_PASSWORD = os.environ.get("DB_PASSWORD")
 BOT_API_TOKEN = os.environ.get("BOT_API_TOKEN")
 WEBHOOK_URL = os.environ.get("WEBHOOK_URL")
 WEBAPP_URL = os.environ.get("WEBAPP_URL")
+
+# Payme
+PAYME_CASH_ID = os.environ.get("PAYME_CASH_ID")
+PAYME_KEY = os.environ.get("PAYME_KEY")
+PAYME_TEST_KEY = os.environ.get("PAYME_TEST_KEY")
+PAYME_CHECKOUT_URL = os.environ.get("PAYME_CHECKOUT_URL")
