@@ -34,7 +34,7 @@ async def cards_create_api(number, expire):
     return response
 
 
-async def cards_get_verify_code(token):
+async def cards_get_verify_code_api(token):
     """Sample response:\n
     {
         "jsonrpc": "2.0",
@@ -57,7 +57,7 @@ async def cards_get_verify_code(token):
     return response
 
 
-async def cards_verify(token, code):
+async def cards_verify_api(token, code):
     """Sample response:\n
     {
       "jsonrpc": "2.0",

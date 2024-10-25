@@ -24,7 +24,7 @@ async def get_verify_code(request: HttpRequest):
     token = request.POST.get("token")
 
     # send verification
-    response = await cards_get_verify_code(token)
+    response = await cards_get_verify_code_api(token)
 
     return JsonResponse(response)
 
@@ -34,6 +34,6 @@ async def verify(request: HttpRequest):
     code = request.POST.get("code")
 
     # verify
-    response = await cards_verify(token, code)
+    response = await cards_verify_api(token, code)
     return JsonResponse(response)
     
