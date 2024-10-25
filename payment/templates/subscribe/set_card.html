@@ -438,7 +438,6 @@
             async function cardverify(id, token, code) {
                 let response = await fetch(
                     "{{ api_host }}/cards/verify",
-                    // "http://localhost:5566/cards/verify",
                     {
                         method: "POST",
                         headers: {
