@@ -1,4 +1,5 @@
 from payment.services.payme import *
+from app.utils import DictToClass
 
 
 async def cards_create_api(number, expire):
@@ -83,6 +84,31 @@ async def cards_verify_api(token, code):
     )
     response = await checkout_request.send()
     return response
+
+
+async def cards_check_api(token) -> DictToClass:
+    """
+    `obj.to_dict`:
+    {
+        card: {
+            number: String,
+            expire: String,
+            token: String,
+            recurrent: Boolean,
+            verify: Boolean
+        }
+    }
+    """
+    method = "cards.check"
+    params = {
+        "token": token
+    }
+    checkout_request = CheckoutEndpointRequest(
+        method, params, RequestType.POST
+    )
+    response = await checkout_request.send()
+    result: DictToClass = response["result"]
+    return result
 
 
 async def create_receipt_api(order_id, amount):
