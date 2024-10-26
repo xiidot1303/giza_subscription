@@ -4,11 +4,6 @@ from asgiref.sync import async_to_sync
 
 checkout_url = PAYME_CHECKOUT_URL
 
-headers = {
-    'X-Auth': PAYME_TEST_XAUTH if DEBUG else f'{PAYME_CASH_ID}:{PAYME_KEY}',
-    'Content-Type': 'application/json',
-}
-
 
 class RequestType:
     POST = 'post'
@@ -21,6 +16,10 @@ class CheckoutEndpointRequest:
         self.request_params = params
         self.request_type = type
         self.request_body = request_body
+        self.headers = {
+            'X-Auth': f'{PAYME_CASH_ID}:{PAYME_KEY}',
+            'Content-Type': 'application/json',
+        }
 
     @classmethod
     async def create(cls, method, params, type):
@@ -34,7 +33,11 @@ class CheckoutEndpointRequest:
         return instance
 
     async def send(self):
+        # change x-auth if request is cards. | x-auth should only cash id
+        if "cards." in self.request_method:
+            self.headers['X-Auth'] = PAYME_CASH_ID
+        print(self.headers)
         response, header = await send_request(
-            checkout_url, self.request_body, headers, self.request_type
+            checkout_url, self.request_body, self.headers, self.request_type
         )
         return response
