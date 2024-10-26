@@ -27,7 +27,7 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
     if DEBUG:
         payment.payed = True
         await payment.asave()
-        
+
     if "result" in receipt_pay_data and payment.payed:
         ## successfullt payment, approve channel join request
 
@@ -51,4 +51,4 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
     elif "error" in receipt_pay_data:
         # error in payment
         text = "Error in payment"
-        await update_message_reply_text(text)
+        await update_message_reply_text(update, text)
