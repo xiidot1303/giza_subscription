@@ -8,7 +8,7 @@ import uuid
 class SubscriptionPlan(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.0)])
+    price = models.BigIntegerField(null=True)
     description = models.TextField(blank=True, null=True)
     duration_in_months = models.IntegerField(default=1)  # Duration of subscription in months
 
@@ -17,7 +17,7 @@ class SubscriptionPlan(models.Model):
 
 class Payment(models.Model):
     bot_user = models.ForeignKey("bot.Bot_user", null=True, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.BigIntegerField(null=True)
     payment_date = models.DateTimeField(default=timezone.now)
     payed = models.BooleanField(default=False)
 
