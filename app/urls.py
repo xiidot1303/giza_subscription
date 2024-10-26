@@ -19,8 +19,11 @@ urlpatterns = [
         template_name = 'registration/afterchanging.html'), name='password_change_done'),
     path('logout/', LogoutView.as_view(), name='logout'),
 
+    path('', main.main),
+
     # files
     re_path(r'^files/(?P<path>.*)$', main.get_file),
+
 
 
 ]
