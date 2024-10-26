@@ -20,10 +20,8 @@ class CreateCardView(APIView):
         # get data from POST
         number = request.data.get('number')
         expire = request.data.get('expire')
-        print(number, expire)
         # send request to payme endpoint to get token
         response = await cards_create_api(number, expire)
-        print('\n\n', response)
         return JsonResponse(response)
 
 
