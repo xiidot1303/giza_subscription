@@ -398,7 +398,7 @@
 
             async function createCard(cardnumber, expire) {
                 let response = await fetch(
-                    "{{ api_host }}/cards/create",
+                    "{{ api_host }}cards/create",
                     {
                         method: "POST",
                         headers: {
@@ -419,7 +419,7 @@
 
             async function sendverifycode(id, token) {
                 let response = await fetch(
-                    "{{ api_host }}/cards/getverifycode",
+                    "{{ api_host }}cards/getverifycode",
                     {
                         method: "POST",
                         headers: {
@@ -437,7 +437,7 @@
 
             async function cardverify(id, token, code) {
                 let response = await fetch(
-                    "{{ api_host }}/cards/verify",
+                    "{{ api_host }}cards/verify",
                     {
                         method: "POST",
                         headers: {

@@ -15,5 +15,8 @@ urlpatterns = [
     path('payme/endpoint', payme.endpoint),
 
     # subscribe
-    path('set-card', subscribe.set_card)
+    path('subscribe/set-card', subscribe.set_card),
+    path('cards/create', subscribe.create_card),
+    path('cards/getverifycode', subscribe.get_verify_code),
+    path('cards/verify', subscribe.verify),
 ]

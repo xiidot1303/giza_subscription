@@ -5,7 +5,7 @@ from asgiref.sync import async_to_sync
 checkout_url = PAYME_CHECKOUT_URL
 
 headers = {
-    'X-Auth': f'{PAYME_CASH_ID}:{PAYME_KEY}',
+    'X-Auth': PAYME_TEST_XAUTH if DEBUG else f'{PAYME_CASH_ID}:{PAYME_KEY}',
     'Content-Type': 'application/json',
 }
 

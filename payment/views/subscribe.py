@@ -1,12 +1,16 @@
 from app.views import *
 from app.services.plan_service import *
 from payment.services.payme.subscribe_api import *
+from config import PAYME_CHECKOUT_URL
 
 
 async def set_card(request: HttpRequest):
     plan_id = request.GET.get('plan_id', None)
     plan: SubscriptionPlan = await get_subscription_plan_by_id(plan_id)
-    return render(request, 'subscribe/set_card.html')
+    context = {
+        "api_host": request.build_absolute_uri('/')
+    }
+    return render(request, 'subscribe/set_card.html', context=context)
 
 
 async def create_card(request: HttpRequest):
@@ -16,8 +20,9 @@ async def create_card(request: HttpRequest):
 
     # send request to payme endpoint to get token
     response = await cards_create_api(number, expire)
-    
+
     return JsonResponse(response)
+
 
 async def get_verify_code(request: HttpRequest):
     # get data from POST
@@ -28,6 +33,7 @@ async def get_verify_code(request: HttpRequest):
 
     return JsonResponse(response)
 
+
 async def verify(request: HttpRequest):
     # get data from POST
     token = request.POST.get("token")
@@ -36,4 +42,3 @@ async def verify(request: HttpRequest):
     # verify
     response = await cards_verify_api(token, code)
     return JsonResponse(response)
-    

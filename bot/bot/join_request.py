@@ -35,7 +35,7 @@ async def select_plan(update: Update, context: CustomContext):
     _, plan_id = data.split('--')
     i_button = InlineKeyboardButton(
         text=await get_word("Pay for plan", update),
-        web_app=WebAppInfo(url=f"{WEBAPP_URL}?subscription_plan_id={plan_id}")
+        web_app=WebAppInfo(url=f"{WEBAPP_URL}/subscribe/set-card?subscription_plan_id={plan_id}")
     )
     text = "purchase"
     markup = InlineKeyboardMarkup([[i_button]])
