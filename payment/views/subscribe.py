@@ -4,11 +4,13 @@ from payment.services.payme.subscribe_api import *
 from config import PAYME_CHECKOUT_URL
 from adrf.views import APIView
 from adrf.requests import AsyncRequest
+from config import DEBUG
 
 
 async def set_card(request: HttpRequest):
     context = {
-        "api_host": request.build_absolute_uri('/')
+        "api_host": request.build_absolute_uri('/'),
+        "debug": DEBUG
     }
     return render(request, 'subscribe/set_card.html', context=context)
 

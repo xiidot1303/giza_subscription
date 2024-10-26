@@ -211,6 +211,7 @@
                 id="cardInput"
                 maxlength="19"
                 placeholder="0000 0000 0000 0000"
+                {% if debug %}value="8600069195406311"{% endif %}
             />
 
             <input
@@ -218,6 +219,8 @@
                 id="cardExpireDate"
                 maxlength="5"
                 placeholder="00/00"
+                {% if debug %}value="0399"{% endif %}
+
             />
             <p>
                 To’lovlar faqatgina UzCard va Humo kartalari orqali amalga
@@ -248,7 +251,7 @@
         </section>
         <section id="smsdiv" style="display: none">
             <h1>Tasdiqlash kodini kiriting</h1>
-            <input type="tel" maxlength="6" placeholder="000000" id="sms" />
+            <input type="tel" maxlength="6" placeholder="000000" id="sms" {% if debug %}value="666666"{% endif %}/>
         </section>
 
         <script type="application/javascript">

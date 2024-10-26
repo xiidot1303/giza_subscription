@@ -4,6 +4,7 @@ from app.services.payment_service import *
 from app.services.plan_service import *
 from app.services.subscription_service import *
 from payment.services.payme.subscribe_api import *
+from config import DEBUG
 
 
 async def web_app_data(update: Update, context: CustomContext) -> None:
@@ -23,6 +24,10 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
     receipt_id  = await receipts_create_api(payment.id, payment.amount)
     # pay receipt
     receipt_pay_data = await receipts_pay_api(receipt_id, token)
+    if DEBUG:
+        payment.payed = True
+        await payment.asave()
+        
     if "result" in receipt_pay_data and payment.payed:
         ## successfullt payment, approve channel join request
 
