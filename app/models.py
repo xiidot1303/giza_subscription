@@ -19,17 +19,17 @@ class Payment(models.Model):
     bot_user = models.ForeignKey("bot.Bot_user", null=True, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_date = models.DateTimeField(default=timezone.now)
-    successful = models.BooleanField(default=True)
-    transaction_id = models.CharField(max_length=100, unique=True)
+    payed = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.user.username} - {self.amount} - {self.payment_date}"
+        return f"{self.bot_user.name} - {self.amount} - {self.payment_date}"
 
 class Subscription(models.Model):
     bot_user = models.ForeignKey("bot.Bot_user", null=True, on_delete=models.CASCADE)
     plan = models.ForeignKey(SubscriptionPlan, on_delete=models.CASCADE)
     start_date = models.DateTimeField(default=timezone.now)
-    end_date = models.DateTimeField()
+    end_date = models.DateTimeField(null=True)
+    payment = models.ForeignKey(Payment, null=True, on_delete=models.CASCADE)
 
     active = models.BooleanField(default=True)
 
@@ -58,12 +58,3 @@ class TelegramChannelAccess(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {'Access' if self.has_access else 'No Access'}"
-
-class Invoice(models.Model):
-    bot_user = models.ForeignKey("bot.Bot_user", null=True, on_delete=models.CASCADE)
-    subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE)
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
-    invoice_date = models.DateTimeField(default=timezone.now)
-
-    def __str__(self):
-        return f"Invoice for {self.user.username} on {self.invoice_date}"

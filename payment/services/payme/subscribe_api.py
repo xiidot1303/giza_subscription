@@ -27,7 +27,7 @@ async def cards_create_api(number, expire):
         },
         "save": True
     }
-    checkout_request = CheckoutEndpointRequest(
+    checkout_request = await CheckoutEndpointRequest.create(
         method, params, RequestType.POST
     )
 
@@ -51,7 +51,7 @@ async def cards_get_verify_code_api(token):
     params = {
         "token": token
     }
-    checkout_request = CheckoutEndpointRequest(
+    checkout_request = await CheckoutEndpointRequest.create(
         method, params, RequestType.POST
     )
     response = await checkout_request.send()
@@ -79,7 +79,7 @@ async def cards_verify_api(token, code):
         "token": token,
         "code": code
     }
-    checkout_request = CheckoutEndpointRequest(
+    checkout_request = await CheckoutEndpointRequest.create(
         method, params, RequestType.POST
     )
     response = await checkout_request.send()
@@ -103,7 +103,7 @@ async def cards_check_api(token) -> DictToClass:
     params = {
         "token": token
     }
-    checkout_request = CheckoutEndpointRequest(
+    checkout_request = await CheckoutEndpointRequest.create(
         method, params, RequestType.POST
     )
     response = await checkout_request.send()
@@ -111,19 +111,37 @@ async def cards_check_api(token) -> DictToClass:
     return result
 
 
-async def create_receipt_api(order_id, amount):
-    requestBody = {
-        "jsonrpc": "2.0",
-        "id": 1111111,
-        "method": "receipts.create",
-        "params": {
-            "amount": amount * 100,
-            "account": {
-                "order_id": str(order_id)
-            }
+async def receipts_create_api(payment_id, amount):
+    """
+    Response: `receipt ID`
+    """
+    method = "receipts.create"
+    params = {
+        "amount": amount * 100,
+        "account": {
+            "payment_id": str(payment_id)
         }
     }
-    response, h = await send_request(checkout_url, requestBody, headers, 'post')
-    trans_id = response['result']['receipt']['_id']
-    payment_url = f'https://payme.uz/checkout/{trans_id}'
-    return payment_url
+    checkout_request = await CheckoutEndpointRequest.create(
+        method, params, RequestType.POST
+    )
+    response = await checkout_request.send()
+    receipt_id = response['result']['receipt']['_id']
+    return receipt_id
+
+
+async def receipts_pay_api(receipt_id, token) -> dict:
+    """
+    If "result" is available in response, then request is successfully.
+    Otherwise, "error" is in response. It means request is not successfully
+    """
+    method = "receipts.pay"
+    params = {
+        "id": receipt_id,
+        "token": token
+    }
+    checkout_request = await CheckoutEndpointRequest.create(
+        method, params, RequestType.POST
+    )
+    response = await checkout_request.send()
+    return response

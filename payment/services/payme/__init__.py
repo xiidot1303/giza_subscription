@@ -16,18 +16,22 @@ class RequestType:
 
 
 class CheckoutEndpointRequest:
-    def __init__(self, method, params, type):
+    def __init__(self, method, params, type, request_body):
         self.request_method = method
         self.request_params = params
         self.request_type = type
+        self.request_body = request_body
 
+    @classmethod
+    async def create(cls, method, params, type):
         request_body = {
             "jsonrpc": "2.0",
-            "id": async_to_sync(create_random_id)(),
-            "method": self.request_method,
-            "params": self.request_params
+            "id": await create_random_id(),
+            "method": method,
+            "params": params
         }
-        self.request_body = request_body
+        instance = cls(method, params, type, request_body)
+        return instance
 
     async def send(self):
         response, header = await send_request(

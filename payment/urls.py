@@ -16,7 +16,7 @@ urlpatterns = [
 
     # subscribe
     path('subscribe/set-card', subscribe.set_card),
-    path('cards/create', subscribe.create_card),
-    path('cards/getverifycode', subscribe.get_verify_code),
-    path('cards/verify', subscribe.verify),
+    path('cards/create', subscribe.CreateCardView.as_view()),
+    path('cards/getverifycode', subscribe.GetVerifyCodeView.as_view()),
+    path('cards/verify', subscribe.VerifyView.as_view()),
 ]
