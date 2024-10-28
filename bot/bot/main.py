@@ -4,11 +4,18 @@ import logging
 import traceback
 import html
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(update.message.chat_id, 'Hello')
 
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    pass
+
+
+
+######################################################################
+######################################################################
+######################################################################
 
 logger = logging.getLogger(__name__)
+
 
 async def error_handler(update: Update, context: CustomContext):
     """Log the error and send a telegram message to notify the developer."""
@@ -17,7 +24,8 @@ async def error_handler(update: Update, context: CustomContext):
 
     # traceback.format_exception returns the usual python message about an exception, but as a
     # list of strings rather than a single string, so we have to join them together.
-    tb_list = traceback.format_exception(None, context.error, context.error.__traceback__)
+    tb_list = traceback.format_exception(
+        None, context.error, context.error.__traceback__)
     tb_string = "".join(tb_list)
 
     # Build the message with some markup and additional information about what happened.

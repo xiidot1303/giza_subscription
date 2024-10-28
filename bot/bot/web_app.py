@@ -3,7 +3,9 @@ import json
 from app.services.payment_service import *
 from app.services.plan_service import *
 from app.services.subscription_service import *
+from app.services.channel_access_service import *
 from payment.services.payme.subscribe_api import *
+from payment.services.card_service import *
 from config import DEBUG
 
 
@@ -21,7 +23,7 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
     # create payment
     payment: Payment = await create_payment(bot_user, plan.price)
     # create receipt
-    receipt_id  = await receipts_create_api(payment.id, payment.amount)
+    receipt_id = await receipts_create_api(payment.id, payment.amount)
     # pay receipt
     receipt_pay_data = await receipts_pay_api(receipt_id, token)
     if DEBUG:
@@ -29,11 +31,12 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
         await payment.asave()
 
     if "result" in receipt_pay_data and payment.payed:
-        ## successfullt payment, approve channel join request
+        # successfullt payment, approve channel join request
 
-        # set token to bot user
-        bot_user.card_token = token
-        await bot_user.asave()
+        # create or update card of the user
+        card_info = DictToClass(receipt_pay_data["result"]["receipt"])
+        card_info.token = token
+        await update_card_of_bot_user(bot_user, card_info)
 
         # create subscription
         subscription: Subscription = await create_subscription(
@@ -45,6 +48,10 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
             chat_id=channel_id,
             user_id=bot_user.user_id
         )
+
+        # create telegram channel access
+        await give_channel_access(bot_user, subscription)
+        
         text = "Successfully joned to channel"
         await update_message_reply_text(update, text, reply_markup=await reply_keyboard_remove())
 

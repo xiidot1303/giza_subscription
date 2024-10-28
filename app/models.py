@@ -44,17 +44,3 @@ class Subscription(models.Model):
 class TelegramChannelAccess(models.Model):
     bot_user = models.OneToOneField("bot.Bot_user", null=True, on_delete=models.CASCADE)
     subscription = models.OneToOneField(Subscription, on_delete=models.CASCADE)
-    has_access = models.BooleanField(default=False)
-
-    def check_access(self):
-        """
-        Checks if the user should have access to the channel based on their subscription.
-        """
-        if self.subscription.active and timezone.now() <= self.subscription.end_date:
-            self.has_access = True
-        else:
-            self.has_access = False
-        self.save()
-
-    def __str__(self):
-        return f"{self.user.username} - {'Access' if self.has_access else 'No Access'}"

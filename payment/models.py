@@ -27,7 +27,7 @@ class Payme_transaction(models.Model):
     test = models.BooleanField(null=True, default=False)
 
 class Card(models.Model):
-    bot_user = models.ForeignKey("bot.Bot_user", null=True, on_delete=models.CASCADE)
+    bot_user = models.OneToOneField("bot.Bot_user", null=True, on_delete=models.CASCADE)
     number = models.CharField(null=True, max_length=32)
     expire = models.CharField(null=True, max_length=8)
     token = models.CharField(null=True, max_length=1024)
