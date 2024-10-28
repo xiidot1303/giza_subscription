@@ -21,8 +21,7 @@ class Payment(models.Model):
     payment_date = models.DateTimeField(default=timezone.now)
     payed = models.BooleanField(default=False)
 
-    def __str__(self):
-        return f"{self.bot_user.name} - {self.amount} - {self.payment_date}"
+
 
 class Subscription(models.Model):
     bot_user = models.ForeignKey("bot.Bot_user", null=True, on_delete=models.CASCADE)
@@ -38,8 +37,6 @@ class Subscription(models.Model):
             self.end_date = self.start_date + relativedelta(months = self.plan.duration_in_months)
         super().save(*args, **kwargs)
 
-    def __str__(self):
-        return f"{self.user.username} - {self.plan.name} - {self.active}"
 
 class TelegramChannelAccess(models.Model):
     bot_user = models.OneToOneField("bot.Bot_user", null=True, on_delete=models.CASCADE)
