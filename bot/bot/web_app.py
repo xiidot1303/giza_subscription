@@ -37,7 +37,7 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
         # successfullt payment, approve channel join request
 
         # create or update card of the user
-        card_info = DictToClass(receipt_pay_data["result"]["receipt"])
+        card_info = DictToClass(receipt_pay_data["result"]["receipt"]["card"])
         card_info.token = token
         await update_card_of_bot_user(bot_user, card_info)
 
