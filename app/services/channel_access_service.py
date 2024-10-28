@@ -33,7 +33,6 @@ async def update_channel_access(subscription: Subscription, payment: Payment):
 
 async def remove_user_from_channel(subscription: Subscription):
     bot_user = await subscription.get_bot_user
-    forty_seconds_later_timestamp = (await datetime_now() + timedelta(seconds=40)).timestamp()
     # kick user from channel without banning
     is_user_banned: bool = await bot.unban_chat_member(
         chat_id=TG_CHANNEL_ID,
