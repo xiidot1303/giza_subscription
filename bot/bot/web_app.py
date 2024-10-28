@@ -28,12 +28,12 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
     receipt_pay_data = await receipts_pay_api(receipt_id, token)
     # update payment object because it changed by merchant api
     await payment.arefresh_from_db()
-
+    
     if DEBUG:
         payment.payed = True
         await payment.asave()
 
-    if payment.payed:
+    if "result" in receipt_pay_data and payment.payed:
         # successfullt payment, approve channel join request
 
         # create or update card of the user
