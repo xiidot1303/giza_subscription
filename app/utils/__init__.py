@@ -2,6 +2,7 @@ from datetime import datetime, date, timedelta
 import requests
 import json
 import uuid
+from django.utils import timezone
 
 async def get_user_ip(request):
     x_forwarded_for = await request.META.get('HTTP_X_FORWARDED_FOR')

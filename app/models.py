@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 import uuid
+from asgiref.sync import sync_to_async
 
 class SubscriptionPlan(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -37,6 +38,15 @@ class Subscription(models.Model):
             self.end_date = self.start_date + relativedelta(months = self.plan.duration_in_months)
         super().save(*args, **kwargs)
 
+    @property
+    @sync_to_async
+    def get_bot_user(self):
+        return self.bot_user
+
+    @property
+    @sync_to_async
+    def get_plan(self):
+        return self.plan
 
 class TelegramChannelAccess(models.Model):
     bot_user = models.OneToOneField("bot.Bot_user", null=True, on_delete=models.CASCADE)

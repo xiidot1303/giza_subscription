@@ -20,6 +20,8 @@ DB_PASSWORD = os.environ.get("DB_PASSWORD")
 BOT_API_TOKEN = os.environ.get("BOT_API_TOKEN")
 WEBHOOK_URL = os.environ.get("WEBHOOK_URL")
 WEBAPP_URL = os.environ.get("WEBAPP_URL")
+TG_CHANNEL_INVITE_LINK = os.environ.get("TG_CHANNEL_INVITE_LINK")
+TG_CHANNEL_ID = os.environ.get("TG_CHANNEL_ID")
 
 # Payme
 PAYME_CASH_ID = os.environ.get("PAYME_CASH_ID")

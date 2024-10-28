@@ -15,3 +15,8 @@ async def create_subscription(
         bot_user=bot_user, plan=plan, payment=payment
     )
     return obj
+
+filter_active_ended_subscriptions_dict = {
+    "end_date__lte": timezone.now(),
+    "active": True
+}
