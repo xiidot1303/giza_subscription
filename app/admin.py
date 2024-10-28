@@ -25,6 +25,9 @@ class SubscriptionAdmin(admin.ModelAdmin):
     search_fields = ('bot_user__username', 'plan__name')
     ordering = ('-start_date',)
 
+@admin.register(TelegramChannelAccess)
+class TelegramChannelAccessAdmin(admin.ModelAdmin):
+    list_display = ('bot_user', 'subscription')
 
 # Customizing the Admin Site settings
 admin.site.site_header = _("Giza Subscription Management System Admin")
