@@ -1,20 +1,16 @@
 from bot.bot import *
 from app.services.plan_service import *
 from config import WEBAPP_URL
-from telegram import User
+
 
 async def channel_join_request(update: Update, context: CustomContext):
-    # create bot user if doesnt exist 
-    user: User = update.effective_user
-    await Bot_user.objects.aget_or_create(
-        user_id = user.id,
-        defaults={
-            "name": user.first_name,
-            "firstname": user.first_name,
-            "lang": "uz",
-        }
-    )
+    # create bot user if doesnt exist
+    await create_user_if_doesnt_exist(update.effective_user)
 
+    # check user already has access to channel
+    if await has_channel_access(update.effective_user.id):
+        await update.chat_join_request.approve()
+        return
 
     text = "start text"
     i_button = InlineKeyboardButton(

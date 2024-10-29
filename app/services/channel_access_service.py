@@ -48,3 +48,9 @@ async def remove_user_from_channel(subscription: Subscription):
         # deactivate subscription
         subscription.active = False
         await subscription.asave()
+
+async def has_channel_access(user_id: int | str) -> bool:
+    exists = await TelegramChannelAccess.objects.filter(
+        bot_user__user_id = user_id
+    ).aexists()
+    return exists

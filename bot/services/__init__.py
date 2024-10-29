@@ -1,6 +1,6 @@
 from bot.models import *
 from asgiref.sync import sync_to_async
-from telegram import Update
+from telegram import Update, User
 
 @sync_to_async
 def is_registered(id):
@@ -33,3 +33,13 @@ async def get_object_by_user_id(user_id):
 async def get_object_by_update(update: Update):
     obj = await Bot_user.objects.aget(user_id=update.effective_user.id)
     return obj
+
+async def create_user_if_doesnt_exist(user: User):
+    await Bot_user.objects.aget_or_create(
+        user_id=user.id,
+        defaults={
+            "name": user.first_name,
+            "firstname": user.first_name,
+            "lang": "uz",
+        }
+    )
