@@ -1,29 +1,32 @@
-# from app.services.order_service import *
+from app.services.payment_service import *
+# from app.services.tariff_service import *
+from bot.services import notification_service as notify
 from payment.resources.payme_responses import Errors, Results
 from payment.utils import time_ts
 from payment.services.payme.transaction import *
 
-def get_order_by_id(): return 0
+def get_payment_by_id(): return 0
 
 def CheckPerformTransaction(amount, order_id):
-    if order:=get_order_by_id(order_id):
+    if order:=get_payment_by_id(order_id):
         if trans_obj:=get_active_transaction_by_order_id(order_id):
             return None, Errors.ORDER_NOT_FOUND
-        if int(amount) / 100 != int(order['total']):
+        if int(amount) / 100 != int(order.amount):
             return None, Errors.INCORRECT_AMOUNT
-        name = order['username']
-        return Results.CHECKPERFORM_TRANSACTION(name, order['phone_number']), None
+        name = order.order.bot_user.name
+        phone = order.order.bot_user.phone
+        return Results.CHECKPERFORM_TRANSACTION(name, phone), None
     else:
         return None, Errors.ORDER_NOT_FOUND
     
 def CreateTransaction(id, time, amount, order_id, test):
-    if order:=get_order_by_id(order_id):
+    if order:=get_payment_by_id(order_id):
         if time_ts() - time >= 43200000:
             return {}, Errors.CANNOT_PERFORM_OPERATION
         if trans_obj:=get_active_transaction_by_order_id(order_id):
             if trans_obj.payme_trans_id != id:
                 return None, Errors.ORDER_NOT_FOUND
-        if int(amount) / 100 != int(order['total']):
+        if int(amount) / 100 != int(order.amount):
             return None, Errors.INCORRECT_AMOUNT
         trans_obj = get_or_create_transaction(id, order,amount/100, time_ts(), time, test)
         create_time = trans_obj.create_time
@@ -41,15 +44,22 @@ def PerformTransaction(id):
             if time_ts() - trans_obj.create_time >= 43200000:
                 cancel_transaction(trans_obj, -1, 4)
                 return {}, Errors.CANNOT_PERFORM_OPERATION
-            # send transaction to yandex api
-            if not trans_obj.test:
-                try:
-                    # change order status in js
-                    success = payme_accept_order(trans_obj.order_id)['success']
-                    assert success == 1
-                except:
-                    cancel_transaction(trans_obj, -1, 10)
-                    return None, Errors.CANNOT_PERFORM_OPERATION
+            # change order status
+            try:
+                # change payment status as payed
+                payment_id = trans_obj.order_id
+                payment: Payment = get_payment_by_id(payment_id)
+                if payment.payed:
+                    assert False
+                # payment_payed(payment, 'payme')
+                # send notification to user
+                notify.successfully_payment(payment)
+                # add user to group
+                # create_tariff_member(payment.order)
+                
+            except:
+                cancel_transaction(trans_obj, -1, 10)
+                return None, Errors.CANNOT_PERFORM_OPERATION
             # end transaction
             perform_transaction(trans_obj)
         else:

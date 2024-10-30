@@ -12,7 +12,7 @@ from payment.views import (
 
 urlpatterns = [
     # payme
-    path('payme/endpoint', payme.endpoint),
+    path('payme/endpoint', payme.Endpoint.as_view()),
 
     # subscribe
     path('subscribe/set-card', subscribe.set_card),
