@@ -2,6 +2,7 @@ from django.contrib import admin
 from bot.models import *
 from django.utils.html import format_html
 from django.urls import reverse
+from solo.admin import SingletonModelAdmin
 
 class Bot_userAdmin(admin.ModelAdmin):
     def get_list_display(self, request):
@@ -72,5 +73,7 @@ class MesageAdmin(admin.ModelAdmin):
         form.base_fields['bot_users'].widget.attrs['style'] = 'width: 20em;'
         return form
 
+
 admin.site.register(Bot_user, Bot_userAdmin)
 admin.site.register(Message, MesageAdmin)
+admin.site.register(Text, SingletonModelAdmin)

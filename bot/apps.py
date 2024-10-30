@@ -6,6 +6,7 @@ class bot(AppConfig):
     name = 'bot'
 
     def ready(self):
+        import bot.signals
         # run_once = os.environ.get('CMDLINERUNNER_RUN_ONCE_BOT')
         # if run_once is not None:
         #     return

@@ -8,7 +8,7 @@ from config import TG_CHANNEL_INVITE_LINK
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if await has_channel_access(update.effective_user.id):
-        text = "you are already available access to channel"
+        text = await GetText.on(Text.main_menu)
     else:
         text = "please select button join to channel"
     i_button = InlineKeyboardButton(

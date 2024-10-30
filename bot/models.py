@@ -37,3 +37,7 @@ class Message(models.Model):
     class Meta:
         verbose_name = "Сообщение"
         verbose_name_plural = "Сообщения"
+
+class Text(models.Model):
+    start = models.TextField(null=True, blank=True, verbose_name="Старт")
+    main_menu = models.TextField(null=True, blank=True, verbose_name="Главное меню")

@@ -9,6 +9,7 @@ from bot.resources.strings import lang_dict
 from bot.services import *
 from bot.services.language_service import *
 from bot.services.string_service import *
+from bot.services.text_service import *
 from bot.resources.conversationList import *
 from app.services import filter_objects_sync
 from app.services.channel_access_service import has_channel_access
