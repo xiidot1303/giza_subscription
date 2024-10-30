@@ -1,5 +1,5 @@
 class Errors:
-    ORDER_NOT_FOUND = {
+    ACCOUNT_NOT_FOUND = {
         "code": -31050,
         "message": {
             "ru": "ID не найден",
@@ -72,17 +72,13 @@ class Errors:
     }
 
 class Results:
-    def CHECKPERFORM_TRANSACTION(name, phone):
+    async def CHECKPERFORM_TRANSACTION():
         r = {
-            "allow": True,
-            "additional": {
-                "name": name,
-                "phone": phone
-            }
+            "allow": True
         }
         return r
     
-    def CREATE_TRANSACTION(create_time, transaction, state):
+    async def CREATE_TRANSACTION(create_time, transaction, state):
         r = {
             "create_time" : create_time,
             "transaction" : transaction,
@@ -90,7 +86,7 @@ class Results:
         }
         return r
     
-    def PERFORM_TRANSACTION(transaction, perform_time, state):
+    async def PERFORM_TRANSACTION(transaction, perform_time, state):
         r = {
             "transaction" : transaction,
             "perform_time" : perform_time,
@@ -98,7 +94,7 @@ class Results:
         }
         return r
     
-    def CANCEL_TRANSACTION(transaction, cancel_time, state):
+    async def CANCEL_TRANSACTION(transaction, cancel_time, state):
         r = {
             "transaction" : transaction,
             "cancel_time" : cancel_time,
@@ -106,7 +102,7 @@ class Results:
         }
         return r
     
-    def CHECK_TRANSACTION(create_time, perform_time, cancel_time, transaction, state, reason):
+    async def CHECK_TRANSACTION(create_time, perform_time, cancel_time, transaction, state, reason):
         r = {
             "create_time" : create_time,
             "perform_time" : perform_time,
@@ -117,22 +113,23 @@ class Results:
         }
         return r
     
-    def GET_STATEMENT(transactions):
+    async def GET_STATEMENT(transactions_filter: dict):
+        from payment.models import Payme_transaction
         r = {
             "transactions" : [
                 {
-                    "id" : t.payme_trans_id,
-                    "time" : t.time,
-                    "amount" : t.amount,
+                    "id" : transaction.payme_trans_id,
+                    "time" : transaction.time,
+                    "amount" : transaction.amount,
                     "account" : {
-                        "callsign" : t.driver.callsign
+                        "account_id" : transaction.account_id
                     },
-                    "create_time" : t.create_time,
-                    "perform_time" : t.perform_time,
-                    "cancel_time" : t.cancel_time,
-                    "transaction" : str(t.id),
-                    "state" : t.state,
-                    "reason" : t.reason,
+                    "create_time" : transaction.create_time,
+                    "perform_time" : transaction.perform_time,
+                    "cancel_time" : transaction.cancel_time,
+                    "transaction" : str(transaction.id),
+                    "state" : transaction.state,
+                    "reason" : transaction.reason,
                     # "receivers" : [
                         # {
                         #     "id" : "5305e3bab097f420a62ced0b",
@@ -140,7 +137,7 @@ class Results:
                         # },
                     # ]
                 }
-                for t in transactions
+                async for transaction in Payme_transaction.objects.filter(**transactions_filter)
             ]
         }
         return r

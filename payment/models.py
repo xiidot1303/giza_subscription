@@ -2,7 +2,7 @@ from django.db import models
 
 class Payme_transaction(models.Model):
     payme_trans_id = models.CharField(null=True, blank=False, max_length=64)
-    order_id = models.CharField(null=True, blank=False, max_length=128)
+    account_id = models.CharField(null=True, blank=False, max_length=128)
     amount = models.BigIntegerField(null=True, blank=True)
     time = models.BigIntegerField(null=True, blank=True)
     create_time = models.BigIntegerField(null=True, blank=True)

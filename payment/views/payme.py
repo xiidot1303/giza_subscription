@@ -20,7 +20,7 @@ class Endpoint(APIView):
         self.auth = request.META["HTTP_AUTHORIZATION"]
 
     async def check_authorization(self):
-        login, password = get_login_password_from_auth(self.auth)
+        login, password = await get_login_password_from_auth(self.auth)
         if (
             self.request_headers["X-Forwarded-For"] in payme_ips and
             login == 'Paycom'
@@ -42,29 +42,29 @@ class Endpoint(APIView):
         # check method and create response
         if method == "CheckPerformTransaction":
             amount, payment_id = params["amount"], params["account"]["payment_id"]
-            result, error = CheckPerformTransaction(
+            result, error = await CheckPerformTransaction(
                 amount, payment_id)
         if method == "CreateTransaction":
             payme_trans_id = params["id"]
             time = params["time"]
             amount = params["amount"]
             payment_id = params["account"]["payment_id"]
-            result, error = CreateTransaction(
+            result, error = await CreateTransaction(
                 payme_trans_id, time, amount, payment_id, self.test)
         if method == "PerformTransaction":
             payme_trans_id = params["id"]
-            result, error = PerformTransaction(payme_trans_id)
+            result, error = await PerformTransaction(payme_trans_id)
         if method == "CancelTransaction":
             payme_trans_id = params["id"]
             reason = params["reason"]
-            result, error = CancelTransaction(
+            result, error = await CancelTransaction(
                 payme_trans_id, reason)
         if method == "CheckTransaction":
             payme_trans_id = params["id"]
-            result, error = CheckTransaction(payme_trans_id)
+            result, error = await CheckTransaction(payme_trans_id)
         if method == "GetStatement":
             from_, to = params["from"], params["to"]
-            result, error = GetStatement(from_, to)
+            result, error = await GetStatement(from_, to)
         self.result, self.error = result, error
 
     async def create_response(self):

@@ -1,45 +1,60 @@
 from app.services import *
+from payment.services import *
 from payment.models import Payme_transaction as Trans
 from payment.utils import time_ts
 
-def get_or_create_transaction(payme_trans_id, order: dict, amount, time, create_time, test) -> Trans:
-    obj, created = Trans.objects.get_or_create(payme_trans_id=payme_trans_id)
+
+async def get_or_create_transaction(
+        payme_trans_id, account: Account,
+        amount, time, create_time, test) -> Trans:
+    obj, created = await Trans.objects.aget_or_create(payme_trans_id=payme_trans_id)
     if created:
-        obj.order_id = order['order_id']
+        obj.account_id = account.id
         obj.amount = amount
         obj.time = time
         obj.create_time = create_time
         obj.state = 1
         obj.test = test
-        obj.save()
+        await obj.asave()
     return obj
 
-def get_transaction_by_payme_trans_id(id):
+
+async def get_transaction_by_payme_trans_id(id):
     try:
-        obj = Trans.objects.get(payme_trans_id=id)
+        obj = await Trans.objects.aget(payme_trans_id=id)
         return obj
     except:
         return None
 
-def get_active_transaction_by_order_id(order_id):
+
+async def get_active_transaction_by_account_id(account_id):
     try:
-        obj = Trans.objects.get(Q(order_id=order_id) & (Q(state=1) | Q(state=2)))
+        obj = await Trans.objects.aget(
+            Q(account_id=account_id)
+            & (Q(state=1) | Q(state=2)))
         return obj
     except:
         return None
 
-def perform_transaction(obj: Trans):
+
+async def perform_transaction(obj: Trans):
     obj.state = 2
-    obj.perform_time = time_ts()
-    obj.save()
+    obj.perform_time = await time_ts()
+    await obj.asave()
     return
 
-def cancel_transaction(obj: Trans, state: int, reason: int):
+
+async def cancel_transaction(obj: Trans, state: int, reason: int):
     obj.state = state
     obj.reason = reason
-    obj.cancel_time = time_ts()
-    obj.save()
+    obj.cancel_time = await time_ts()
+    await obj.asave()
     return
 
-def filter_transactions_by_createtime_period(from_, to):
-    return Trans.objects.filter(create_time__range = (from_, to), test = False)
+
+async def filter_transactions_by_createtime_period(from_, to) -> dict:
+    filter_dict = {
+        "create_time__range": (from_, to),
+        "test": False
+    }
+    return filter_dict

@@ -21,7 +21,7 @@ class Payment(models.Model):
     amount = models.BigIntegerField(null=True)
     payment_date = models.DateTimeField(default=timezone.now)
     payed = models.BooleanField(default=False)
-
+    payment_system = models.CharField(null=True, blank=True, max_length=32)
 
 
 class Subscription(models.Model):
