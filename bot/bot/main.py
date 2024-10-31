@@ -10,7 +10,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if await has_channel_access(update.effective_user.id):
         text = await GetText.on(Text.main_menu)
     else:
-        text = "please select button join to channel"
+        text = await GetText.on(Text.start)
     i_button = InlineKeyboardButton(
         text=await get_word("join channel", update),
         url=TG_CHANNEL_INVITE_LINK

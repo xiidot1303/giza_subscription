@@ -55,10 +55,10 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
         # create telegram channel access
         await give_channel_access(bot_user, subscription)
         
-        text = "Successfully joned to channel"
+        text = await GetText.on(Text.joined_to_channel)
         await update_message_reply_text(update, text, reply_markup=await reply_keyboard_remove())
 
     elif "error" in receipt_pay_data:
         # error in payment
-        text = "Error in payment"
+        text = await GetText.on(Text.error_in_payment)
         await update_message_reply_text(update, text)

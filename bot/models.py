@@ -41,3 +41,9 @@ class Message(models.Model):
 class Text(models.Model):
     start = models.TextField(null=True, blank=True, verbose_name="Старт")
     main_menu = models.TextField(null=True, blank=True, verbose_name="Главное меню")
+    after_join_request = models.TextField(null=True, blank=True, verbose_name="После запроса на присоединение")
+    joined_to_channel = models.TextField(null=True, blank=True, verbose_name="Успешное присоединение к каналу")
+    error_in_payment = models.TextField(null=True, blank=True, verbose_name="Ошибка при оплате")
+    subscription_renewed = models.TextField(null=True, blank=True, verbose_name="Подписка продлена")
+    banned = models.TextField(null=True, blank=True, verbose_name="Вы заблокированы на канале")
+    cannot_charge = models.TextField(null=True, blank=True, verbose_name="Не удается продлить подписку")

@@ -12,7 +12,7 @@ async def channel_join_request(update: Update, context: CustomContext):
         await update.chat_join_request.approve()
         return
 
-    text = "start text"
+    text = await GetText.on(Text.after_join_request)
     i_button = InlineKeyboardButton(
         text=await get_word('tariffs', update),
         callback_data="plans_list"

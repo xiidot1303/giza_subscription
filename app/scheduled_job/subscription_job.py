@@ -5,6 +5,7 @@ from payment.services.payme.subscribe_api import *
 from payment.services.card_service import *
 from bot.utils.bot_functions import send_newsletter, bot
 from config import DEBUG
+from bot.services.text_service import *
 
 async def check_subscription():
     async for subscription in Subscription.objects.filter(
@@ -35,7 +36,7 @@ async def check_subscription():
             await update_channel_access(subscription, payment)
 
             # send notification about successfully added new subscription
-            text = "successfully charged and added new subsciption"
+            text = await GetText.on(Text.subscription_renewed)
 
         else:  # can not charge monthly amount
             # check subscription end date is past more than 3 days
@@ -43,11 +44,11 @@ async def check_subscription():
             if days_passed >= 3:
                 # remove user from telegram channel
                 await remove_user_from_channel(subscription)
-                text = "you are banned"
+                text = await GetText.on(Text.banned)
 
             else:
                 # send alert to user about can not charge amount
-                text = "please add amount to your card"
+                text = await GetText.on(Text.cannot_charge)
                 markup = None
 
         await send_newsletter(bot, bot_user.user_id, text, reply_markup=markup)
