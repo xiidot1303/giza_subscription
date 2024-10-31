@@ -16,3 +16,10 @@ async def update_card_of_bot_user(bot_user: Bot_user, card_info: DictToClass):
 async def get_card_of_bot_user(bot_user: Bot_user) -> Card:
     obj = await Card.objects.aget(bot_user__id = bot_user.id)
     return obj
+
+async def update_card(card: Card, number, expire, token):
+    card.number = number
+    card.expire = expire
+    card.token = token
+    await card.asave()
+    

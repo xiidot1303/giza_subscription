@@ -15,7 +15,8 @@ async def users_all(exclude_superadmins=False):
     return users
 
 async def get_user_by_pk(pk):
-    return get_object_or_404(User, pk=pk)
+    obj = await Bot_user.objects.filter(pk = pk).afirst()
+    return obj
 
 async def filter_groups_of_user(user):
     return user.groups.all()
