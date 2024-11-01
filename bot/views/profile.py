@@ -16,7 +16,7 @@ async def home(request: HttpRequest, id):
     channel_access: TelegramChannelAccess = await get_channel_access_of_bot_user(bot_user)
     subscription: Subscription = await channel_access.get_subscription
     plan: SubscriptionPlan = await subscription.get_plan
-    payments = await filter_payments_by_bot_user_list(bot_user)
+    payments = await filter_payed_payments_by_bot_user_list(bot_user)
     context = {
         # Card info
         "card_number": card_info.number,
