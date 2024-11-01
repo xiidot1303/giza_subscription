@@ -41,16 +41,16 @@ class Endpoint(APIView):
 
         # check method and create response
         if method == "CheckPerformTransaction":
-            amount, payment_id = params["amount"], params["account"]["payment_id"]
+            amount, account_id = params["amount"], params["account"]["account_id"]
             result, error = await CheckPerformTransaction(
-                amount, payment_id)
+                amount, account_id)
         if method == "CreateTransaction":
             payme_trans_id = params["id"]
             time = params["time"]
             amount = params["amount"]
-            payment_id = params["account"]["payment_id"]
+            account_id = params["account"]["account_id"]
             result, error = await CreateTransaction(
-                payme_trans_id, time, amount, payment_id, self.test)
+                payme_trans_id, time, amount, account_id, self.test)
         if method == "PerformTransaction":
             payme_trans_id = params["id"]
             result, error = await PerformTransaction(payme_trans_id)
