@@ -30,8 +30,8 @@ async def get_object_by_user_id(user_id):
     obj = await Bot_user.objects.aget(user_id=user_id)
     return obj
 
-async def get_object_by_update(update: Update):
-    obj = await Bot_user.objects.aget(user_id=update.effective_user.id)
+async def get_object_by_update(update: Update) -> Bot_user | None:
+    obj = await Bot_user.objects.filter(user_id=update.effective_user.id).afirst()
     return obj
 
 async def create_user_if_doesnt_exist(user: User):

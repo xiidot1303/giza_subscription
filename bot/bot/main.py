@@ -7,18 +7,34 @@ from config import TG_CHANNEL_INVITE_LINK
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if await has_channel_access(update.effective_user.id):
-        text = await GetText.on(Text.main_menu)
-    else:
-        text = await GetText.on(Text.start)
-    i_button = InlineKeyboardButton(
+    bot_user = await get_object_by_update(update)
+
+    # create inline button
+    i_join = InlineKeyboardButton(
         text=await get_word("join channel", update),
         url=TG_CHANNEL_INVITE_LINK
     )
-    markup = InlineKeyboardMarkup([[i_button]])
+    buttons = [i_join]
+
+    # check that availablae channel access for this user
+    if await has_channel_access(update.effective_user.id):
+        # go to main menu
+        text = await GetText.on(Text.main_menu)
+        # add profile inline button
+        i_profile = InlineKeyboardButton(
+            text=await get_word("profile", update),
+            web_app=WebAppInfo(f"{WEBAPP_URL}/profile/{bot_user.id}")
+        )
+        buttons.append(i_profile)
+    else:
+        # go to start message
+        text = await GetText.on(Text.start)
+
+    markup = InlineKeyboardMarkup([
+        [button]
+        for button in buttons
+    ])
     await update_message_reply_text(update, text, reply_markup=markup)
-
-
 
 
 ######################################################################
