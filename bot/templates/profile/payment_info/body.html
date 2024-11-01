@@ -1,0 +1,14 @@
+<!-- Payments Block -->
+<div class="payments-info" id="payments-info">
+    <h2 class="payments-title">Payments</h2> <!-- Title for the payments block -->
+    <div class="payments-list">
+        {% for payment in payments %}
+        <div class="payment-item">
+            <div class="payment-details">
+                <span class="payment-amount">{{ payment.amount }} so'm</span>
+                <span class="payment-date">{{ payment.payment_date|date:"d M Y H:i" }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

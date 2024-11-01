@@ -19,3 +19,9 @@ async def payment_pay(payment: Payment, payment_system):
     payment.payed = True
     payment.payment_system = payment_system
     await payment.asave()
+
+
+@sync_to_async
+def filter_payments_by_bot_user_list(bot_user: Bot_user):
+    query_list = list(Payment.objects.filter(bot_user__id=bot_user.id).values())
+    return query_list

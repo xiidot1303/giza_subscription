@@ -2,6 +2,7 @@ from app.views import *
 from bot.services import *
 from payment.services.card_service import *
 from app.services.channel_access_service import *
+from app.services.payment_service import *
 from adrf.views import APIView
 from adrf.requests import AsyncRequest
 
@@ -15,6 +16,7 @@ async def home(request: HttpRequest, id):
     channel_access: TelegramChannelAccess = await get_channel_access_of_bot_user(bot_user)
     subscription: Subscription = await channel_access.get_subscription
     plan: SubscriptionPlan = await subscription.get_plan
+    payments = await filter_payments_by_bot_user_list(bot_user)
     context = {
         # Card info
         "card_number": card_info.number,
@@ -24,7 +26,10 @@ async def home(request: HttpRequest, id):
 
         # Tariff info
         "tariff": plan,
-        "subscription": subscription
+        "subscription": subscription,
+
+        # Payment info
+        "payments": payments,
 
     }
     return render(request, "profile/main.html", context)

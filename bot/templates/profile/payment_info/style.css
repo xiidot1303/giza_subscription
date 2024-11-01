@@ -1,0 +1,51 @@
+.payments-info {
+    background-color: #ffffff; /* White background for clarity */
+    border-radius: 12px; /* Rounded corners */
+    padding: 20px;
+    width: 80%;
+    max-width: 350px; /* Set max width */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    margin-top: 20px; /* Space between blocks */
+}
+
+.payments-title {
+    font-size: 20px; /* Larger font size for the title */
+    color: #333; /* Darker color for the title */
+    margin-bottom: 15px; /* Space below the title */
+    text-align: center; /* Centered title */
+}
+
+.payments-list {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+}
+
+.payment-item {
+    display: flex;
+    flex-direction: column; /* Stack payment details vertically */
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0; /* Divider line between payments */
+}
+
+.payment-item:last-child {
+    border-bottom: none; /* Remove divider from the last item */
+}
+
+.payment-details {
+    display: flex;
+    justify-content: space-between; /* Space between label and value */
+    margin-bottom: 5px; /* Space between details */
+}
+
+.payment-amount {
+    font-weight: bold; /* Emphasize the amount */
+    color: #4A90E2; /* Color to match the theme */
+}
+
+.payment-date {
+    color: #666; /* Lighter color for the date */
+}
+
+.payment-system {
+    color: #666; /* Lighter color for the payment system */
+}
