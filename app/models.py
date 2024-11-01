@@ -51,3 +51,8 @@ class Subscription(models.Model):
 class TelegramChannelAccess(models.Model):
     bot_user = models.OneToOneField("bot.Bot_user", null=True, on_delete=models.CASCADE)
     subscription = models.OneToOneField(Subscription, on_delete=models.CASCADE)
+
+    @property
+    @sync_to_async
+    def get_subscription(self):
+        return self.subscription

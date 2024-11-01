@@ -1,23 +1,18 @@
-<div class="tariff-info">
-    <h2>Tarif ma'lumotlari</h2>
-    <div class="tariff-info-item">
-        <span>Tarif nomi:</span>
-        <span>{{ tariff.name }}</span>
-    </div>
-    <div class="tariff-info-item">
-        <span>Narxi:</span>
-        <span>{{ tariff.price }} UZS</span>
-    </div>
-    <div class="tariff-info-item">
-        <span>Davomiyligi (oy):</span>
-        <span>{{ tariff.duration_in_months }}</span>
-    </div>
-    <div class="tariff-info-item">
-        <span>Boshlanish sanasi:</span>
-        <span>{{ start_date }}</span>
-    </div>
-    <div class="tariff-info-item">
-        <span>Keyingi to'lov sanasi:</span>
-        <span>{{ next_payment_date }}</span>
+<!-- Tariff Info Block -->
+<div class="tariff-info" id="tariff-info">
+    <h2 class="tariff-title">Tariff: {{ tariff.name }}</h2> <!-- Updated title -->
+    <div class="tariff-details">
+        <div class="tariff-item">
+            <strong>Narxi:</strong> <span class="tariff-value">{{ tariff.price }} so'm</span>
+        </div>
+        <div class="tariff-item">
+            <strong>Muddati:</strong> <span class="tariff-value">{{ tariff.duration_in_months }} oy</span>
+        </div>
+        <div class="tariff-item">
+            <strong>Boshlangan sanasi:</strong> <span class="tariff-value">{{ subscription.start_date|date:"d.m.Y" }}</span>
+        </div>
+        <div class="tariff-item">
+            <strong>Keyingi to'lov sanasi:</strong> <span class="tariff-value">{{ subscription.end_date|date:"d.m.Y" }}</span>
+        </div>
     </div>
 </div>

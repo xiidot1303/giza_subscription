@@ -11,6 +11,12 @@ from config import TG_CHANNEL_ID
 from bot.bot import bot
 
 
+async def get_channel_access_of_bot_user(bot_user: Bot_user):
+    obj = await TelegramChannelAccess.objects.filter(
+        bot_user__id=bot_user.id).afirst()
+    return obj
+
+
 async def give_channel_access(bot_user: Bot_user, subscription: Subscription):
     obj = await TelegramChannelAccess.objects.acreate(
         bot_user=bot_user,
@@ -49,8 +55,9 @@ async def remove_user_from_channel(subscription: Subscription):
         subscription.active = False
         await subscription.asave()
 
+
 async def has_channel_access(user_id: int | str) -> bool:
     exists = await TelegramChannelAccess.objects.filter(
-        bot_user__user_id = user_id
+        bot_user__user_id=user_id
     ).aexists()
     return exists
