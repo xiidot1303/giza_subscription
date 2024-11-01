@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Card Information</title>
+    <style>
+        {% include "profile/card_info/style.css" %}
+        {% include "profile/tariff_info/style.css" %}
+    </style>
+</head>
+<body>
+    <!-- Main tags -->
+    <div class="main-content">
+        {% include "profile/card_info/body.html" %}
+        {% include "profile/tariff_info/body.html" %}
+    </div>
+
+    <!-- Scripts -->
+    {% include "profile/card_info/script.html" %}
+    {% include "profile/tariff_info/script.html" %}
+</body>
+</html>

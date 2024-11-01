@@ -1,0 +1,19 @@
+<div class="card" id="card">
+    <img src="https://cdn.paycom.uz/documentation_assets/payme_02.png?target=_blank" alt="Bank Logo" class="card-logo">
+    <div class="card-number">{{ card_number }}</div>
+    <div class="card-info">
+        <div class="exp-date">Expires: {{ expire|slice:":2" }} / {{ expire|slice:"2:" }}</div>
+    </div>
+    <button class="edit-button" id="editButton" onclick="toggleEditForm()">O'zgartirish</button>
+    <!-- Edit Form -->
+    <div class="edit-form" id="editForm">
+        <input type="text" id="newCardNumber" placeholder="New Card Number" maxlength="16" oninput="validateCardNumber()" required />
+        <input type="text" id="newExpire" placeholder="MM/YY" maxlength="5" oninput="formatExpiry()" required />
+        <button class="continue-button" id="continueButton" onclick="continueEditing()">Davom etish</button>
+    </div>
+    <!-- Verification Form -->
+    <div class="verification-form" id="verificationForm">
+        <input type="text" id="smsCode" placeholder="SMS tasdiqlash kodini kiriting" maxlength="6" oninput="validateSmsCode()" required />
+        <button class="submit-button" id="submitButton" onclick="submitVerification()" disabled>Tasdiqlash</button>
+    </div>
+</div>

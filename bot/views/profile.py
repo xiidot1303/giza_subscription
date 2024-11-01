@@ -16,7 +16,7 @@ async def home(request: HttpRequest, id):
         "api_host": request.build_absolute_uri('/'),
         "user_id": id
     }
-    return render(request, "profile.html", context)
+    return render(request, "profile/main.html", context)
 
 
 class UpdateCard(APIView):
