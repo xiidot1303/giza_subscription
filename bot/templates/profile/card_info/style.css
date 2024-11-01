@@ -16,29 +16,34 @@
     position: relative;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
+
 .card-number {
     font-size: 20px;
     letter-spacing: 2px;
     margin: 10px 0;
 }
+
 .card-info-details {
     display: flex;
     justify-content: space-between;
     font-size: 14px;
     margin-top: 20px;
 }
+
 .exp-date {
     border: 1px solid white;
     padding: 5px;
     border-radius: 5px;
     font-size: 14px;
 }
+
 .card-logo {
     position: absolute;
     top: 10px;
     right: 10px;
     width: 40px; /* Adjusted logo size */
 }
+
 .edit-button {
     background-color: #ffffff; /* White background for contrast */
     color: #4A90E2; /* Text color matching the card */
@@ -53,15 +58,18 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
 }
+
 .edit-button:hover {
     background-color: #e0e0e0; /* Light gray background on hover */
     color: #333; /* Darker text on hover */
 }
+
 /* Input styles for the edit form */
 .edit-form {
     display: none; /* Hidden by default */
     margin-top: 20px;
 }
+
 .edit-form input {
     width: calc(100% - 20px);
     padding: 10px;
@@ -69,6 +77,7 @@
     border: none;
     border-radius: 5px;
 }
+
 .continue-button {
     background-color: #ffcc00; /* Bright color for the continue button */
     color: black;
@@ -82,18 +91,22 @@
     opacity: 0.5; /* Initially disabled appearance */
     pointer-events: none; /* Disable interaction */
 }
+
 .continue-button.enabled {
     opacity: 1; /* Fully visible when enabled */
     pointer-events: auto; /* Enable interaction */
 }
+
 .continue-button:hover {
     background-color: #e6b800; /* Darker shade on hover */
 }
+
 /* Verification code styles */
 .verification-form {
     display: none; /* Hidden by default */
     margin-top: 20px;
 }
+
 .verification-form input {
     width: calc(100% - 20px);
     padding: 10px;
@@ -101,6 +114,7 @@
     border: none;
     border-radius: 5px;
 }
+
 .submit-button {
     background-color: #4CAF50; /* Green color for submit button */
     color: white;
@@ -112,29 +126,36 @@
     width: 100%;
     transition: background-color 0.3s ease;
 }
+
 .submit-button:hover {
     background-color: #45a049; /* Darker shade on hover */
 }
+
 /* Responsive styles */
 @media (max-width: 400px) {
-    .card {
+    .card-info {
         padding: 15px;
     }
+
     .card-number {
         font-size: 18px;
     }
+
     .exp-date {
         font-size: 12px;
     }
+
     .edit-button {
         font-size: 12px; /* Adjust button font size for smaller screens */
         padding: 6px 10px; /* Smaller padding for mobile */
     }
+
     .continue-button, .submit-button {
         font-size: 12px; /* Adjust font size for mobile */
         padding: 8px; /* Adjust padding for mobile */
     }
 }
+
 /* Continue Button Styling */
 .submit-button {
     padding: 10px 20px;
@@ -147,6 +168,7 @@
     cursor: not-allowed;
     transition: background-color 0.3s ease;
 }
+
 /* Enabled State Styling for Both Buttons */
 .submit-button.enabled {
     background-color: #4CAF50; /* Active green color */
