@@ -4,12 +4,20 @@ import logging
 import traceback
 import html
 from config import TG_CHANNEL_INVITE_LINK
+from bot.services.referral_service import *
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # create bot user if doesnt exist
     bot_user, created = await create_user_if_doesnt_exist(update.effective_user)
     bot_user: Bot_user
+    # get start message
+    referrer_id = await get_start_msg(update.effective_message.text)
+    if created and referrer_id:
+        # get referrer object
+        if referrer := await get_object_by_pk(referrer_id):
+            # create Referral
+            await create_referral(bot_user, referrer)
 
     # create inline button
     i_join = InlineKeyboardButton(
