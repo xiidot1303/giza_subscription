@@ -8,6 +8,6 @@ from bot.views import botwebhook, profile
 urlpatterns = [
     path(BOT_API_TOKEN, botwebhook.BotWebhookView.as_view()),
 
-    path("profile/<int:id>/", profile.home),
+    path("profile/<str:id>/", profile.home),
     path("profile/update-card", profile.UpdateCard.as_view()),
 ]

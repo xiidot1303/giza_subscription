@@ -1,7 +1,9 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
+import uuid
 
 class Bot_user(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.BigIntegerField(null=True)
     name = models.CharField(null=True, blank=True, max_length=256, default='', verbose_name='Имя')
     username = models.CharField(null=True, blank=True, max_length=256, verbose_name='username')
@@ -22,7 +24,7 @@ class Bot_user(models.Model):
 
 class Referral(models.Model):
     bot_user = models.OneToOneField(Bot_user, on_delete=models.PROTECT)
-    referrer = models.ForeignKey(Bot_user, on_delete=models.PROTECT)
+    referrer = models.ForeignKey(Bot_user, related_name="referrall_referrer", on_delete=models.PROTECT)
 
 class Message(models.Model):
     bot_users = models.ManyToManyField('bot.Bot_user', blank=True, related_name='bot_users_list', verbose_name='Пользователи бота')
