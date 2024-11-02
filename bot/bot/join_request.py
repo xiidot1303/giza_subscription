@@ -4,9 +4,6 @@ from config import WEBAPP_URL
 
 
 async def channel_join_request(update: Update, context: CustomContext):
-    # create bot user if doesnt exist
-    await create_user_if_doesnt_exist(update.effective_user)
-
     # check user already has access to channel
     if await has_channel_access(update.effective_user.id):
         await update.chat_join_request.approve()

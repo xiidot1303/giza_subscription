@@ -1,6 +1,7 @@
 from bot.models import *
 from asgiref.sync import sync_to_async
 from telegram import Update, User
+from typing import Tuple
 
 @sync_to_async
 def is_registered(id):
@@ -34,8 +35,8 @@ async def get_object_by_update(update: Update) -> Bot_user | None:
     obj = await Bot_user.objects.filter(user_id=update.effective_user.id).afirst()
     return obj
 
-async def create_user_if_doesnt_exist(user: User):
-    await Bot_user.objects.aget_or_create(
+async def create_user_if_doesnt_exist(user: User) -> Tuple[Bot_user, bool]:
+    obj, created = await Bot_user.objects.aget_or_create(
         user_id=user.id,
         defaults={
             "name": user.first_name,
@@ -43,3 +44,4 @@ async def create_user_if_doesnt_exist(user: User):
             "lang": "uz",
         }
     )
+    return obj, created

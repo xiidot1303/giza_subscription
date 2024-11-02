@@ -7,7 +7,9 @@ from config import TG_CHANNEL_INVITE_LINK
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    bot_user = await get_object_by_update(update)
+    # create bot user if doesnt exist
+    bot_user, created = await create_user_if_doesnt_exist(update.effective_user)
+    bot_user: Bot_user
 
     # create inline button
     i_join = InlineKeyboardButton(
