@@ -19,7 +19,11 @@ class Bot_user(models.Model):
     class Meta:
         verbose_name = "Пользователь бота"
         verbose_name_plural = "Пользователи бота"
-    
+
+class Referral(models.Model):
+    bot_user = models.OneToOneField(Bot_user, on_delete=models.PROTECT)
+    referrer = models.ForeignKey(Bot_user, on_delete=models.PROTECT)
+
 class Message(models.Model):
     bot_users = models.ManyToManyField('bot.Bot_user', blank=True, related_name='bot_users_list', verbose_name='Пользователи бота')
     text = models.TextField(null=True, blank=False, max_length=1024, verbose_name='Текст')
