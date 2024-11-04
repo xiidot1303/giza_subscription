@@ -73,7 +73,10 @@ class MesageAdmin(admin.ModelAdmin):
         form.base_fields['bot_users'].widget.attrs['style'] = 'width: 20em;'
         return form
 
+class ReferralAdmin(admin.ModelAdmin):
+    list_display = ["bot_user", "referrer"]
 
 admin.site.register(Bot_user, Bot_userAdmin)
 admin.site.register(Message, MesageAdmin)
 admin.site.register(Text, SingletonModelAdmin)
+admin.site.register(Referral, ReferralAdmin)

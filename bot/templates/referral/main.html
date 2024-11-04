@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+
+/* Container Styling */
+.referral-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Aligns items to the top */
+    padding-top: 20px; /* Adds some space at the top */
+    background-color: #f0f0f5;
+    min-height: 100vh; /* Ensures full viewport height */
+}
+
+
+
+/* Referral Page Styling */
+.referral-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 500px; /* Set max width for the entire referral page */
+    padding: 30px;
+    border-radius: 12px;
+    background-color: #ffffff; /* Container background */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+/* Other styles from previous referral page remain the same */
+
+/* General Page Styling */
+.referral-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+h1 {
+    font-size: 26px;
+    color: #4A90E2;
+    margin-bottom: 30px;
+}
+
+/* Referral Link Section Styling */
+.referral-link-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    width: 100%;
+    max-width: 400px;
+    padding: 10px 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#referralLink {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #555;
+    background-color: #f3f3f3;
+    margin-right: 10px;
+}
+
+button {
+    padding: 12px 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Referral Statistics Section */
+.referral-stats {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px); /* Lift on hover */
+}
+
+.stat-value {
+    font-size: 24px;
+    color: #4A90E2;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 16px;
+    color: #777;
+}
+
+/* Styling for Bonus Due Date Section */
+.bonus-due-date {
+    margin-top: 20px;
+    font-size: 16px;
+    text-align: center;
+    color: #333;
+}
+
+.due-date-label {
+    font-weight: bold;
+    color: #4A90E2;
+    margin-right: 5px;
+}
+
+.due-date-value {
+    color: #666;
+    font-size: 18px;
+}
+
+
+    </style>
+</head>
+<body>
+
+
+
+<div class="referral-container">
+    <div class="referral-page">
+        <h1>Referral Program</h1>
+
+        <!-- Referral Link Section -->
+        <div class="referral-link-section">
+            <input type="text" id="referralLink" value="{{ referral_link }}" readonly>
+            <button onclick="copyReferralLink()">Copy Referral Link</button>
+        </div>
+
+        <!-- Referral Statistics Section -->
+        <div class="referral-stats">
+            <div class="stat-item">
+                <span class="stat-value">{{ referrals_count }}</span>
+                <span class="stat-label">Total Referrals</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">{{ subscribed_referrals_count }}</span>
+                <span class="stat-label">Subscribed referrals</span>
+            </div>
+        </div>
+
+        <!-- Bonus Due Date Section -->
+        <div class="bonus-due-date">
+            <span class="due-date-label">Bonus Due Date:</span>
+            <span class="due-date-value">{{ bonus_due_date }}</span>
+        </div>
+    </div>
+</div>
+
+    
+
+
+    <script>
+        function copyReferralLink() {
+        const referralLink = document.getElementById("referralLink");
+        referralLink.select();
+        referralLink.setSelectionRange(0, 99999); // For mobile devices
+
+        navigator.clipboard.writeText(referralLink.value)
+            .then(() => {
+                alert("Referral link copied to clipboard!");
+            })
+            .catch((error) => {
+                console.error("Copy failed", error);
+            });
+        }
+
+    </script>    
+</body>
+</html>

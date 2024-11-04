@@ -32,5 +32,5 @@ class GetText:
         """
         Public method to get the value of a specified attribute.
         """
-        text = cls.data.get(attribute_name, ".")
+        text = cls.data.get(attribute_name, attribute_name)
         return text if text else attribute_name

@@ -28,7 +28,7 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
     receipt_pay_data = await receipts_pay_api(receipt_id, token)
     # update payment object because it changed by merchant api
     await payment.arefresh_from_db()
-    
+
     if DEBUG:
         payment.payed = True
         await payment.asave()
@@ -54,7 +54,32 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
 
         # create telegram channel access
         await give_channel_access(bot_user, subscription)
-        
+
+        # check referral available of this user
+        if referral := await bot_user.get_referral:
+            # check for this referral did not give bonus subscription
+            if await Subscription.objects.filter(referral__id=referral.id).aexists():
+                # dont give bonus
+                pass
+            else:
+                # give bonus to referrer
+                referrer: Bot_user = await referral.get_referrer
+                # create subscription
+                subscription: Subscription = await create_subscription(
+                    bot_user=referrer,
+                    referral=referral
+                )
+                # send notification about that bonus given
+                given_bonus = await GetText.on(Text.given_bonus)
+                await send_newsletter(bot, referrer.user_id, given_bonus)
+
+                # give telegram channel access to referrer, if doesn't exist
+                channel_access, created = await give_channel_access(referrer, subscription)
+                if created:
+                    joined_to_channel_text = await GetText.on(Text.joined_to_channel)
+                    await send_newsletter(bot, referrer.user_id,
+                                          joined_to_channel_text, reply_markup=await reply_keyboard_remove())
+
         text = await GetText.on(Text.joined_to_channel)
         await update_message_reply_text(update, text, reply_markup=await reply_keyboard_remove())
 

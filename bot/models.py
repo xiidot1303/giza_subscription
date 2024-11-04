@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
 import uuid
+from asgiref.sync import sync_to_async
 
 class Bot_user(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -11,6 +12,11 @@ class Bot_user(models.Model):
     phone = models.CharField(null=True, blank=True, max_length=16, default='', verbose_name='Телефон')
     lang = models.CharField(null=True, blank=True, max_length=4, verbose_name='')
     date = models.DateTimeField(db_index=True, null=True, auto_now_add=True, blank=True, verbose_name='Дата регистрации')
+
+    @property
+    async def get_referral(self):
+        obj = await Referral.objects.filter(bot_user__id = self.id).afirst()
+        return obj
 
     def __str__(self) -> str:
         try:
@@ -25,6 +31,11 @@ class Bot_user(models.Model):
 class Referral(models.Model):
     bot_user = models.OneToOneField(Bot_user, on_delete=models.PROTECT)
     referrer = models.ForeignKey(Bot_user, related_name="referrall_referrer", on_delete=models.PROTECT)
+
+    @property
+    @sync_to_async
+    def get_referrer(self):
+        return self.referrer
 
 class Message(models.Model):
     bot_users = models.ManyToManyField('bot.Bot_user', blank=True, related_name='bot_users_list', verbose_name='Пользователи бота')
@@ -49,6 +60,7 @@ class Text(models.Model):
     main_menu = models.TextField(null=True, blank=True, verbose_name="Главное меню")
     after_join_request = models.TextField(null=True, blank=True, verbose_name="После запроса на присоединение")
     joined_to_channel = models.TextField(null=True, blank=True, verbose_name="Успешное присоединение к каналу")
+    given_bonus = models.TextField(null=True, blank=True, verbose_name="Вы получали бонус за привлечение рефералов")
     error_in_payment = models.TextField(null=True, blank=True, verbose_name="Ошибка при оплате")
     subscription_renewed = models.TextField(null=True, blank=True, verbose_name="Подписка продлена")
     banned = models.TextField(null=True, blank=True, verbose_name="Вы заблокированы на канале")

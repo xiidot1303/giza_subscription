@@ -9,6 +9,7 @@ from bot.models import Bot_user
 from app.services.subscription_service import create_subscription as _create_subscription
 from config import TG_CHANNEL_ID
 from bot.bot import bot
+from typing import Tuple
 
 
 async def get_channel_access_of_bot_user(bot_user: Bot_user):
@@ -17,12 +18,17 @@ async def get_channel_access_of_bot_user(bot_user: Bot_user):
     return obj
 
 
-async def give_channel_access(bot_user: Bot_user, subscription: Subscription):
-    obj = await TelegramChannelAccess.objects.acreate(
+async def give_channel_access(bot_user: Bot_user, subscription: Subscription) -> Tuple[TelegramChannelAccess, bool]:
+    """
+    Return: (<`TelegramchannelAccess` objects>, <`is created` boolen>)
+    """
+    obj, created = await TelegramChannelAccess.objects.aget_or_create(
         bot_user=bot_user,
-        subscription=subscription
+        defaults={
+            "subscription": subscription
+        }
     )
-    return obj
+    return obj, created
 
 
 async def update_channel_access(subscription: Subscription, payment: Payment):
