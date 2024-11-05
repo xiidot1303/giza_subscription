@@ -32,8 +32,11 @@ async def check_subscription():
         if "result" in receipt_pay_data and payment.payed:
             # successfully payment
 
+            # create new subscription
+            new_subscription = await create_subscription(bot_user, plan, payment)
             # update telegram channel access
-            await update_channel_access(subscription, payment)
+            await update_channel_access(subscription, new_subscription)
+
 
             # send notification about successfully added new subscription
             text = await GetText.on(Text.subscription_renewed)
