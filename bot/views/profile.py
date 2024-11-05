@@ -1,7 +1,10 @@
 from app.views import *
 from bot.services import *
+from bot.bot import *
+from bot.utils.keyboards import cancel_subscription_keyboard
 from payment.services.card_service import *
 from app.services.channel_access_service import *
+from app.services.subscription_service import *
 from app.services.payment_service import *
 from adrf.views import APIView
 from adrf.requests import AsyncRequest
@@ -23,6 +26,7 @@ async def home(request: HttpRequest, id):
         "expire": card_info.expire,
         "api_host": request.build_absolute_uri('/'),
         "user_id": id,
+        "bot_user_id": bot_user.user_id,
 
         # Tariff info
         "tariff": plan,
@@ -48,4 +52,17 @@ class UpdateCard(APIView):
         card: Card = await get_card_of_bot_user(bot_user)
         # update card data
         await update_card(card, card_number, expire, token)
+        return JsonResponse({})
+
+
+class CancelSubscription(APIView):
+    async def post(self, request: AsyncRequest, *args, **kwargs):
+        # get data from POST
+        subscription_id = request.data.get("subscription_id")
+        bot_user_id = request.data.get("bot_user_id")
+
+        # send newsletter to user about cancellation
+        text = await get_word("confirm cancellation", chat_id=bot_user_id)
+        markup = await cancel_subscription_keyboard(subscription_id)
+        await send_newsletter(bot, bot_user_id, text, reply_markup=markup)
         return JsonResponse({})

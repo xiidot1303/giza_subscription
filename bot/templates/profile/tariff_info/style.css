@@ -15,6 +15,35 @@
     text-align: center; /* Centered title */
 }
 
+.cancel-subscription{
+    display: flex;
+    justify-content: end;
+
+
+}
+
+.cancel-subscription-button {
+    background-color: #ffffff; /* White background for contrast */
+    color: #120404; /* Text color matching the card */
+    background-color: rgba(51, 51, 51, 0.66);
+    border: none;
+    border-radius: 20px; /* More rounded corners */
+    padding: 8px 12px; /* Smaller padding for a smaller button */
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 14px; /* Smaller font size */
+    /* position: relative; */
+    /* bottom: 20px; */
+    /* left: 20px;  */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+}
+
+.cancel-subscription-button:hover {
+    background-color: #530101; /* Light gray background on hover */
+    color: rgb(255, 0, 0); /* Darker text on hover */
+}
+
 .tariff-details {
     display: flex;
     flex-direction: column; /* Stack items vertically */

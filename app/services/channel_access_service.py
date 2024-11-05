@@ -6,7 +6,11 @@ from app.models import (
     SubscriptionPlan
 )
 from bot.models import Bot_user
-from app.services.subscription_service import create_subscription as _create_subscription
+from app.services.subscription_service import (
+    create_subscription as _create_subscription,
+    get_subscription_by_id as _get_subscription_by_id,
+    get_next_active_subscription as _get_next_active_subscription
+)
 from config import TG_CHANNEL_ID
 from bot.bot import bot
 from typing import Tuple
@@ -31,16 +35,19 @@ async def give_channel_access(bot_user: Bot_user, subscription: Subscription) ->
     return obj, created
 
 
-async def update_channel_access(subscription: Subscription, payment: Payment):
-    bot_user: Bot_user = await subscription.get_bot_user
-    plan: SubscriptionPlan = await subscription.get_plan
-
+async def update_channel_access(old_subscription: Subscription, new_subscription: Subscription):
+    bot_user: Bot_user = await old_subscription.get_bot_user
     # disactivate current subscription
-    subscription.active = False
-    await subscription.asave()
+    old_subscription.active = False
+    await old_subscription.asave()
 
-    # create new subscription
-    await _create_subscription(bot_user, plan, payment)
+    # get telegram channel access
+    channel_access: TelegramChannelAccess = await TelegramChannelAccess.objects.aget(
+        subscription=old_subscription)
+
+    # set new subscription to channel access
+    channel_access.subscription = new_subscription
+    await channel_access.asave()
 
 
 async def remove_user_from_channel(subscription: Subscription):
@@ -67,3 +74,11 @@ async def has_channel_access(user_id: int | str) -> bool:
         bot_user__user_id=user_id
     ).aexists()
     return exists
+
+
+async def deactivate_subscription_and_update_channel_access(subscription: Subscription):
+    # if active subcriptions available in the next, set subscription or remove user from channel
+    if next_subscription := await _get_next_active_subscription(subscription):
+        await update_channel_access(subscription, next_subscription)
+    else:
+        await remove_user_from_channel(subscription)

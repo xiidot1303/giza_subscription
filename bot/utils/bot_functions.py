@@ -101,7 +101,8 @@ async def send_newsletter(bot: Bot, chat_id, text, photo=None, video=None, docum
         if pin_message:
             await bot.pin_chat_message(chat_id=chat_id, message_id=message.message_id)
         return message
-    except:
+    except Exception as ex:
+        print(ex)
         return None
 
 async def bot_delete_message(update: Update, context: ContextTypes.DEFAULT_TYPE, message_id=None):

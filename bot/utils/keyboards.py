@@ -55,3 +55,17 @@ async def build_keyboard(update, button_list, n_cols, back_button=True, main_men
 
     reply_markup = ReplyKeyboardMarkup(buttons, resize_keyboard=True)
     return reply_markup
+
+
+async def cancel_subscription_keyboard(subscription_id):
+    i_confirm = InlineKeyboardButton(
+        text="Tasdiqlayman",
+        callback_data=f"cancel_subscription--{subscription_id}"
+    )
+    i_no = InlineKeyboardButton(
+        text="Yo'q",
+        callback_data="delete_current_message"
+    )
+
+    markup = InlineKeyboardMarkup([[i_confirm, i_no]])
+    return markup

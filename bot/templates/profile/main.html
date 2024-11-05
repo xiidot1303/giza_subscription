@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Card Information</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -32,9 +34,13 @@
         {% include "profile/payment_info/body.html" %}
     </div>
 
-    <!-- Scripts -->
-    <script>
-        {% include "profile/card_info/script.js" %}
-    </script>
+<!-- Scripts -->
+<script>
+Telegram.WebApp.ready();
+Telegram.WebApp.expand();
+{% include "profile/card_info/script.js" %}
+{% include "profile/tariff_info/script.js" %}
+</script>
+
 </body>
 </html>

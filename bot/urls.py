@@ -12,6 +12,9 @@ urlpatterns = [
     path("profile/<str:id>/", profile.home),
     path("profile/update-card", profile.UpdateCard.as_view()),
 
+    # subscription
+    path("subscription/cancel", profile.CancelSubscription.as_view()),
+
     # referral
     path('referral/<str:id>/', referral.main),
 ]

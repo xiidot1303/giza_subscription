@@ -62,7 +62,11 @@ lang_dict = {
 
     "profile": ["", ""],
 
-    "": ["", ""],
+    "confirm cancellation": [
+        "<b>Obunani bekor qilishni tasdiqlaysizmi?</b>\n" \
+            "⚠️ Diqqat qiling, obunani qayta tiklash uchun qaytatdan to'lov amalga oshirishingiz kerak.", 
+        ""
+    ],
 
     "": ["", ""],
 

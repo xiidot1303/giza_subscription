@@ -13,7 +13,7 @@ from bot.resources.strings import lang_dict
 from bot.resources.conversationList import *
 
 from bot.bot import (
-    main, join_request, web_app
+    main, join_request, web_app, subscription
 )
 
 exceptions_for_filter_text = (~filters.COMMAND) & (
@@ -35,4 +35,6 @@ handlers = [
     CallbackQueryHandler(join_request.plans_list, pattern="plans_list"),
     CallbackQueryHandler(join_request.select_plan,
                          pattern=".*subscription_plan.*"),
+    CallbackQueryHandler(subscription.cancel_subscription, pattern=".*cancel_subscription.*"),
+    CallbackQueryHandler(main.bot_delete_message, pattern="delete_current_message"),
 ]
