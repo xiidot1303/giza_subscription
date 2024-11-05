@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Payme_transaction(models.Model):
     payme_trans_id = models.CharField(null=True, blank=False, max_length=64)
     account_id = models.CharField(null=True, blank=False, max_length=128)
@@ -26,9 +27,16 @@ class Payme_transaction(models.Model):
     reason = models.IntegerField(null=True, blank=True, choices=REASON_CHOICES)
     test = models.BooleanField(null=True, default=False)
 
+
 class Card(models.Model):
-    bot_user = models.OneToOneField("bot.Bot_user", null=True, on_delete=models.CASCADE)
-    number = models.CharField(null=True, max_length=32)
-    expire = models.CharField(null=True, max_length=8)
-    token = models.CharField(null=True, max_length=1024)
-    
+    bot_user = models.OneToOneField(
+        "bot.Bot_user", null=True, on_delete=models.CASCADE, verbose_name="Пользователь бота"
+    )
+    number = models.CharField(null=True, max_length=32, verbose_name="Номер")
+    expire = models.CharField(null=True, max_length=8,
+                              verbose_name="Срок действия")
+    token = models.CharField(null=True, max_length=1024, verbose_name="Токен")
+
+    class Meta:
+        verbose_name = "Карта"
+        verbose_name_plural = "Карты"

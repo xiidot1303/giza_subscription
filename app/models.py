@@ -9,38 +9,56 @@ from asgiref.sync import sync_to_async
 
 class SubscriptionPlan(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=100)
-    price = models.BigIntegerField(null=True)
-    description = models.TextField(blank=True, null=True)
+    name = models.CharField(max_length=100, verbose_name="Название")
+    price = models.BigIntegerField(null=True, verbose_name="Цена")
+    description = models.TextField(
+        blank=True, null=True, verbose_name="Описание")
     duration_in_months = models.IntegerField(
-        default=1)  # Duration of subscription in months
+        default=1, verbose_name="Длительность (в месяцах)"
+    )
 
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Тариф"
+        verbose_name_plural = "Тарифы"
+
 
 class Payment(models.Model):
     bot_user = models.ForeignKey(
-        "bot.Bot_user", null=True, on_delete=models.CASCADE)
-    amount = models.BigIntegerField(null=True)
-    payment_date = models.DateTimeField(default=timezone.now)
-    payed = models.BooleanField(default=False)
-    payment_system = models.CharField(null=True, blank=True, max_length=32)
+        "bot.Bot_user", null=True, on_delete=models.CASCADE, verbose_name="Пользователь бота"
+    )
+    amount = models.BigIntegerField(null=True, verbose_name="Сумма")
+    payment_date = models.DateTimeField(
+        default=timezone.now, verbose_name="Дата платежа")
+    payed = models.BooleanField(default=False, verbose_name="Оплачено?")
+    payment_system = models.CharField(
+        null=True, blank=True, max_length=32, verbose_name="Платежная система"
+    )
+
+    class Meta:
+        verbose_name = "Оплата"
+        verbose_name_plural = "Платежи"
 
 
 class Subscription(models.Model):
     bot_user = models.ForeignKey(
-        "bot.Bot_user", null=True, on_delete=models.CASCADE)
-    plan = models.ForeignKey(SubscriptionPlan, null=True,
-                             blank=True, on_delete=models.CASCADE)
-    start_date = models.DateTimeField(default=timezone.now)
-    end_date = models.DateTimeField(null=True)
+        "bot.Bot_user", null=True, on_delete=models.CASCADE, verbose_name="Пользователь бота"
+    )
+    plan = models.ForeignKey(
+        SubscriptionPlan, null=True, blank=True, on_delete=models.CASCADE, verbose_name="Тарифный план"
+    )
+    start_date = models.DateTimeField(
+        default=timezone.now, verbose_name="Дата начала")
+    end_date = models.DateTimeField(null=True, verbose_name="Дата окончания")
     payment = models.ForeignKey(
-        Payment, null=True, blank=True, on_delete=models.CASCADE)
+        Payment, null=True, blank=True, on_delete=models.CASCADE, verbose_name="Платеж"
+    )
     referral = models.OneToOneField(
-        'bot.Referral', null=True, blank=True, on_delete=models.CASCADE)
-
-    active = models.BooleanField(default=True)
+        'bot.Referral', null=True, blank=True, on_delete=models.CASCADE, verbose_name="Реферал"
+    )
+    active = models.BooleanField(default=True, verbose_name="Активен?")
 
     def save(self, *args, **kwargs):
         if not self.end_date:
@@ -67,13 +85,24 @@ class Subscription(models.Model):
     def get_plan(self):
         return self.plan
 
+    class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"
+
 
 class TelegramChannelAccess(models.Model):
     bot_user = models.OneToOneField(
-        "bot.Bot_user", null=True, on_delete=models.CASCADE)
-    subscription = models.OneToOneField(Subscription, on_delete=models.CASCADE)
+        "bot.Bot_user", null=True, on_delete=models.CASCADE, verbose_name="Пользователь бота"
+    )
+    subscription = models.OneToOneField(
+        Subscription, on_delete=models.CASCADE, verbose_name="Подписка"
+    )
 
     @property
     @sync_to_async
     def get_subscription(self):
         return self.subscription
+
+    class Meta:
+        verbose_name = "Доступ к каналу"
+        verbose_name_plural = "Подписчики канала"
