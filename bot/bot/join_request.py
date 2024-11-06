@@ -42,12 +42,16 @@ async def select_plan(update: Update, context: CustomContext):
     _, plan_id = data.split('--')
     # set plan id in user data
     context.user_data["plan_id"] = plan_id
+    # get plan
+    plan: SubscriptionPlan = await get_subscription_plan_by_id(plan_id)
     # create buttons for web app
     button = KeyboardButton(
         text=await get_word("Pay for plan", update),
         web_app=WebAppInfo(url=f"{WEBAPP_URL}/subscribe/set-card"),
     )
-    text = "purchase"
+    tariff_text = f"✅ {plan.name} {plan.price} so'm"
+    text = await get_word("purchase tariff", update)
     markup = ReplyKeyboardMarkup([[button]], resize_keyboard=True)
-    await bot_edit_message_reply_markup(update, context, reply_markup=None)
+    # await bot_edit_message_reply_markup(update, context, reply_markup=None)
+    await bot_edit_message_text(update, context, tariff_text)
     await bot_send_message(update, context, text, reply_markup=markup)

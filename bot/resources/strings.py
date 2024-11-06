@@ -54,13 +54,13 @@ lang_dict = {
         """Ваше имя успешно изменено!""",
     ],
 
-    "Pay for plan": ["", ""],
+    "Pay for plan": ["To'lovni amalga oshirish", ""],
 
-    "tariffs": ["", ""],
+    "tariffs": ["📄 Tariflar", ""],
 
-    "join channel": ["", ""],
+    "join channel": ["🔘 Kanalga obuna bo'lish", ""],
 
-    "profile": ["", ""],
+    "profile": ["👤 Shaxsiy hisob", ""],
 
     "confirm cancellation": [
         "<b>Obunani bekor qilishni tasdiqlaysizmi?</b>\n" \
@@ -73,9 +73,13 @@ lang_dict = {
         ""
         ],
 
-    "edit card": ["", ""],
+    "edit card": ["Kartani o'zgartirish", ""],
 
-    "": ["", ""],
+    "purchase tariff": [
+        "Ushbu tarif bo'yicha kanalga obuna bo'lish uchun to'lovni amalga " \
+            "oshirishingiz kerak.\n\n<b>To'lovni amalga oshirish</b> tugmasiga bosing", 
+        ""
+        ],
 
     "": ["", ""],
 
