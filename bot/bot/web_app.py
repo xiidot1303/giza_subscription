@@ -77,11 +77,13 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
                 channel_access, created = await give_channel_access(referrer, subscription)
                 if created:
                     joined_to_channel_text = await GetText.on(Text.joined_to_channel)
+                    markup = await build_keyboard(update, [], 1, back_button=False)
                     await send_newsletter(bot, referrer.user_id,
-                                          joined_to_channel_text, reply_markup=await reply_keyboard_remove())
+                                          joined_to_channel_text, reply_markup=markup)
 
         text = await GetText.on(Text.joined_to_channel)
-        await update_message_reply_text(update, text, reply_markup=await reply_keyboard_remove())
+        markup = await build_keyboard(update, [], 1, back_button=False)
+        await update_message_reply_text(update, text, reply_markup=markup)
 
     elif "error" in receipt_pay_data:
         # error in payment

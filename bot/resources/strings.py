@@ -81,6 +81,14 @@ lang_dict = {
         ""
         ],
 
+    "referral": ["🔉 Referal tizimi", ""],
+
+    "open channel": ["📣 Kanalga kirish", ""],
+
+    "": ["", ""],
+
+    "": ["", ""],
+
     "": ["", ""],
 
 }

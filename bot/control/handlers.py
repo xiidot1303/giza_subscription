@@ -20,6 +20,7 @@ exceptions_for_filter_text = (~filters.COMMAND) & (
     ~filters.Text(lang_dict['main menu']))
 
 start = CommandHandler('start', main.start)
+main_menu = MessageHandler(filters.Text(lang_dict['main menu']), main.start)
 
 channel_join_request_handler = ChatJoinRequestHandler(
     join_request.channel_join_request)
@@ -29,6 +30,7 @@ web_app_data_handler = MessageHandler(
 
 handlers = [
     start,
+    main_menu,
     channel_join_request_handler,
     web_app_data_handler,
     # Callback query handlers
