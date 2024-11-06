@@ -1,6 +1,12 @@
 <!-- Tariff Info Block -->
 <div class="tariff-info" id="tariff-info">
-    <h2 class="tariff-title">Tarif: {{ tariff.name }}</h2> <!-- Updated title -->
+    <h2 class="tariff-title">Tarif: 
+    {% if tariff %}
+        {{ tariff.name }}
+    {% else %}
+        BONUS
+    {% endif %}
+    </h2> <!-- Updated title -->
 
     <div class="tariff-details">
         <div class="tariff-item">
@@ -16,7 +22,9 @@
             <strong>Keyingi to'lov sanasi:</strong> <span class="tariff-value">{{ subscription.end_date|date:"d.m.Y" }}</span>
         </div>
     </div>
+    {% if tariff %}
     <div class="cancel-subscription">
         <button class="cancel-subscription-button" id="cancelSubscriptionButton">Bekor qilish</button>
     </div>
+    {% endif %}
 </div>

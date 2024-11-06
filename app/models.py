@@ -85,6 +85,11 @@ class Subscription(models.Model):
     def get_plan(self):
         return self.plan
 
+    @property
+    @sync_to_async
+    def get_plan_name(self):
+        return self.plan.name if self.plan else "BONUS"
+
     class Meta:
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"

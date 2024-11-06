@@ -68,7 +68,10 @@ lang_dict = {
         ""
     ],
 
-    "": ["", ""],
+    "successfully deactivated subscription": [
+        "Sizning obunangiz bekor qilindi. Qaytatdan obuna bo'lish uchun /start ustiga bosing.", 
+        ""
+        ],
 
     "": ["", ""],
 

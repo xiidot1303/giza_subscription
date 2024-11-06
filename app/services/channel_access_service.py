@@ -11,6 +11,10 @@ from app.services.subscription_service import (
     get_subscription_by_id as _get_subscription_by_id,
     get_next_active_subscription as _get_next_active_subscription
 )
+from bot.services.notification_service import (
+    your_subscription_changed_notify,
+    deactivated_your_subscription_notify
+    )
 from config import TG_CHANNEL_ID
 from bot.bot import bot
 from typing import Tuple
@@ -77,8 +81,17 @@ async def has_channel_access(user_id: int | str) -> bool:
 
 
 async def deactivate_subscription_and_update_channel_access(subscription: Subscription):
+    bot_user: Bot_user = await subscription.get_bot_user
     # if active subcriptions available in the next, set subscription or remove user from channel
     if next_subscription := await _get_next_active_subscription(subscription):
         await update_channel_access(subscription, next_subscription)
+        # send notification about subscription changed
+        await your_subscription_changed_notify(
+            bot_user.user_id,
+            subscription,
+            next_subscription
+        )
     else:
         await remove_user_from_channel(subscription)
+        # send notification about successfully deactivated subscription
+        await deactivated_your_subscription_notify(bot_user.user_id)
