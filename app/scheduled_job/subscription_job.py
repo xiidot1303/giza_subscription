@@ -6,6 +6,7 @@ from payment.services.card_service import *
 from bot.utils.bot_functions import send_newsletter, bot
 from config import DEBUG
 from bot.services.text_service import *
+from bot.utils.keyboards import change_card_keyboard
 
 async def check_subscription():
     async for subscription in Subscription.objects.filter(
@@ -52,6 +53,6 @@ async def check_subscription():
             else:
                 # send alert to user about can not charge amount
                 text = await GetText.on(Text.cannot_charge)
-                markup = None
+                markup = await change_card_keyboard(bot_user)
 
         await send_newsletter(bot, bot_user.user_id, text, reply_markup=markup)
