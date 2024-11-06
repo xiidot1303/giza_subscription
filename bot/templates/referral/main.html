@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://kit.fontawesome.com/2707a376d5.js" crossorigin="anonymous"></script>
+
     <style>
 
 
@@ -155,29 +158,29 @@ button:hover {
 
 <div class="referral-container">
     <div class="referral-page">
-        <h1>Referral Program</h1>
+        <h1>Sizning referal havolangiz:</h1>
 
         <!-- Referral Link Section -->
         <div class="referral-link-section">
             <input type="text" id="referralLink" value="{{ referral_link }}" readonly>
-            <button onclick="copyReferralLink()">Copy Referral Link</button>
+            <button onclick="copyReferralLink()"><i class="fas fa-copy"></i></button>
         </div>
 
         <!-- Referral Statistics Section -->
         <div class="referral-stats">
             <div class="stat-item">
                 <span class="stat-value">{{ referrals_count }}</span>
-                <span class="stat-label">Total Referrals</span>
+                <span class="stat-label">Umumiy referallar</span>
             </div>
             <div class="stat-item">
                 <span class="stat-value">{{ subscribed_referrals_count }}</span>
-                <span class="stat-label">Subscribed referrals</span>
+                <span class="stat-label">Bonus olib kelganlar</span>
             </div>
         </div>
 
         <!-- Bonus Due Date Section -->
         <div class="bonus-due-date">
-            <span class="due-date-label">Bonus Due Date:</span>
+            <span class="due-date-label">Bonuslar amal qilish muddati:</span>
             <span class="due-date-value">{{ bonus_due_date }}</span>
         </div>
     </div>
@@ -187,6 +190,8 @@ button:hover {
 
 
     <script>
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
         function copyReferralLink() {
         const referralLink = document.getElementById("referralLink");
         referralLink.select();
@@ -194,7 +199,7 @@ button:hover {
 
         navigator.clipboard.writeText(referralLink.value)
             .then(() => {
-                alert("Referral link copied to clipboard!");
+                Telegram.WebApp.showAlert("Havoladan nusxa ko'chirildi!");
             })
             .catch((error) => {
                 console.error("Copy failed", error);
