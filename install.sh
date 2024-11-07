@@ -1,6 +1,7 @@
 #!/bin/bash
 
 mkdir logs
+touch bot/resources/text.json
 
 echo "Project title:"
 read project_title
@@ -33,7 +34,7 @@ createdb $project_title
 
 pip install -r requirements.txt
 
-python manage.py migrate
+python manage.py migrate --skip-checks
 python manage.py makemigrations app
 python manage.py makemigrations bot
 python manage.py migrate app
