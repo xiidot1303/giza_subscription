@@ -22,5 +22,5 @@ app/static/assets/*
 !payment/services/__init__.py
 !payment/resources/__init__.py
 !payment/utils/__init__.py
-enter_server.py
+enter_server.sh
 bot/resources/text.json
