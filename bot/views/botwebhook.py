@@ -21,9 +21,5 @@ class BotWebhookView(View):
     async def post(self, request, *args, **kwargs):
         data = json.loads(request.body.decode("utf-8"))
         update = Update.de_json(data = data, bot=application.bot)
-        await update_bot(update)
+        await application.update_queue.put(update)
         return JsonResponse({'status': 'success'})
-
-async def update_bot(update):
-    await application.update_queue.put(update)
-    
