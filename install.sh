@@ -37,8 +37,10 @@ pip install -r requirements.txt
 python manage.py migrate --skip-checks
 python manage.py makemigrations app
 python manage.py makemigrations bot
+python manage.py makemigrations payment
 python manage.py migrate app
 python manage.py migrate bot
+python manage.py migrate payment
 python manage.py collectstatic
 python manage.py createsuperuser
 
