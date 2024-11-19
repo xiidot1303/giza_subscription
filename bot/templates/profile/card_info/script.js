@@ -1,4 +1,4 @@
-let cardToken = ''; // Store the card token after the first API call
+let transactionId = ''; // Store the card token after the first API call
 
 function toggleEditForm() {
     const editForm = document.getElementById('editForm');
@@ -33,14 +33,12 @@ function formatExpiry() {
 
 async function continueEditing() {
     const newCardNumber = document.getElementById('newCardNumber').value;
-    const newExpire = document.getElementById('newExpire').value;
+    const newExpire = document.getElementById('newExpire').value.replace("/", "");
     const apiHost = "{{ api_host }}";
-
-    const response = await fetch(`${apiHost}cards/create`, {
+    const response = await fetch(`${apiHost}cards/init`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            id: 1,
             number: newCardNumber,
             expire: newExpire,
         }),
@@ -48,19 +46,13 @@ async function continueEditing() {
 
     const data = await response.json();
 
-    if (data.result) {
-        cardToken = data.result.card.token;
-
+    if (data.result.code == "OK") {
+        transactionId = data.transaction_id;
+        const phone = data.phone;
         document.getElementById('editForm').style.display = 'none';
         document.getElementById('verificationForm').style.display = 'block';
-
-        await fetch(`${apiHost}cards/getverifycode`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: cardToken }),
-        });
     } else {
-        alert('Karta ma\'lumotlari noto‘g‘ri');
+        alert(data.result?.description);
     }
 }
 
@@ -82,21 +74,22 @@ async function submitVerification() {
     const smsCode = document.getElementById('smsCode').value;
     const apiHost = "{{ api_host }}";
 
-    const response = await fetch(`${apiHost}cards/verify`, {
+    const response = await fetch(`${apiHost}cards/confirm`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            token: cardToken,
+            transaction_id: transactionId,
             code: smsCode,
         }),
     });
 
     const data = await response.json();
 
-    if (data.result) {
-        const cardNumber = data.result.card.number;
-        const cardExpire = data.result.card.expire;
-        const cardToken = data.result.card.token;
+    if (data.result.code == "OK") {
+        const cardNumber = data.data.pan;
+        const cardExpire = data.data.expiry;
+        const cardToken = data.data.card_token;
+        const cardHolder = data.data.card_holder;
         const userId = "{{ user_id }}";
 
         await fetch(`${apiHost}/profile/update-card`, {
@@ -112,6 +105,6 @@ async function submitVerification() {
 
         location.reload();
     } else {
-        alert('Tasdiqlash muvaffaqiyatsiz yakunlandi. Kodni tekshirib qayta urinib ko‘ring.');
+        alert(data.result?.description);
     }
 }

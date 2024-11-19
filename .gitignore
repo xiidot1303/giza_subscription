@@ -19,6 +19,7 @@ app/static/assets/*
 !bot/utils/__init__.py
 !bot/bot/__init__.py
 !payment/services/payme/__init__.py
+!payment/services/atmos/__init__.py
 !payment/services/__init__.py
 !payment/resources/__init__.py
 !payment/utils/__init__.py

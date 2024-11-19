@@ -25,15 +25,17 @@ async def today():
     return today
 
 async def send_request(url, data=None, headers=None, type='get'):
-    if type == 'get':
-        response = requests.get(url, params=data, headers=headers)
-        content = json.loads(response.content)
-        headers = response.headers
-    else:
-        response = requests.post(url, json=data, headers=headers)
-        content = json.loads(response.content)
-        headers = response.headers
-
+    try:
+        if type == 'get':
+            response = requests.get(url, params=data, headers=headers)
+            content = json.loads(response.content)
+            headers = response.headers
+        else:
+            response = requests.post(url, json=data, headers=headers)
+            content = json.loads(response.content)
+            headers = response.headers
+    except:
+        content, headers = ({"error": ""}, None)
     return content, headers
 
 async def create_random_id():

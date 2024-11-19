@@ -34,7 +34,7 @@ CSRF_TRUSTED_ORIGINS = CSRF_TRUSTED_ORIGINS
 INSTALLED_APPS = [
     'app.apps.app',
     'bot.apps.bot',
-    'payment',
+    'payment.apps.payment',
     'jazzmin',
     'django_apscheduler',
     'django.contrib.admin',
@@ -129,6 +129,17 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/13',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 

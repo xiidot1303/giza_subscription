@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+import base64
 
 load_dotenv(os.path.join(".env"))
 
@@ -28,3 +29,11 @@ PAYME_CASH_ID = os.environ.get("PAYME_CASH_ID")
 PAYME_KEY = os.environ.get("PAYME_KEY")
 PAYME_TEST_KEY = os.environ.get("PAYME_TEST_KEY")
 PAYME_CHECKOUT_URL = os.environ.get("PAYME_CHECKOUT_URL")
+
+# Atmos
+ATMOS_STORE_ID = os.environ.get("ATMOS_STORE_ID")
+ATMOS_CONSUMER_KEY = os.environ.get("ATMOS_CONSUMER_KEY")
+ATMOS_CONSUMER_SECRET = os.environ.get("ATMOS_CONSUMER_SECRET")
+ATMOS_AUTHORIZATION_KEY = base64.b64encode(
+    f"{ATMOS_CONSUMER_KEY}:{ATMOS_CONSUMER_SECRET}".encode("utf-8")
+).decode("utf-8")
