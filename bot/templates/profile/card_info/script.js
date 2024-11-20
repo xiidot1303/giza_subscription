@@ -86,20 +86,15 @@ async function submitVerification() {
     const data = await response.json();
 
     if (data.result.code == "OK") {
-        const cardNumber = data.data.pan;
-        const cardExpire = data.data.expiry;
-        const cardToken = data.data.card_token;
-        const cardHolder = data.data.card_holder;
+        const cardData = data.data
         const userId = "{{ user_id }}";
 
         await fetch(`${apiHost}/profile/update-card`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                card_number: cardNumber,
-                expire: cardExpire,
-                token: cardToken,
-                user_id: userId,
+                card_data: cardData,
+                user_id: userId
             }),
         });
 

@@ -11,6 +11,8 @@ from app.services.subscription_service import (
     get_subscription_by_id as _get_subscription_by_id,
     get_next_active_subscription as _get_next_active_subscription
 )
+from payment.services.card_service import delete_card_of_bot_user, Card, get_card_of_bot_user
+from payment.services.atmos.card_api import remove_card_api as _unlink_card_from_atmos
 from config import TG_CHANNEL_ID
 from bot.utils.bot_functions import bot
 from typing import Tuple
@@ -68,6 +70,12 @@ async def remove_user_from_channel(subscription: Subscription):
         subscription.active = False
         await subscription.asave()
 
+        # Cancel a linked card
+        card: Card = await get_card_of_bot_user(bot_user)
+        unlinked = await _unlink_card_from_atmos(card.card_id, card.token)
+        if unlinked == "OK":
+            # Delete Card object
+            await delete_card_of_bot_user(bot_user)
 
 async def has_channel_access(user_id: int | str) -> bool:
     exists = await TelegramChannelAccess.objects.filter(

@@ -43,15 +43,13 @@ class UpdateCard(APIView):
     async def post(self, request: AsyncRequest, *args, **kwargs):
         # get data from data
         data = request.data
-        card_number = data.get("card_number")
-        expire = str(data.get("expire")).replace("/", "")
-        token = data.get("token")
+
         user_id = data.get("user_id")
+        card_data = data.get("card_data")
 
         bot_user: Bot_user = await get_user_by_pk(user_id)
-        card: Card = await get_card_of_bot_user(bot_user)
         # update card data
-        await update_card(card, card_number, expire, token)
+        await update_card_of_bot_user(bot_user, DictToClass(card_data))
         return JsonResponse({})
 
 

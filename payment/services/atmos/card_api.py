@@ -50,3 +50,17 @@ async def bind_card_confirm_api(transaction_id, otp):
     request = await EndpointRequest.create("partner/bind-card/confirm", data)
     response = await request.send()
     return response
+
+
+async def remove_card_api(card_id, token):
+    """
+    In success response:\n
+    `"OK"
+    """
+    data = {
+        "id": card_id,
+        "token": token
+    }
+    request = await EndpointRequest.create("partner/remove-card", data)
+    response = await request.send()
+    return response["result"]["code"]

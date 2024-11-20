@@ -29,12 +29,14 @@ class Payme_transaction(models.Model):
 
 
 class Card(models.Model):
+    card_id = models.BigIntegerField(null=True, verbose_name="ID")
     bot_user = models.OneToOneField(
         "bot.Bot_user", null=True, on_delete=models.CASCADE, verbose_name="Пользователь бота"
     )
     number = models.CharField(null=True, max_length=32, verbose_name="Номер")
     expire = models.CharField(null=True, max_length=8,
                               verbose_name="Срок действия")
+    holder = models.CharField(null=True, max_length=32, verbose_name="Имя")
     token = models.CharField(null=True, max_length=1024, verbose_name="Токен")
 
     class Meta:

@@ -22,6 +22,15 @@ class RequestType:
     GET = 'get'
 
 
+class CardData:
+    card_id: int
+    pan: str
+    expiry: str
+    card_holder: str
+    phone: str
+    card_token: str
+
+
 class EndpointRequest:
     def __init__(self, request_url, request_body, headers, type):
         self.request_url = request_url
@@ -52,8 +61,9 @@ class EndpointRequest:
         return instance
 
     async def send(self):
-        response = requests.post(self.request_url, **self.request_body, headers=self.headers)
-        
+        response = requests.post(
+            self.request_url, **self.request_body, headers=self.headers)
+
         return response.json()
 
 
