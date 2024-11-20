@@ -1,7 +1,7 @@
 from app.services.channel_access_service import *
 from app.services.subscription_service import *
 from app.services.payment_service import *
-from payment.services.payme.subscribe_api import *
+from payment.services.atmos.transaction_api import *
 from payment.services.card_service import *
 from bot.utils.bot_functions import send_newsletter, bot
 from config import DEBUG
@@ -19,10 +19,18 @@ async def check_subscription():
             card: Card = await get_card_of_bot_user(bot_user)
             # create payment
             payment: Payment = await create_payment(bot_user, plan.price)
-            # create receipt
-            receipt_id = await receipts_create_api(payment.id, payment.amount)
-            # pay receipt
-            receipt_pay_data = await receipts_pay_api(receipt_id, card.token)
+            try:
+                # create receipt
+                transaction_id = await create_transaction_api(payment.id, payment.amount)
+                # pay receipt
+                pre_apply = await pre_apply_transaction_api(transaction_id, card.token)
+                assert pre_apply["result"]["code"] == "OK"
+                transaction_data = await apply_transaction_api(transaction_id)
+                assert transaction_data["result"]["code"] == "OK"
+
+                error = None
+            except Exception as ex:
+                error = ex
 
             # update payment object because it changed by merchant api
             await payment.arefresh_from_db()
@@ -32,7 +40,7 @@ async def check_subscription():
                 await payment.asave()
 
             markup = None
-            if "result" in receipt_pay_data and payment.payed:
+            if not error and payment.payed:
                 # successfully payment
 
                 # create new subscription

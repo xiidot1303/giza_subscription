@@ -4,7 +4,7 @@ from app.services.payment_service import *
 from app.services.plan_service import *
 from app.services.subscription_service import *
 from app.services.channel_access_service import *
-from payment.services.payme.subscribe_api import *
+from payment.services.atmos.transaction_api import *
 from payment.services.card_service import *
 from config import DEBUG
 
@@ -12,7 +12,7 @@ from config import DEBUG
 async def web_app_data(update: Update, context: CustomContext) -> None:
     # get data from web app data
     data = json.loads(update.effective_message.web_app_data.data)
-    token = data["token"]
+    card_data: CardData = DictToClass(data["card_data"])
     plan_id = context.user_data["plan_id"]
     channel_id = context.user_data["channel_id"]
     # get subscription plan object
@@ -22,10 +22,22 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
 
     # create payment
     payment: Payment = await create_payment(bot_user, plan.price)
-    # create receipt
-    receipt_id = await receipts_create_api(payment.id, payment.amount)
-    # pay receipt
-    receipt_pay_data = await receipts_pay_api(receipt_id, token)
+    try:
+        # create transaction
+        transaction_id = await create_transaction_api(payment.id, payment.amount)
+        print(card_data, transaction_id)
+        pre_apply = await pre_apply_transaction_api(transaction_id, card_data.card_token)
+        print(pre_apply)
+        assert pre_apply["result"]["code"] == "OK"
+        # pay transacrion
+        transaction_data = await apply_transaction_api(transaction_id)
+        print(transaction_data)
+        assert transaction_data["result"]["code"] == "OK"
+    
+        error = None
+    except Exception as ex:
+        error = ex
+
     # update payment object because it changed by merchant api
     await payment.arefresh_from_db()
 
@@ -33,13 +45,11 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
         payment.payed = True
         await payment.asave()
 
-    if "result" in receipt_pay_data and payment.payed:
+    if not error and payment.payed:
         # successfullt payment, approve channel join request
 
         # create or update card of the user
-        card_info = DictToClass(receipt_pay_data["result"]["receipt"]["card"])
-        card_info.token = token
-        await update_card_of_bot_user(bot_user, card_info)
+        await update_card_of_bot_user(bot_user, card_data)
 
         # create subscription
         subscription: Subscription = await create_subscription(
@@ -87,7 +97,7 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
         markup = await build_keyboard(update, [], 1, back_button=False)
         await update_message_reply_text(update, text, reply_markup=markup)
 
-    elif "error" in receipt_pay_data:
+    elif error:
         # error in payment
         text = await GetText.on(Text.error_in_payment)
         await update_message_reply_text(update, text)

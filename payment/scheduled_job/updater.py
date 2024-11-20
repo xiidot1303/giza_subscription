@@ -8,4 +8,5 @@ class jobs:
     scheduler = BackgroundScheduler(timezone='Asia/Tashkent')
     scheduler.add_jobstore(DjangoJobStore(), 'djangojobstore')
     register_events(scheduler)
-    scheduler.add_job(atmos_job.update_access_token, 'interval', minutes=45)
+    scheduler.add_job(async_to_sync(
+        atmos_job.update_access_token), 'interval', minutes=45)

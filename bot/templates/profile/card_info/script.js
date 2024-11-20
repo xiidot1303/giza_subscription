@@ -88,17 +88,24 @@ async function submitVerification() {
     if (data.result.code == "OK") {
         const cardData = data.data
         const userId = "{{ user_id }}";
-
-        await fetch(`${apiHost}/profile/update-card`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                card_data: cardData,
-                user_id: userId
-            }),
+        const requestBody = JSON.stringify({
+            card_data: cardData,
+            user_id: userId
         });
+        if (window.location.pathname.includes("subscribe/set-card")){
+            // send data to telegram
+            Telegram.WebApp.sendData(requestBody);
+            Telegram.WebApp.close();
+        } else{
+            // send data to api endpoint
+            await fetch(`${apiHost}/profile/update-card`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: requestBody,
+            });
+            location.reload();
+        }
 
-        location.reload();
     } else {
         alert(data.result?.description);
     }

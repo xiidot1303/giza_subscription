@@ -1,460 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
-        />
-        <meta name="format-detection" content="telephone=no" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="MobileOptimized" content="176" />
-        <meta name="HandheldFriendly" content="True" />
-        <meta name="robots" content="noindex,nofollow" />
-        <title></title>
-        <script src="https://telegram.org/js/telegram-web-app.js"></script>
-        <script>
-            function setThemeClass() {
-                document.documentElement.className =
-                    Telegram.WebApp.colorScheme;
-            }
-            Telegram.WebApp.onEvent("themeChanged", setThemeClass);
-            setThemeClass();
-        </script>
-        <style>
-            body {
-                font-family: sans-serif;
-                background-color: var(--tg-theme-bg-color, #ffffff);
-                color: var(--tg-theme-text-color, #222222);
-                font-size: 16px;
-                margin: 0;
-                padding: 0;
-                color-scheme: var(--tg-color-scheme);
-            }
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+      function setThemeClass() {
+        document.documentElement.className = Telegram.WebApp.colorScheme;
+      }
+      Telegram.WebApp.onEvent("themeChanged", setThemeClass);
+      setThemeClass();
+    </script>
+    <style>
+      body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+      }
+      .main-content {
+          display: flex;
+          justify-content: start;
+          flex-direction: column;
+          align-items: center;
+          height: 100vh;
+          padding-top: 20px; /* Add some padding from the top */
+      }
+      {% include "profile/card_info/style.css" %}
+    </style>
+  </head>
+  <body>
+    <div class="main-content">
+      <!-- Card Info Block -->
+      <div class="card-info" id="card-info">
+        <div class="card-number">
+            <b>
+                Bank kartasi ma'lumotlarini kiriting
+            </b>
+        </div>
+        <!-- Edit Form -->
+        <div class="edit-form" id="editForm" style="display: block">
+          <input
+            type="text"
+            id="newCardNumber"
+            placeholder="Karta raqamingizni kiriting"
+            maxlength="16"
+            oninput="validateCardNumber()"
+            required
+          />
+          <input
+            type="text"
+            id="newExpire"
+            placeholder="MM/YY"
+            maxlength="5"
+            oninput="formatExpiry()"
+            required
+          />
+          <button
+            class="continue-button"
+            id="continueButton"
+            onclick="continueEditing()"
+          >
+            Davom etish
+          </button>
+        </div>
 
-            a {
-                color: var(--tg-theme-link-color, #2678b6);
-            }
+        <!-- Verification Form -->
+        <div class="verification-form" id="verificationForm">
+          <input
+            type="text"
+            id="smsCode"
+            placeholder="SMS tasdiqlash kodini kiriting"
+            maxlength="6"
+            oninput="validateSmsCode()"
+            required
+          />
+          <button
+            class="submit-button"
+            id="submitButton"
+            onclick="submitVerification()"
+            disabled
+          >
+            Tasdiqlash
+          </button>
+        </div>
+      </div>
+    </div>
 
-            button {
-                display: block;
-                width: 100%;
-                font-size: 14px;
-                margin: 15px 0;
-                padding: 12px 20px;
-                border: none;
-                border-radius: 4px;
-                background-color: var(--tg-theme-button-color, #50a8eb);
-                color: var(--tg-theme-button-text-color, #ffffff);
-                cursor: pointer;
-            }
+    <script>
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+      {% if debug %}
+      const continueButton = document.getElementById('continueButton');
+      continueButton.classList.add('enabled');
+      continueButton.disabled = false;
+      const cardNumberInput = document.getElementById('newCardNumber');
+      const expiryInput = document.getElementById('newExpire');
 
-            button[disabled] {
-                opacity: 0.6;
-                cursor: auto;
-                pointer-events: none;
-            }
-
-            button.close_btn {
-                /*position: fixed;*/
-                position: absolute;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                border-radius: 0;
-                margin: 0;
-                padding: 16px 20px;
-                text-transform: uppercase;
-            }
-
-            section {
-                padding: 15px 15px 35px;
-                text-align: center;
-            }
-
-            p {
-                margin: 20px 0 15px;
-            }
-
-            ul {
-                text-align: left;
-            }
-
-            li {
-                color: var(--tg-theme-hint-color, #a8a8a8);
-            }
-
-            textarea {
-                width: 100%;
-                box-sizing: border-box;
-                padding: 7px;
-            }
-
-            pre {
-                background: rgba(0, 0, 0, 0.07);
-                border-radius: 4px;
-                padding: 4px;
-                margin: 7px 0;
-                word-break: break-all;
-                word-break: break-word;
-                white-space: pre-wrap;
-                text-align: left;
-            }
-
-            .dark pre {
-                background: rgba(255, 255, 255, 0.15);
-            }
-
-            .hint {
-                font-size: 0.8em;
-                color: var(--tg-theme-hint-color, #a8a8a8);
-            }
-
-            .ok {
-                color: green;
-            }
-
-            .err {
-                color: red;
-            }
-
-            #fixed_wrap {
-                position: fixed;
-                left: 0;
-                right: 0;
-                top: 0;
-                transform: translateY(100vh);
-            }
-
-            .viewport_border,
-            .viewport_stable_border {
-                position: fixed;
-                left: 0;
-                right: 0;
-                top: 0;
-                height: var(--tg-viewport-height, 100vh);
-                pointer-events: none;
-            }
-
-            .viewport_stable_border {
-                height: var(--tg-viewport-stable-height, 100vh);
-            }
-
-            .viewport_border:before,
-            .viewport_stable_border:before {
-                content: attr(text);
-                display: inline-block;
-                position: absolute;
-                background: gray;
-                right: 0;
-                top: 0;
-                font-size: 7px;
-                padding: 2px 4px;
-                vertical-align: top;
-            }
-
-            .viewport_stable_border:before {
-                background: green;
-                left: 0;
-                right: auto;
-            }
-
-            .viewport_border:after,
-            .viewport_stable_border:after {
-                content: "";
-                display: block;
-                position: absolute;
-                left: 0;
-                right: 0;
-                top: 0;
-                bottom: 0;
-                border: 2px dashed gray;
-            }
-
-            .viewport_stable_border:after {
-                border-color: green;
-            }
-
-            small {
-                font-size: 12px;
-            }
-
-            input {
-                background-color: var(--tg-theme-bg-color, #ffffff);
-                color: var(--tg-theme-text-color, #222222);
-                padding: 15px 15px;
-                border: 1px solid var(--tg-theme-text-color, #222222);
-                font-size: 20px;
-                outline: none;
-            }
-
-            #cardInput {
-                margin-bottom: 15px;
-            }
-
-            section {
-                display: flex;
-                flex-direction: column;
-            }
-        </style>
-    </head>
-
-    <body>
-        <section id="firstsection">
-            <!-- <div style="display: flex; align-items: baseline;"> -->
-
-            <h1 id="greeting">Bank kartasi ma’lumotlarini kiriting</h1>
-            <!-- </div> -->
-
-            <input
-                type="tel"
-                id="cardInput"
-                maxlength="19"
-                placeholder="0000 0000 0000 0000"
-                {% if debug %}value="8600069195406311"{% endif %}
-            />
-
-            <input
-                type="tel"
-                id="cardExpireDate"
-                maxlength="5"
-                placeholder="00/00"
-                {% if debug %}value="0399"{% endif %}
-
-            />
-            <p>
-                To’lovlar faqatgina UzCard va Humo kartalari orqali amalga
-                oshiriladi.
-            </p>
-            <p>
-                Xavfsizlik maqsadida sizning bank kartangiz ma’lumotlari PayMe
-                xizmatining serverlarida saqlanadi. Obuna xizmati sizning
-                shaxsingizga oid hech qanday ma’lumot saqlamaydi.
-                <a
-                    href="https://cdn.payme.uz/terms/main.html?target=_blank"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    >Payme ofertasi</a
-                >
-            </p>
-            <img
-
-                style="margin: 0 auto;"
-                width="50"
-                height="50"
-                src="https://cdn.paycom.uz/documentation_assets/payme_02.png?target=_blank"
-                alt="PayMe"
-            />
-            <p style="text-align: center">Powered by Payme</p>
-            <pre id="codeResponse"></pre>
-            <!-- <button id="main_button">Tasdiqlash kodini olish</button> -->
-        </section>
-        <section id="smsdiv" style="display: none">
-            <h1>Tasdiqlash kodini kiriting</h1>
-            <input type="tel" maxlength="6" placeholder="000000" id="sms" {% if debug %}value="666666"{% endif %}/>
-        </section>
-
-        <script type="application/javascript">
-            const cardInputElement = document.querySelector("#cardInput");
-            const cardExpireDateElement =
-                document.querySelector("#cardExpireDate");
-            cardInputElement.addEventListener(
-                "input",
-                () =>
-                    (cardInputElement.value = formatNumber(
-                        cardInputElement.value.replaceAll(" ", "")
-                    ))
-            );
-
-            cardExpireDateElement.onkeydown = function () {
-                const key = event.keyCode || event.charCode;
-
-                if (key !== 8 && key !== 46) {
-                    if (cardExpireDateElement.value.length == 2) {
-                        cardExpireDateElement.value =
-                            cardExpireDateElement.value + "/";
-                    }
-                }
-
-                if (
-                    (key == 8 || key == 46) &&
-                    cardExpireDateElement.value.length === 4
-                ) {
-                    cardExpireDateElement.value =
-                        cardExpireDateElementw.value.slice(0, 3);
-                }
-            };
-            const formatNumber = (number) =>
-                number.split("").reduce((seed, next, index) => {
-                    if (index !== 0 && !(index % 4)) seed += " ";
-                    return seed + next;
-                }, "");
-
-            var k = 1;
-            Telegram.WebApp.ready();
-            Telegram.WebApp.expand();
-            Telegram.WebApp.MainButton.show();
-
-            let token = "";
-
-            const initData = Telegram.WebApp.initData || "";
-            const initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
-
-            if (k === 1) {
-                Telegram.WebApp.MainButton.setText(
-                    "Tasdiqlash kodini olish"
-                ).onClick(function () {
-                    submit();
-                });
-                // var main_button = document.getElementById("main_button");
-                // main_button.onclick = function() {
-                //     submit();
-                // };
-            } else if (k === 2) {
-                Telegram.WebApp.MainButton.setText("Tasdiqlash").onClick(
-                    function () {
-                        verfiy(1, token);
-                    }
-                );
-            }
-
-            Telegram.WebApp.onEvent("themeChanged", function () {
-                document.querySelector("#themeData").innerHTML = JSON.stringify(
-                    Telegram.WebApp.themeParams,
-                    null,
-                    2
-                );
-            });
-
-            async function submit() {
-                let regex = new RegExp("^[0-9]{16}$");
-                // let newStr = cardInputElement.value.replace(regex, "");
-                let newStr = cardInputElement.value.replaceAll(" ", "");
-                const newStr2 = cardExpireDateElement.value.replace("/", "");
-                if (!(regex.test(newStr) || regex.test(newStr2))) {
-                    Telegram.WebApp.showAlert(
-                        "Karta ma'lumotlarini qayta tekshiring"
-                    );
-                } else {
-                    Telegram.WebApp.MainButton.setText("Ma'lumot yuklanmoqda")
-                        .showProgress()
-                        .disable();
-
-                    let card = await createCard(
-                        cardInputElement.value,
-                        cardExpireDateElement.value
-                    );
-                    if (card.error) {
-                        Telegram.WebApp.showAlert(
-                            "Bunday karta topilmadi. Karta ma'lumotlarini qayta tekshiring"
-                        );
-                        Telegram.WebApp.MainButton.hideProgress();
-                    } else if (card.result) {
-                        if (k === 1) {
-                            document.querySelector(
-                                "#firstsection"
-                            ).style.display = "none";
-                            document.querySelector("#smsdiv").style.display =
-                                "block";
-                            const code = document.querySelector("#sms").focus();
-                            const sended = await sendverifycode(
-                                1,
-                                card.result.card.token
-                            );
-                            k = 2;
-                            token = card.result.card.token;
-                            Telegram.WebApp.MainButton.setText(
-                                "Tasdiqlash"
-                            ).hideProgress();
-                        } else if (k === 2) {
-                            verfiy(1, token);
-                        }
-                    } else {
-                        Telegram.WebApp.showAlert(
-                            "Kutilmagan xatolik qayta urinib ko'ring"
-                        );
-                    }
-                }
-            }
-
-            async function verfiy(id, token) {
-                const code = document.querySelector("#sms").value;
-                const data = await cardverify(id, token, code);
-                if (data?.result?.card?.token) {
-                    Telegram.WebApp.sendData(
-                        JSON.stringify({
-                            token,
-                        })
-                    );
-                    // Telegram.WebApp.close();
-                } else if (data?.error?.message) {
-                    Telegram.WebApp.showAlert(data.error.message);
-                    Telegram.WebApp.MainButton.hideProgress();
-                } else {
-                    Telegram.WebApp.showAlert(
-                        "Bizga bog'liq bo'lmagan xatolik iltimos keyinroq urinb ko'ring"
-                    );
-                    Telegram.WebApp.MainButton.hideProgress();
-                }
-            }
-
-            async function createCard(cardnumber, expire) {
-                let response = await fetch(
-                    "{{ api_host }}cards/create",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            id: 1,
-                            number: cardnumber,
-                            expire: expire,
-                        }),
-                    }
-                );
-
-                response = await response.json();
-                console.log("create card", response);
-                return response;
-            }
-
-            async function sendverifycode(id, token) {
-                let response = await fetch(
-                    "{{ api_host }}cards/getverifycode",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            token,
-                        }),
-                    }
-                );
-                response = await response.json();
-                console.log("Send verify", response);
-                return response;
-            }
-
-            async function cardverify(id, token, code) {
-                let response = await fetch(
-                    "{{ api_host }}cards/verify",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            token,
-                            code,
-                        }),
-                    }
-                );
-                response = await response.json();
-                console.log("card verify", response);
-                return response;
-            }
-        </script>
-    </body>
+      cardNumberInput.value = "8600332914249390";
+      expiryInput.value = "09/25";
+      {% endif %}
+      {% include "profile/card_info/script.js" %}
+    </script>
+  </body>
 </html>
