@@ -24,6 +24,7 @@ async def home(request: HttpRequest, id):
         # Card info
         "card_number": card_info.number,
         "expire": card_info.expire[2:] + card_info.expire[:2],
+        "card_holder": card_info.holder,
         "api_host": request.build_absolute_uri('/'),
         "user_id": id,
         "bot_user_id": bot_user.user_id,

@@ -29,6 +29,10 @@
     font-size: 14px;
 }
 
+.cardholder-name {
+    margin-top: 20px;
+}
+
 .card-logo {
     position: absolute;
     top: 20px;
