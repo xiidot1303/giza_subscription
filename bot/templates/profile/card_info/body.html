@@ -9,8 +9,8 @@
 
     <!-- Edit Form -->
     <div class="edit-form" id="editForm">
-        <input type="text" id="newCardNumber" placeholder="Yangi karta raqami" maxlength="16" oninput="validateCardNumber()" required />
-        <input type="text" id="newExpire" placeholder="MM/YY" maxlength="5" oninput="formatExpiry()" required />
+        <input type="text" inputmode="numeric" id="newCardNumber" placeholder="Yangi karta raqami" maxlength="16" oninput="validateCardNumber()" required />
+        <input type="text" inputmode="numeric" id="newExpire" placeholder="MM/YY" maxlength="5" oninput="formatExpiry()" required />
         <button class="continue-button" id="continueButton" onclick="continueEditing()">Davom etish</button>
     </div>
 
