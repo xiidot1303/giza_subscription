@@ -7,12 +7,16 @@ from django.contrib.auth.views import (
 )
 
 from payment.views import (
-    payme, subscribe
+    payme, subscribe, atmos
 )
 
 urlpatterns = [
     # payme
     path('payme/endpoint', payme.Endpoint.as_view()),
+
+    # atmos
+    path('atmos/endpoint', atmos.Endpoint.as_view()),
+
 
     # subscribe
     path('subscribe/set-card', subscribe.set_card),
