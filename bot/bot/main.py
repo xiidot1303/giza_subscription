@@ -5,6 +5,7 @@ import traceback
 import html
 from config import TG_CHANNEL_INVITE_LINK
 from bot.services.referral_service import *
+from bot.bot.login import _to_the_getting_name
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -13,46 +14,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     bot_user: Bot_user
     # get start message
     referrer_id = await get_start_msg(update.effective_message.text)
-    if created and referrer_id:
-        # get referrer object
-        if referrer := await get_object_by_pk(referrer_id):
-            # create Referral
-            await create_referral(bot_user, referrer)
+    if created:
+        if referrer_id:
+            # get referrer object
+            if referrer := await get_object_by_pk(referrer_id):
+                # create Referral
+                await create_referral(bot_user, referrer)
 
-    # check that availablae channel access for this user
-    if await has_channel_access(update.effective_user.id):
-        # go to main menu
-        text = await GetText.on(Text.main_menu)
-        # add profile inline button
-        i_open = InlineKeyboardButton(
-            text=await get_word("open channel", update),
-            url=TG_CHANNEL_INVITE_LINK
-        )
-        i_profile = InlineKeyboardButton(
-            text=await get_word("profile", update),
-            web_app=WebAppInfo(f"{WEBAPP_URL}/profile/{bot_user.id}")
-        )
+        # redirect to login
+        return await _to_the_getting_name(update, context)
 
-        # add referral inline button
-        i_referral = InlineKeyboardButton(
-            text=await get_word("referral", update),
-            web_app=WebAppInfo(f"{WEBAPP_URL}/referral/{bot_user.id}")
-        )
-        buttons = [i_open, i_profile, i_referral]
-    else:
-        # go to start message
-        text = await GetText.on(Text.start)
-        i_join = InlineKeyboardButton(
-            text=await get_word("join channel", update),
-            url=TG_CHANNEL_INVITE_LINK
-        )
-        buttons = [i_join]
-    markup = InlineKeyboardMarkup([
-        [button]
-        for button in buttons
-    ])
-    await update_message_reply_text(update, text, reply_markup=markup)
-
+    await main_menu(update, context)
 
 ######################################################################
 ######################################################################
