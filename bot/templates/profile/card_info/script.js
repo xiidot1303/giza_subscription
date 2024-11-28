@@ -19,6 +19,9 @@ function validateCardNumber() {
         continueButton.classList.remove('enabled');
         continueButton.disabled = true;
     }
+    let value = cardNumberInput.value.replace(/\D/g, '');
+    const formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+    cardNumberInput.value = formattedValue;
 }
 
 function formatExpiry() {
@@ -32,7 +35,7 @@ function formatExpiry() {
 }
 
 async function continueEditing() {
-    const newCardNumber = document.getElementById('newCardNumber').value;
+    const newCardNumber = document.getElementById('newCardNumber').value.replace(/\D/g, '');
     const newExpire = document.getElementById('newExpire').value.replace("/", "");
     const apiHost = "{{ api_host }}";
     const response = await fetch(`${apiHost}cards/init`, {
