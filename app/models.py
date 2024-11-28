@@ -111,3 +111,11 @@ class TelegramChannelAccess(models.Model):
     class Meta:
         verbose_name = "Доступ к каналу"
         verbose_name_plural = "Подписчики канала"
+
+
+class Setting(models.Model):
+    offer = models.FileField(null=True, blank=True, verbose_name="Оферта")
+
+    class Meta:
+        verbose_name = "Настройки"
+        verbose_name_plural = "Настройки"

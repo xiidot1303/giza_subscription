@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 from app.models import *
+from solo.admin import SingletonModelAdmin
 
 @admin.register(SubscriptionPlan)
 class SubscriptionPlanAdmin(admin.ModelAdmin):
@@ -28,6 +29,8 @@ class SubscriptionAdmin(admin.ModelAdmin):
 @admin.register(TelegramChannelAccess)
 class TelegramChannelAccessAdmin(admin.ModelAdmin):
     list_display = ('bot_user', 'subscription')
+
+admin.site.register(Setting, SingletonModelAdmin)
 
 # Customizing the Admin Site settings
 admin.site.site_header = _("Giza Subscription Management System Admin")
