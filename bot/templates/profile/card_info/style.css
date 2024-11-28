@@ -170,3 +170,15 @@
     background-color: #4CAF50; /* Active green color */
     cursor: pointer;
 }
+
+.card-icon {
+    display: flex;
+    height: 18px;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.card-icon img {
+    width: 30px;
+    margin-left: 3px;
+}

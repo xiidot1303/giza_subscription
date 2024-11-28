@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,7 +29,12 @@
           height: 100vh;
           padding-top: 20px; /* Add some padding from the top */
       }
+      
       {% include "profile/card_info/style.css" %}
+      .edit-form {
+        display: none; /* Hidden by default */
+        margin-top: 10px;
+      }
     </style>
   </head>
   <body>
@@ -39,7 +45,11 @@
             <b>
                 Bank kartasi ma'lumotlarini kiriting
             </b>
-        </div>
+          </div>
+          <div class="card-icon">
+            <img src="{% static 'humo.png' %}" alt="" class="card-icon">
+            <img src="{% static 'uzcard.png' %}" alt="" class="card-icon">
+          </div>
         <!-- Edit Form -->
         <div class="edit-form" id="editForm" style="display: block">
           <input
