@@ -4,9 +4,11 @@ from app.services.plan_service import *
 
 async def plans_list_string():
     text = "<b>“BIZ BIRGAMIZ🫂” klubi ta’riflar va narxlari!</b>\n\n"
-    async for plan in SubscriptionPlan.objects.filter(**subscription_plans_filter_dict):
+    async for plan in SubscriptionPlan.objects.filter(
+            **subscription_plans_filter_dict).order_by("duration_in_months"):
         price = f"{plan.price:,}".replace(",", ".")
-        text += f"<b>{plan.name} narxi</b> - {price} {plan.sale_text}\n\n"
+        sale_text = plan.sale_text or ""
+        text += f"<b>{plan.name} narxi</b> - {price} {sale_text}\n\n"
     return text
 
 
