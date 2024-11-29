@@ -6,6 +6,7 @@ from app.services.subscription_service import *
 from app.services.channel_access_service import *
 from payment.services.atmos.transaction_api import *
 from payment.services.card_service import *
+from bot.services.referral_service import referrals_count_of_bot_user
 from config import DEBUG
 
 
@@ -67,9 +68,19 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
 
         # check referral available of this user
         if referral := await bot_user.get_referral:
+            referrer: Bot_user = await referral.get_referrer
+            referrals_count = await referrals_count_of_bot_user(referrer, subscribed=True)
             # check for this referral did not give bonus subscription
             if await Subscription.objects.filter(referral__id=referral.id).aexists():
                 # dont give bonus
+                pass
+
+            # dont give bonus if referrals count is even of referrer
+            elif referrals_count % 2 == 0:
+                # create unactive subscription
+                await Subscription.objects.acreate(
+                    bot_user=referrer, referral=referral, active = False
+                )
                 pass
             else:
                 # give bonus to referrer
