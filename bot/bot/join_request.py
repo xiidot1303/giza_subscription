@@ -30,7 +30,8 @@ async def plans_list(update: Update, context: CustomContext):
                 callback_data=f"subscription_plan--{plan.id}"
             )
         ]
-        async for plan in SubscriptionPlan.objects.filter(**subscription_plans_filter_dict)
+        async for plan in SubscriptionPlan.objects.filter(
+            **subscription_plans_filter_dict).order_by("duration_in_months")
     ]
     markup = InlineKeyboardMarkup(i_buttons)
     await bot_edit_message_text(update, context, text)
@@ -51,7 +52,8 @@ async def select_plan(update: Update, context: CustomContext):
     )
     tariff_text = f"✅ {plan.name} {plan.price} so'm"
     text = await get_word("purchase tariff", update)
-    markup = ReplyKeyboardMarkup([[button]], resize_keyboard=True, one_time_keyboard=True)
+    markup = ReplyKeyboardMarkup(
+        [[button]], resize_keyboard=True, one_time_keyboard=True)
     # await bot_edit_message_reply_markup(update, context, reply_markup=None)
     await bot_edit_message_text(update, context, tariff_text)
     await bot_send_message(update, context, text, reply_markup=markup)
