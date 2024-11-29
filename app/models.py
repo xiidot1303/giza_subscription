@@ -11,6 +11,8 @@ class SubscriptionPlan(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100, verbose_name="Название")
     price = models.BigIntegerField(null=True, verbose_name="Цена")
+    sale_text = models.CharField(null=True, max_length=255, default="", 
+        verbose_name="Дополнительный текст о скидке")
     description = models.TextField(
         blank=True, null=True, verbose_name="Описание")
     duration_in_months = models.IntegerField(

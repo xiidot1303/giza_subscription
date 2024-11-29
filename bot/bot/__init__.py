@@ -13,6 +13,7 @@ from bot.services.text_service import *
 from bot.resources.conversationList import *
 from app.services import filter_objects_sync
 from app.services.channel_access_service import has_channel_access
+from app.services.setting_service import get_settings, Setting
 from config import *
 
 

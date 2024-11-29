@@ -3,12 +3,11 @@ from asgiref.sync import sync_to_async
 from telegram import Update, User
 from typing import Tuple
 
-@sync_to_async
-def is_registered(id):
-    if Bot_user.objects.filter(user_id=id).exclude(phone=None):
-        return True
-    else:
-        return False
+ 
+async def is_registered(user_id):
+    is_exists = await Bot_user.objects.filter(user_id=user_id).aexists()
+    return is_exists
+        
 
 async def get_user_by_update(update: Update):
     user = await Bot_user.objects.aget(user_id=update.effective_user.id)

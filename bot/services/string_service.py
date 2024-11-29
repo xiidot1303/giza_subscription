@@ -3,9 +3,9 @@ from app.services.plan_service import *
 
 
 async def plans_list_string():
-    text = ""
+    text = "<b>“BIZ BIRGAMIZ🫂” klubi ta’riflar va narxlari!</b>\n\n"
     async for plan in SubscriptionPlan.objects.filter(**subscription_plans_filter_dict):
-        text += f"▪️ {plan.name} {plan.price} so'm\n"
+        text += f"<b>▪️ {plan.name} narxi</b> - {plan.price} {plan.sale_text}\n\n"
     return text
 
 

@@ -76,8 +76,8 @@ lang_dict = {
     "edit card": ["Kartani o'zgartirish", ""],
 
     "purchase tariff": [
-        "Ushbu tarif bo'yicha kanalga obuna bo'lish uchun to'lovni amalga " \
-            "oshirishingiz kerak.\n\n<b>To'lovni amalga oshirish</b> tugmasiga bosing", 
+        "Kartangizni kiriting👇" \
+            "➖To’lov har oy qo’shilgan sanangizda avtomatik yechib olinadi!", 
         ""
         ],
 
@@ -85,9 +85,9 @@ lang_dict = {
 
     "open channel": ["📣 Kanalga kirish", ""],
 
-    "": ["", ""],
+    "instruction": ["📌 Botdan foydalanish bo'yicha qo’llanma", ""],
 
-    "": ["", ""],
+    "registration": ["📝 Ro'yxatdan o'tish", ""],
 
     "": ["", ""],
 

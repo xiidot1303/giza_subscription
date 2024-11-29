@@ -4,33 +4,42 @@ import logging
 import traceback
 import html
 from config import TG_CHANNEL_INVITE_LINK
-from bot.services.referral_service import *
 from bot.bot.login import _to_the_getting_name
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # create bot user if doesnt exist
-    bot_user, created = await create_user_if_doesnt_exist(update.effective_user)
-    bot_user: Bot_user
     # get start message
     referrer_id = await get_start_msg(update.effective_message.text)
-    if created:
-        if referrer_id:
-            # get referrer object
-            if referrer := await get_object_by_pk(referrer_id):
-                # create Referral
-                await create_referral(bot_user, referrer)
+    if not is_registered(context._user_id):
+        context.user_data['referrer_id'] = referrer_id
 
-        # redirect to login
-        return await _to_the_getting_name(update, context)
+        settings: Setting = await get_settings()
+        # send hello video note
+        await context.bot.send_video_note(context._user_id, video_note=settings.start_video_note_id)
+        # send hello message with instruction button
+        i_button = InlineKeyboardButton(
+            text=await get_word("instruction", update),
+            callback_data="start_instruction"
+        )
+        markup = InlineKeyboardMarkup([[i_button]])
+        await context.bot.send_message(context._user_id, await GetText.on(Text.hello), reply_markup=markup)
+        return
 
     await main_menu(update, context)
 
-    
+
+async def start_instruction(update: Update, context: CustomContext):
+    await bot_edit_message_reply_markup(update, context)
+    settings: Setting = await get_settings()
+    markup = ReplyKeyboardMarkup([[await get_word("registration", update)]],
+                                 resize_keyboard=True, one_time_keyboard=True)
+    await context.bot.send_video_note(context._user_id, settings.instruction_video_note_id, reply_markup=markup)
+
+
 async def get_video_note_id(update: Update, context: CustomContext):
     await update_message_reply_text(update, update.message.video_note.file_id)
 
-    
+
 async def get_video_id(update: Update, context: CustomContext):
     await update_message_reply_text(update, update.message.video.file_id)
 

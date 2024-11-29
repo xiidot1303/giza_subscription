@@ -100,7 +100,11 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
                         await context.bot.send_message(referrer.user_id, joined_to_channel_text, reply_markup=markup)
                     except:
                         None
+        # send video instruction
+        settings = await get_settings()
+        await context.bot.send_video(context._user_id, settings.instruction_of_channel_video_id)
 
+        # send success message
         text = await GetText.on(Text.joined_to_channel)
         markup = await build_keyboard(update, [], 1, back_button=False)
         await update_message_reply_text(update, text, reply_markup=markup)

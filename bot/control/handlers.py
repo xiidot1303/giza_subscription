@@ -22,7 +22,9 @@ exceptions_for_filter_text = (~filters.COMMAND) & (
 main_menu = MessageHandler(filters.Text(lang_dict['main menu']), main.start)
 
 login_handler = ConversationHandler(
-    entry_points=[CommandHandler("start", main.start)],
+    entry_points=[
+        MessageHandler(filters.Text(lang_dict['registration']), login._to_the_getting_name)
+    ],
     states={
         GET_NAME: [
             MessageHandler(filters.TEXT & (~filters.COMMAND), login.get_name)
@@ -47,6 +49,7 @@ web_app_data_handler = MessageHandler(
     filters.StatusUpdate.WEB_APP_DATA, web_app.web_app_data)
 
 handlers = [
+    CommandHandler("start", main.start),
     login_handler,
     main_menu,
     channel_join_request_handler,
@@ -59,4 +62,5 @@ handlers = [
                          pattern=".*subscription_plan.*"),
     CallbackQueryHandler(subscription.cancel_subscription, pattern=".*cancel_subscription.*"),
     CallbackQueryHandler(main.bot_delete_message, pattern="delete_current_message"),
+    CallbackQueryHandler(main.start_instruction, pattern="start_instruction")
 ]

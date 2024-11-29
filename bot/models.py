@@ -16,7 +16,7 @@ class Bot_user(models.Model):
     phone = models.CharField(null=True, blank=True,
                              max_length=16, default='', verbose_name='Телефон')
     lang = models.CharField(null=True, blank=True,
-                            max_length=4, verbose_name='')
+                            max_length=4, default='uz', verbose_name='')
     date = models.DateTimeField(
         db_index=True, null=True, auto_now_add=True, blank=True, verbose_name='Дата регистрации')
 
@@ -80,6 +80,7 @@ class Message(models.Model):
 
 
 class Text(models.Model):
+    hello = models.TextField(null=True, blank=True, verbose_name="Текст приветствия")
     start = models.TextField(null=True, blank=True, verbose_name="Старт")
     main_menu = models.TextField(
         null=True, blank=True, verbose_name="Главное меню")
