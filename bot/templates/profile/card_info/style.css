@@ -182,3 +182,64 @@
     width: 30px;
     margin-left: 3px;
 }
+
+.offer {
+    display: flex;
+    flex-direction: row;
+    max-height: 30px;
+    justify-content: start;
+    margin: 10px 10px 20px 0;
+}
+
+
+.offer input[type="checkbox"] {
+    display: none;
+  }
+
+  /* Style the custom checkbox label */
+.offer label {
+    position: relative;
+    display: inline-block;
+    padding-left: 35px; /* Space for the custom checkbox */
+    cursor: pointer;
+    font-size: 13px;
+    user-select: none; /* Disable text selection */
+  }
+
+  /* Custom checkbox design */
+.offer label::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    background-color: #fff;
+    border: 2px solid #007BFF;
+    border-radius: 4px;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+
+  /* Checked state styles */
+.offer input[type="checkbox"]:checked + label::before {
+    background-color: #007BFF;
+    border-color: #0056b3;
+  }
+
+  /* Create the checkmark */
+.offer input[type="checkbox"]:checked + label::after {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+  }
+
+  /* Hover effect */
+.offer label:hover::before {
+    border-color: #0056b3;
+  }

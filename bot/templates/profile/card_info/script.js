@@ -7,18 +7,24 @@ function toggleEditForm() {
     editButton.style.display = editForm.style.display === 'block' ? 'none' : 'block';
 }
 
-function validateCardNumber() {
-    const cardNumberInput = document.getElementById('newCardNumber');
+function toggleContinueButton() {
     const continueButton = document.getElementById('continueButton');
+    const cardNumberInput = document.getElementById('newCardNumber');
     const cardNumberLength = cardNumberInput.value.replace(/\s/g, '').length;
-
-    if (cardNumberLength === 16) {
+    const checkbox = document.getElementById("terms");
+    if (cardNumberLength === 16 && checkbox.checked) {
         continueButton.classList.add('enabled');
         continueButton.disabled = false;
     } else {
         continueButton.classList.remove('enabled');
         continueButton.disabled = true;
     }
+
+}
+
+function validateCardNumber() {
+    toggleContinueButton();
+    const cardNumberInput = document.getElementById('newCardNumber');
     let value = cardNumberInput.value.replace(/\D/g, '');
     const formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1 ');
     cardNumberInput.value = formattedValue;

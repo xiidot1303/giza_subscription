@@ -45,7 +45,7 @@
             <b>
                 Bank kartasi ma'lumotlarini kiriting
             </b>
-          </div>
+        </div>
           <div class="card-icon">
             <img src="{% static 'humo.png' %}" alt="" class="card-icon">
             <img src="{% static 'uzcard.png' %}" alt="" class="card-icon">
@@ -58,6 +58,7 @@
             id="newCardNumber"
             placeholder="Karta raqamingizni kiriting"
             maxlength="19"
+            minlength="19"
             oninput="validateCardNumber()"
             required
           />
@@ -70,6 +71,12 @@
             oninput="formatExpiry()"
             required
           />
+          <div class="offer">
+            <input type="checkbox" id="terms" onclick="toggleContinueButton()" required>
+            <label for="terms" class="">
+              Men ushbu <a href="{{ offer_url }}" target="_blank">ommaviy oferta</a> bilan tanishib chiqdim
+            </label>
+          </div>
           <button
             class="continue-button"
             id="continueButton"
@@ -78,7 +85,6 @@
             Davom etish
           </button>
         </div>
-
         <!-- Verification Form -->
         <div class="verification-form" id="verificationForm">
           <input

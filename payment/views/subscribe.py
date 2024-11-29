@@ -1,5 +1,6 @@
 from app.views import *
 from app.services.plan_service import *
+from app.services.setting_service import *
 from payment.services.payme.subscribe_api import *
 from payment.services.atmos.card_api import *
 from config import PAYME_CHECKOUT_URL
@@ -9,9 +10,11 @@ from config import DEBUG
 
 
 async def set_card(request: HttpRequest):
+    offer = await get_offer_url()
     context = {
         "api_host": request.build_absolute_uri('/'),
-        "debug": DEBUG
+        "debug": DEBUG,
+        "offer_url": offer
     }
     return render(request, 'subscribe/set_card.html', context=context)
 
