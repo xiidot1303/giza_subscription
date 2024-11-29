@@ -3,7 +3,7 @@ from payment.services.atmos import *
 
 async def create_transaction_api(account, amount):
     data = {
-        "amount": amount,
+        "amount": amount * 100,
         "account": str(account),
         "store_id": ATMOS_STORE_ID,
     }

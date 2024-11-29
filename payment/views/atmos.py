@@ -36,7 +36,7 @@ class Endpoint(APIView):
         assert invoice, INVOICE_NOT_FOUND
 
         # check amount of the invoice
-        assert data.amount == invoice.amount, AMOUNT_NOT_SATISFIED
+        assert data.amount == invoice.amount * 100, AMOUNT_NOT_SATISFIED
 
         # successfully request, change account status to payed
         await account_pay(invoice, "atmos")
