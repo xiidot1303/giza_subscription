@@ -52,6 +52,7 @@ handlers = [
     channel_join_request_handler,
     web_app_data_handler,
     MessageHandler(filters.VIDEO_NOTE, main.get_video_note_id),
+    MessageHandler(filters.VIDEO, main.get_video_id),
     # Callback query handlers
     CallbackQueryHandler(join_request.plans_list, pattern="plans_list"),
     CallbackQueryHandler(join_request.select_plan,

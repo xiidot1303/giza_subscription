@@ -30,6 +30,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def get_video_note_id(update: Update, context: CustomContext):
     await update_message_reply_text(update, update.message.video_note.file_id)
 
+    
+async def get_video_id(update: Update, context: CustomContext):
+    await update_message_reply_text(update, update.message.video.file_id)
+
 ######################################################################
 ######################################################################
 ######################################################################
