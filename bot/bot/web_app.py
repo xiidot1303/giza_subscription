@@ -26,25 +26,22 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
     try:
         # create transaction
         transaction_id = await create_transaction_api(payment.id, payment.amount)
-        print(card_data, transaction_id)
         pre_apply = await pre_apply_transaction_api(transaction_id, card_data.card_token)
-        print(pre_apply)
         assert pre_apply["result"]["code"] == "OK"
         # pay transacrion
         transaction_data = await apply_transaction_api(transaction_id)
-        print(transaction_data)
         assert transaction_data["result"]["code"] == "OK"
     
         error = None
+
+        # set payment as payed
+        payment.payed = True
+        await payment.asave()
     except Exception as ex:
         error = ex
 
     # update payment object because it changed by merchant api
-    await payment.arefresh_from_db()
-
-    if DEBUG:
-        payment.payed = True
-        await payment.asave()
+    # await payment.arefresh_from_db()
 
     if not error and payment.payed:
         # successfullt payment, approve channel join request
