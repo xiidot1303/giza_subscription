@@ -6,3 +6,10 @@ async def get_offer_url():
         return setting.offer.url
     else:
         return ""
+
+
+async def get_support_url():
+    if setting := await Setting.objects.filter().afirst():
+        return setting.support
+    else:
+        return ""

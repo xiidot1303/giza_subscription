@@ -35,6 +35,49 @@
         display: none; /* Hidden by default */
         margin-top: 10px;
       }
+
+      .support-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            font-size: 16px;
+            z-index: 1000;
+        }
+
+        .support-footer .icon {
+            margin-right: 10px;
+            font-size: 24px; /* Icon size */
+        }
+
+        /* You can use any icon library, like Font Awesome, here is an example */
+        .support-footer .icon::before {
+            content: "\1F4AC"; /* Unicode for a speech bubble (just an example) */
+        }
+
+        .support-footer a {
+            color: white; /* Default color of the text */
+            text-decoration: none;
+            display: flex; /* Make anchor tag a flex container to align items */
+            align-items: center;
+        }
+
+        /* Change text color when hovering over the anchor tag */
+        .support-footer a:hover {
+            color: #ffcc00; /* Change this to any color you prefer */
+        }
+
+        /* Hover effect on the entire footer (background change) */
+        .support-footer:hover {
+            background-color: #555;
+        }
+    
     </style>
   </head>
   <body>
@@ -105,6 +148,13 @@
           </button>
         </div>
       </div>
+    </div>
+
+    <div class="support-footer">
+      <a href="{{ support_url }}">
+        <span class="icon"></span>
+        <span>Yordam</span>
+      </a>
     </div>
 
     <script>

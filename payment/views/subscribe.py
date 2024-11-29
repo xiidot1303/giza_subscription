@@ -11,10 +11,12 @@ from config import DEBUG
 
 async def set_card(request: HttpRequest):
     offer = await get_offer_url()
+    support_url = await get_support_url()
     context = {
         "api_host": request.build_absolute_uri('/'),
         "debug": DEBUG,
-        "offer_url": offer
+        "offer_url": offer,
+        "support_url": support_url
     }
     return render(request, 'subscribe/set_card.html', context=context)
 

@@ -115,6 +115,7 @@ class TelegramChannelAccess(models.Model):
 
 class Setting(models.Model):
     offer = models.FileField(null=True, blank=True, verbose_name="Оферта")
+    support = models.CharField(null=True, blank=True, max_length=255, verbose_name="Служба поддержки (Ссылка на аккаунт Telegram)")
 
     class Meta:
         verbose_name = "Настройки"
