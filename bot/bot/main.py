@@ -10,7 +10,7 @@ from bot.bot.login import _to_the_getting_name
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # get start message
     referrer_id = await get_start_msg(update.effective_message.text)
-    if not is_registered(context._user_id):
+    if not await is_registered(context._user_id):
         context.user_data['referrer_id'] = referrer_id
 
         settings: Setting = await get_settings()
