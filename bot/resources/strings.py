@@ -89,6 +89,14 @@ lang_dict = {
 
     "registration": ["📝 Ro'yxatdan o'tish", ""],
 
+    "change tariff": ["↩️ Tarifni o'zgartirish", ""],
+
+    "": ["", ""],
+
+    "": ["", ""],
+
+    "": ["", ""],
+
     "": ["", ""],
 
 }

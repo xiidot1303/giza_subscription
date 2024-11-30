@@ -21,6 +21,11 @@ async def channel_join_request(update: Update, context: CustomContext):
 
 
 async def plans_list(update: Update, context: CustomContext):
+    if "--" in update.callback_query.data:
+        _, message_id = update.callback_query.data.split('--')
+        # delete message which bottom of the current message
+        await context.bot.delete_message(context._user_id, message_id)
+        
     text = await plans_list_string()
 
     i_buttons = [
@@ -56,4 +61,12 @@ async def select_plan(update: Update, context: CustomContext):
         [[button]], resize_keyboard=True, one_time_keyboard=True)
     # await bot_edit_message_reply_markup(update, context, reply_markup=None)
     await bot_edit_message_text(update, context, tariff_text)
-    await bot_send_message(update, context, text, reply_markup=markup)
+    message: BotMessage = await bot_send_message(update, context, text, reply_markup=markup)
+
+    i_button = InlineKeyboardButton(
+        text=await get_word('change tariff', update),
+        callback_data=f"plans_list--{message.message_id}"
+    )
+    markup = InlineKeyboardMarkup([[i_button]])
+
+    await bot_edit_message_reply_markup(update, context, reply_markup=markup)

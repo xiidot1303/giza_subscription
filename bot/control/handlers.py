@@ -57,7 +57,7 @@ handlers = [
     MessageHandler(filters.VIDEO_NOTE, main.get_video_note_id),
     MessageHandler(filters.VIDEO, main.get_video_id),
     # Callback query handlers
-    CallbackQueryHandler(join_request.plans_list, pattern="plans_list"),
+    CallbackQueryHandler(join_request.plans_list, pattern=".*plans_list.*"),
     CallbackQueryHandler(join_request.select_plan,
                          pattern=".*subscription_plan.*"),
     CallbackQueryHandler(subscription.cancel_subscription, pattern=".*cancel_subscription.*"),
