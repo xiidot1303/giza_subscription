@@ -1,4 +1,4 @@
-from telegram import Update, Message as BotMessage
+from telegram import Update, Message as BotMessage, MenuButtonWebApp, MenuButtonDefault
 from telegram.ext import ContextTypes, CallbackContext, ExtBot, Application
 from dataclasses import dataclass
 from asgiref.sync import sync_to_async
@@ -58,6 +58,8 @@ async def main_menu(update: Update, context: CustomContext):
             web_app=WebAppInfo(f"{WEBAPP_URL}/referral/{bot_user.id}")
         )
         buttons = [i_open, i_profile, i_referral]
+        await context.bot.set_chat_menu_button(context._user_id, MenuButtonDefault())
+
     else:
         # go to start message
         text = await GetText.on(Text.start)
@@ -66,6 +68,12 @@ async def main_menu(update: Update, context: CustomContext):
             url=TG_CHANNEL_INVITE_LINK
         )
         buttons = [i_join]
+
+        # set referral page web app
+        web_app_menu_button = MenuButtonWebApp(text="Referal",
+                                               web_app=WebAppInfo(f"{WEBAPP_URL}/referral/{bot_user.id}"))
+        await context.bot.set_chat_menu_button(context._user_id, web_app_menu_button)
+
     markup = InlineKeyboardMarkup([
         [button]
         for button in buttons
