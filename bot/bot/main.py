@@ -34,7 +34,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def start_instruction(update: Update, context: CustomContext):
-    await bot_edit_message_reply_markup(update, context)
+    # await bot_edit_message_reply_markup(update, context)
     settings: Setting = await get_settings()
     markup = ReplyKeyboardMarkup([[await get_word("registration", update)]],
                                  resize_keyboard=True, one_time_keyboard=True)
