@@ -47,7 +47,8 @@ async def set_webhook():
     await application.bot.set_webhook(
             url=f"{WEBHOOK_URL}/{BOT_API_TOKEN}", 
             allowed_updates=Update.ALL_TYPES,
-            drop_pending_updates=True
+            drop_pending_updates=True,
+            max_connections=100
             )
 
 async def delete_webhook():
