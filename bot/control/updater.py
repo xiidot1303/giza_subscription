@@ -34,7 +34,7 @@ class CustomContext(CallbackContext[ExtBot, dict, dict, dict]):
 
 persistence = PicklePersistence(filepath="persistencebot")
 context_types = ContextTypes(context=CustomContext)
-application = Application.builder().token(BOT_API_TOKEN).context_types(context_types).build()
+application = Application.builder().token(BOT_API_TOKEN).persistence(persistence).context_types(context_types).build()
 
 # add handlers
 for handler in handlers[::-1]:
