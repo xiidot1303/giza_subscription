@@ -38,7 +38,7 @@ async def start_instruction(update: Update, context: CustomContext):
     settings: Setting = await get_settings()
     markup = ReplyKeyboardMarkup([[await get_word("registration", update)]],
                                  resize_keyboard=True, one_time_keyboard=True)
-    await context.bot.send_video_note(context._user_id, settings.instruction_video_note_id, reply_markup=markup)
+    await context.bot.send_video(context._user_id, settings.instruction_video_note_id, reply_markup=markup)
 
 
 async def get_video_note_id(update: Update, context: CustomContext):
