@@ -31,7 +31,7 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
         # pay transacrion
         transaction_data = await apply_transaction_api(transaction_id)
         assert transaction_data["result"]["code"] == "OK"
-    
+
         error = None
 
         # set payment as payed
@@ -76,7 +76,7 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
             elif referrals_count % 2 == 0:
                 # create unactive subscription
                 await Subscription.objects.acreate(
-                    bot_user=referrer, referral=referral, active = False
+                    bot_user=referrer, referral=referral, active=False
                 )
                 pass
             else:
@@ -102,7 +102,13 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
                         None
         # send video instruction
         settings = await get_settings()
-        await context.bot.send_video(context._user_id, settings.instruction_of_channel_video_id)
+        i_rules = InlineKeyboardButton(
+            text="📝 Klub qonun-qoidalari", url=settings.channel_rules_url)
+        await context.bot.send_video(
+            context._user_id,
+            settings.instruction_of_channel_video_id,
+            reply_markup=InlineKeyboardMarkup([[i_rules]])
+            )
 
         # send success message
         text = await GetText.on(Text.joined_to_channel)

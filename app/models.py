@@ -121,6 +121,7 @@ class Setting(models.Model):
     start_video_note_id = models.CharField(null=True, blank=True, max_length=255)
     instruction_video_note_id = models.CharField(null=True, blank=True, max_length=255)
     instruction_of_channel_video_id = models.CharField(null=True, blank=True, max_length=255)
+    channel_rules_url = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
         verbose_name = "Настройки"
