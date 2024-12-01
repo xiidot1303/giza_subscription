@@ -15,7 +15,7 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
     data = json.loads(update.effective_message.web_app_data.data)
     card_data: CardData = DictToClass(data["card_data"])
     plan_id = context.user_data["plan_id"]
-    channel_id = context.user_data["channel_id"]
+    channel_id = TG_CHANNEL_ID
     # get subscription plan object
     plan: SubscriptionPlan = await get_subscription_plan_by_id(plan_id)
     # get bot user by update
