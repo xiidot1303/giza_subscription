@@ -20,7 +20,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         settings: Setting = await get_settings()
         # send hello video note
-        await context.bot.send_video_note(context._user_id, video_note=settings.start_video_note_id)
+        try:
+            await context.bot.send_video_note(context._user_id, video_note=settings.start_video_note_id)
+        except:
+            None
         # send hello message with instruction button
         i_button = InlineKeyboardButton(
             text=await get_word("instruction", update),
