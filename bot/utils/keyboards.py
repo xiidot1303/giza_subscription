@@ -91,3 +91,15 @@ async def change_card_keyboard(bot_user):
     )
     markup = InlineKeyboardMarkup([[i_button]])
     return markup
+
+
+async def survey_options_keyboard():
+    i_buttons = [
+        [InlineKeyboardButton(
+            text=option,
+            callback_data=f"survey--{option}"
+        )]
+        for option in ["Pul", "Sog'liq", "Munosabatlar"]
+    ]
+
+    return InlineKeyboardMarkup(i_buttons)

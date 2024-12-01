@@ -177,7 +177,7 @@ async def update_inline_query_answer(update: Update, article):
 
 async def bot_answer_callback_query(update: Update, context: ContextTypes.DEFAULT_TYPE, text, show_alert=True):
     bot = context.bot
-    await bot.answer_callback_query(callback_query_id=update.id, text=text, show_alert=show_alert)
+    await bot.answer_callback_query(callback_query_id=update.callback_query.id, text=text, show_alert=show_alert)
 
 async def bot_send_chat_action(update: Update, context: ContextTypes.DEFAULT_TYPE, chat_action=ChatAction.TYPING):
     bot = context.bot

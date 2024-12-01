@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from app.models import *
 from solo.admin import SingletonModelAdmin
 
+
 @admin.register(SubscriptionPlan)
 class SubscriptionPlanAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'duration_in_months')
@@ -26,13 +27,21 @@ class SubscriptionAdmin(admin.ModelAdmin):
     search_fields = ('bot_user__username', 'plan__name')
     ordering = ('-start_date',)
 
+
 @admin.register(TelegramChannelAccess)
 class TelegramChannelAccessAdmin(admin.ModelAdmin):
     list_display = ('bot_user', 'subscription')
+
+
+@admin.register(Survey)
+class SurveyAdmin(admin.ModelAdmin):
+    list_display = ('bot_user', 'answer', 'datetime')
+
 
 admin.site.register(Setting, SingletonModelAdmin)
 
 # Customizing the Admin Site settings
 admin.site.site_header = _("Giza Subscription Management System Admin")
 admin.site.site_title = _("Giza Subscription Management Admin")
-admin.site.index_title = _("Welcome to the Giza Subscription Management System Admin")
+admin.site.index_title = _(
+    "Welcome to the Giza Subscription Management System Admin")

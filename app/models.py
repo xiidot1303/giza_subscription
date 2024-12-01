@@ -110,6 +110,11 @@ class TelegramChannelAccess(models.Model):
     def get_subscription(self):
         return self.subscription
 
+    @property
+    @sync_to_async
+    def get_bot_user(self):
+        return self.bot_user
+
     class Meta:
         verbose_name = "Доступ к каналу"
         verbose_name_plural = "Подписчики канала"
@@ -126,3 +131,9 @@ class Setting(models.Model):
     class Meta:
         verbose_name = "Настройки"
         verbose_name_plural = "Настройки"
+
+
+class Survey(models.Model):
+    bot_user = models.ForeignKey('bot.Bot_user', on_delete=models.CASCADE)
+    datetime = models.DateTimeField(null=True, default=timezone.now)
+    answer = models.CharField(null=True, max_length=64)
