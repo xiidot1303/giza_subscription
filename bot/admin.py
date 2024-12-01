@@ -7,12 +7,12 @@ from solo.admin import SingletonModelAdmin
 class Bot_userAdmin(admin.ModelAdmin):
     def get_list_display(self, request):
         if request.user.is_superuser:
-            list_display = ['name', 'username', 'phone', 'date', 'edit_button']
+            list_display = ['name', 'username', 'phone', 'utm_source', 'date', 'edit_button']
         else:
-            list_display = ['name', 'username', 'phone', 'date']
+            list_display = ['name', 'username', 'phone', 'utm_source', 'date']
         return list_display
     search_fields = ['name', 'username', 'phone']
-    list_filter = ['date']
+    list_filter = ['date', 'utm_source']
     list_display_links = None
 
     def edit_button(self, obj):

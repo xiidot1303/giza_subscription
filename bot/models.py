@@ -19,6 +19,7 @@ class Bot_user(models.Model):
                             max_length=4, default='uz', verbose_name='')
     date = models.DateTimeField(
         db_index=True, null=True, auto_now_add=True, blank=True, verbose_name='Дата регистрации')
+    utm_source = models.CharField(null=True, default="", max_length=255, verbose_name="Источник")
 
     @property
     async def get_referral(self):

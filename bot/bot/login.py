@@ -42,15 +42,24 @@ async def get_contact(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # get name from user data
     name = context.user_data['name']
     # get referrer_id from user data
-    referrer_id = context.user_data['referrer_id']
+    start_msg = context.user_data.get('start_msg', None)
+    referrer_id, utm_source = None, None
+    if start_msg:
+        if "referrer" in start_msg:
+            _, referrer_id = start_msg.split("--")
+            utm_source = "referral"
+        else:
+            utm_source = start_msg
+
     # create bot user
     bot_user, created = await Bot_user.objects.aget_or_create(
-        user_id = context._user_id,
+        user_id=context._user_id,
         defaults={
             "name": name,
             "firstname": update.effective_user.first_name,
             "username": update.effective_user.username,
-            "phone": phone_number 
+            "phone": phone_number,
+            "utm_source": utm_source
         }
     )
 

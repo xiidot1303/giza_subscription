@@ -8,10 +8,15 @@ from bot.bot.login import _to_the_getting_name
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # get start message
-    referrer_id = await get_start_msg(update.effective_message.text)
     if not await is_registered(context._user_id):
-        context.user_data['referrer_id'] = referrer_id
+        # get start message
+        start_msg = await get_start_msg(update.effective_message.text)
+        # stop if start msg is not available
+        if not start_msg:
+            await update_message_reply_text(update, "UTM source is not available")
+            return
+
+        context.user_data['start_msg'] = start_msg
 
         settings: Setting = await get_settings()
         # send hello video note

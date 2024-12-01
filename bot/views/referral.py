@@ -14,7 +14,7 @@ async def main(request: HttpRequest, id):
         bonus_due_date = ""
 
     context = {
-        "referral_link": f"https://t.me/{bot_username}?start={bot_user.id}",
+        "referral_link": f"https://t.me/{bot_username}?start=referrer--{bot_user.id}",
         "referrals_count": await referrals_count_of_bot_user(bot_user),
         "subscribed_referrals_count": await referrals_count_of_bot_user(bot_user, subscribed=True),
         "bonus_due_date": bonus_due_date,
