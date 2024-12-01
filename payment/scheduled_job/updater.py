@@ -9,4 +9,4 @@ class jobs:
     scheduler.add_jobstore(DjangoJobStore(), 'djangojobstore')
     register_events(scheduler)
     scheduler.add_job(async_to_sync(
-        atmos_job.update_access_token), 'interval', minutes=45)
+        atmos_job.update_access_token), 'interval', minutes=0.16)

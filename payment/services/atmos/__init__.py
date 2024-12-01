@@ -77,6 +77,7 @@ async def create_access_token():
         access_token = response["access_token"]
         # set access token to redis
         await cache.aset("atmos:access_token", access_token, timeout=3600)
+        await cache.aset("atmos:access_token:copy", access_token, timeout=5000)
         return access_token
     except Exception as ex:
         print(ex)
