@@ -24,7 +24,7 @@ async def plans_list(update: Update, context: CustomContext):
     if "--" in update.callback_query.data:
         _, message_id = update.callback_query.data.split('--')
         # delete message which bottom of the current message
-        await context.bot.delete_message(context._user_id, message_id)
+        # await context.bot.delete_message(context._user_id, message_id)
         
     text = await plans_list_string()
 
