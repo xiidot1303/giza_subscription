@@ -14,6 +14,10 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
     # get data from web app data
     data = json.loads(update.effective_message.web_app_data.data)
     card_data: CardData = DictToClass(data["card_data"])
+
+    # create or update card of the user
+    await update_card_of_bot_user(bot_user, card_data)
+    
     plan_id = context.user_data["plan_id"]
     channel_id = TG_CHANNEL_ID
     # get subscription plan object
@@ -45,9 +49,6 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
 
     if not error and payment.payed:
         # successfullt payment, approve channel join request
-
-        # create or update card of the user
-        await update_card_of_bot_user(bot_user, card_data)
 
         # create subscription
         subscription: Subscription = await create_subscription(
