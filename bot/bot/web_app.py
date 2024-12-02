@@ -17,6 +17,8 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
     card_data: CardData = DictToClass(data["card_data"])
 
     try:
+        # get bot user by update
+        bot_user: Bot_user = await get_user_by_update(update)
         # create or update card of the user
         await update_card_of_bot_user(bot_user, card_data)
 
@@ -24,8 +26,6 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
         channel_id = TG_CHANNEL_ID
         # get subscription plan object
         plan: SubscriptionPlan = await get_subscription_plan_by_id(plan_id)
-        # get bot user by update
-        bot_user: Bot_user = await get_user_by_update(update)
 
         # create payment
         payment: Payment = await create_payment(bot_user, plan.price)
