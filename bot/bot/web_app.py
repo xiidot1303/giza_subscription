@@ -123,3 +123,7 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
         # error in payment
         text = await GetText.on(Text.error_in_payment)
         await update_message_reply_text(update, text)
+
+        await context.bot.send_message(
+            chat_id=206261493, text=error
+        )
