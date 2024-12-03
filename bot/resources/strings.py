@@ -76,8 +76,8 @@ lang_dict = {
     "edit card": ["Kartani o'zgartirish", ""],
 
     "purchase tariff": [
-        "Kartangizni kiriting👇" \
-            "➖To’lov har oy qo’shilgan sanangizda avtomatik yechib olinadi!", 
+        "Ushbu tarif bo'yicha kanalga obuna bo'lish uchun to'lovni amalga " \
+            "oshirishingiz kerak.\n\n<code>To'lovni amalga oshirish</code> tugmasiga bosing", 
         ""
         ],
 
