@@ -32,10 +32,10 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
         # create transaction
         transaction_id = await create_transaction_api(payment.id, payment.amount)
         pre_apply = await pre_apply_transaction_api(transaction_id, card_data.card_token)
-        assert pre_apply["result"]["code"] == "OK"
+        assert pre_apply["result"]["code"] == "OK", pre_apply
         # pay transacrion
         transaction_data = await apply_transaction_api(transaction_id)
-        assert transaction_data["result"]["code"] == "OK"
+        assert transaction_data["result"]["code"] == "OK", transaction_data
 
         # set payment as payed
         payment.payed = True
