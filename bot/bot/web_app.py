@@ -122,7 +122,7 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
         await remove_card_api(card_data.card_id, card_data.card_token)
         # error in payment
         text = await GetText.on(Text.error_in_payment)
-        await update_message_reply_text(update, text)
+        await update_message_reply_text(update, text, reply_markup=await reply_keyboard_remove())
 
         # make error text
         markup = InlineKeyboardMarkup([[
