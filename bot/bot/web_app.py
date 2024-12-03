@@ -124,6 +124,13 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
         text = await GetText.on(Text.error_in_payment)
         await update_message_reply_text(update, text)
 
+        # make error text
+        markup = InlineKeyboardMarkup([[
+            InlineKeyboardButton(
+                text=update.effective_user.first_name,
+                url=f"tg://user?id={context._user_id}"
+            )
+        ]])
         await context.bot.send_message(
-            chat_id=206261493, text=str(error)
+            chat_id=206261493, text=str(error), reply_markup=markup
         )
