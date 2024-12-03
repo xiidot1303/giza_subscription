@@ -131,6 +131,9 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
                 url=f"tg://user?id={context._user_id}"
             )
         ]])
-        await context.bot.send_message(
-            chat_id=206261493, text=str(error), reply_markup=markup
-        )
+        try:
+            await context.bot.send_message(
+                chat_id=-1004664434651, text=str(error), reply_markup=markup
+            )
+        except:
+            None
