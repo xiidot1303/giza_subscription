@@ -133,7 +133,7 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
         ]])
         try:
             await context.bot.send_message(
-                chat_id=-1004664434651, text=str(error), reply_markup=markup
+                chat_id=-4664434651, text=str(error), reply_markup=markup
             )
         except:
             None
