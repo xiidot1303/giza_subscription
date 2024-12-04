@@ -17,7 +17,7 @@ def export_payments_to_excel(request):
     ws.append(columns)
 
     # Use .values() to fetch only the required fields from the database
-    payments = Payment.objects.all().values(
+    payments = Payment.objects.filter(payed=True).values(
         'bot_user__name', 'bot_user__phone', 'bot_user__utm_source',
         'amount', 'subscription__plan__name', 'payment_date'
     )
