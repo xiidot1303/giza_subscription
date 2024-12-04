@@ -5,6 +5,8 @@ from django.urls import reverse
 from solo.admin import SingletonModelAdmin
 
 class Bot_userAdmin(admin.ModelAdmin):
+    change_list_template = 'admin/bot_user_change_list.html'
+
     def get_list_display(self, request):
         if request.user.is_superuser:
             list_display = ['name', 'username', 'phone', 'utm_source', 'date', 'edit_button']
