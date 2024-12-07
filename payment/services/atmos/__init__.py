@@ -6,7 +6,7 @@ from config import (
 )
 from app.utils import send_request, requests
 from django.core.cache import cache
-from asgiref.sync import async_to_sync
+from asgiref.sync import async_to_sync, sync_to_async
 import base64
 
 ATMOS_AUTHORIZATION_KEY = base64.b64encode(
@@ -61,7 +61,7 @@ class EndpointRequest:
         return instance
 
     async def send(self):
-        response = requests.post(
+        response = await sync_to_async(requests.post)(
             self.request_url, **self.request_body, headers=self.headers)
 
         return response.json()
