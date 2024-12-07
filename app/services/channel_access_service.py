@@ -150,8 +150,8 @@ async def successfully_payment_and_create_subscription(
             settings.instruction_of_channel_video_id,
             reply_markup=InlineKeyboardMarkup([[i_rules]])
         )
-    except:
-        None
+    except Exception as ex:
+        print(ex)
 
     text = "✅ To'lovingiz muvaffaqiyatli qabul qilindi."
     main_menu_markup = ReplyKeyboardMarkup(
@@ -161,8 +161,10 @@ async def successfully_payment_and_create_subscription(
     await bot.send_message(bot_user.user_id, text, reply_markup=main_menu_markup)
 
     text = await GetText.on(Text.joined_to_channel)
-    join_channel_markup = InlineKeyboardButton(
-        text=await get_word("join channel", chat_id=bot_user.user_id),
-        url=TG_CHANNEL_INVITE_LINK
-    )
+    join_channel_markup = InlineKeyboardMarkup([[
+        InlineKeyboardButton(
+            text=await get_word("join channel", chat_id=bot_user.user_id),
+            url=TG_CHANNEL_INVITE_LINK
+        )
+    ]])
     await bot.send_message(bot_user.user_id, text, reply_markup=join_channel_markup)

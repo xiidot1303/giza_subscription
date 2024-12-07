@@ -52,10 +52,10 @@ async def PerformTransaction(id):
                 account: Account = await get_account_by_id(account_id)
                 if account.payed:
                     assert False
-                await account_pay(account, 'payme')
                 # send notification to user
 
                 await successfully_payment_and_create_subscription(account)
+                await account_pay(account, 'payme')
 
             except:
                 await cancel_transaction(trans_obj, -1, 10)
