@@ -3,6 +3,7 @@ import requests
 import json
 import uuid
 from django.utils import timezone
+import aiohttp
 
 async def get_user_ip(request):
     x_forwarded_for = await request.META.get('HTTP_X_FORWARDED_FOR')
@@ -24,19 +25,40 @@ async def today():
     today = date.today()
     return today
 
-async def send_request(url, data=None, headers=None, type='get'):
-    try:
-        if type == 'get':
-            response = requests.get(url, params=data, headers=headers)
-            content = json.loads(response.content)
-            headers = response.headers
-        else:
-            response = requests.post(url, json=data, headers=headers)
-            content = json.loads(response.content)
-            headers = response.headers
-    except:
-        content, headers = ({"error": ""}, None)
-    return content, headers
+async def send_request(url, data=None, headers=None, type='get') -> dict:
+    if type == 'get':
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, headers=headers, params=data) as response:
+                response: aiohttp.ClientResponse
+                if 'application/json' in response.headers.get('Content-Type', ''):
+                    return await response.json()
+                else:
+                    response_text = await response.text()
+                    return json.loads(response_text)
+    else:
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, headers=headers, json=data) as response:
+                response: aiohttp.ClientResponse
+                if 'application/json' in response.headers.get('Content-Type', ''):
+                    return await response.json()
+                else:
+                    response_text = await response.text()
+                    return json.loads(response_text)
+                
+
+# async def send_request(url, data=None, headers=None, type='get'):
+#     try:
+#         if type == 'get':
+#             response = requests.get(url, params=data, headers=headers)
+#             content = json.loads(response.content)
+#             headers = response.headers
+#         else:
+#             response = requests.post(url, json=data, headers=headers)
+#             content = json.loads(response.content)
+#             headers = response.headers
+#     except:
+#         content, headers = ({"error": ""}, None)
+#     return content, headers
 
 async def create_random_id():
     # this creates random 10 digit id

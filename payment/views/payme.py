@@ -38,7 +38,6 @@ class Endpoint(APIView):
         # get values
         method = self.data["method"]
         params = self.data["params"]
-        print(self.data)
         # check method and create response
         if method == "CheckPerformTransaction":
             amount, account_id = params["amount"], params["account"]["account_id"]
@@ -76,7 +75,6 @@ class Endpoint(APIView):
             response_data["error"] = self.error
         else:
             response_data["result"] = self.result
-        print(response_data)
         response = JsonResponse(response_data)
         response['Content-Type'] = 'application/json'
         response['charset'] = 'UTF-8'
@@ -88,6 +86,7 @@ class Endpoint(APIView):
         return await self.create_response()
 
     async def post(self, request: AsyncRequest, *args, **kwargs):
+        print(request)
         try:
             # make ready
             await self.set_data(request)

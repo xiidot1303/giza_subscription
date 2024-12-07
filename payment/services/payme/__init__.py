@@ -36,7 +36,7 @@ class CheckoutEndpointRequest:
         # change x-auth if request is cards. | x-auth should only cash id
         if "cards." in self.request_method:
             self.headers['X-Auth'] = PAYME_CASH_ID
-        response, header = await send_request(
+        response = await send_request(
             checkout_url, self.request_body, self.headers, self.request_type
         )
         return response
