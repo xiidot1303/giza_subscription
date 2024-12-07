@@ -1,3 +1,4 @@
+from bot.bot import *
 from app.services import *
 from app.models import (
     TelegramChannelAccess,
@@ -11,11 +12,13 @@ from app.services.subscription_service import (
     get_subscription_by_id as _get_subscription_by_id,
     get_next_active_subscription as _get_next_active_subscription
 )
+from bot.services.referral_service import referrals_count_of_bot_user
 from payment.services.card_service import delete_card_of_bot_user, Card, get_card_of_bot_user
 from payment.services.atmos.card_api import remove_card_api as _unlink_card_from_atmos
 from config import TG_CHANNEL_ID
 from bot.utils.bot_functions import bot
 from typing import Tuple
+from telegram.ext import ExtBot
 
 
 async def get_channel_access_of_bot_user(bot_user: Bot_user):
@@ -77,8 +80,78 @@ async def remove_user_from_channel(subscription: Subscription):
             # Delete Card object
             await delete_card_of_bot_user(bot_user)
 
+
 async def has_channel_access(user_id: int | str) -> bool:
     exists = await TelegramChannelAccess.objects.filter(
         bot_user__user_id=user_id
     ).aexists()
     return exists
+
+
+async def successfully_payment_and_create_subscription(
+        payment: Payment,
+        bot: ExtBot = bot, bot_user: Bot_user = None,
+        plan: SubscriptionPlan = None):
+
+    if not bot_user:
+        bot_user = await payment.get_bot_user
+        plan = await payment.get_plan
+
+    # create subscription
+    subscription: Subscription = await _create_subscription(
+        bot_user, plan, payment
+    )
+    # create telegram channel access
+    await give_channel_access(bot_user, subscription)
+    # check referral available of this user
+    if referral := await bot_user.get_referral:
+        referrer: Bot_user = await referral.get_referrer
+        referrals_count = await referrals_count_of_bot_user(referrer, subscribed=True)
+        # check for this referral did not give bonus subscription
+        if await Subscription.objects.filter(referral__id=referral.id).aexists():
+            # dont give bonus
+            pass
+        # dont give bonus if referrals count is even of referrer
+        elif referrals_count % 2 == 0:
+            # create unactive subscription
+            await Subscription.objects.acreate(
+                bot_user=referrer, referral=referral, active=False
+            )
+            pass
+        else:
+            # give bonus to referrer
+            referrer: Bot_user = await referral.get_referrer
+            # create subscription
+            subscription: Subscription = await _create_subscription(
+                bot_user=referrer,
+                referral=referral
+            )
+            # send notification about that bonus given
+            given_bonus = await GetText.on(Text.given_bonus)
+            await send_newsletter(bot, referrer.user_id, given_bonus)
+            # give telegram channel access to referrer, if doesn't exist
+            channel_access, created = await give_channel_access(referrer, subscription)
+            if created:
+                joined_to_channel_text = await GetText.on(Text.joined_to_channel)
+                markup = ReplyKeyboardMarkup(
+                    [[await get_word('main menu', chat_id=bot_user.user_id)]],
+                    resize_keyboard=True)
+                try:
+                    await bot.send_message(referrer.user_id, joined_to_channel_text, reply_markup=markup)
+                except:
+                    None
+    # # send video instruction
+    # settings = await get_settings()
+    # i_rules = InlineKeyboardButton(
+    #     text="📝 Klub qonun-qoidalari", url=settings.channel_rules_url)
+    # await context.bot.send_video(
+    #     context._user_id,
+    #     settings.instruction_of_channel_video_id,
+    #     reply_markup=InlineKeyboardMarkup([[i_rules]])
+    #     )
+    # send success message
+    text = await GetText.on(Text.joined_to_channel)
+    markup = ReplyKeyboardMarkup(
+        [[await get_word('main menu', chat_id=bot_user.user_id)]],
+        resize_keyboard=True)
+    await bot.send_message(bot_user.user_id, text, reply_markup=markup)

@@ -50,72 +50,8 @@ async def web_app_data(update: Update, context: CustomContext) -> None:
 
     if not error and payment.payed:
         # successfullt payment, approve channel join request
-
-        # create subscription
-        subscription: Subscription = await create_subscription(
-            bot_user, plan, payment
-        )
-
-        # approve channel join request
-        await context.bot.approveChatJoinRequest(
-            chat_id=channel_id,
-            user_id=bot_user.user_id
-        )
-
-        # create telegram channel access
-        await give_channel_access(bot_user, subscription)
-
-        # check referral available of this user
-        if referral := await bot_user.get_referral:
-            referrer: Bot_user = await referral.get_referrer
-            referrals_count = await referrals_count_of_bot_user(referrer, subscribed=True)
-            # check for this referral did not give bonus subscription
-            if await Subscription.objects.filter(referral__id=referral.id).aexists():
-                # dont give bonus
-                pass
-
-            # dont give bonus if referrals count is even of referrer
-            elif referrals_count % 2 == 0:
-                # create unactive subscription
-                await Subscription.objects.acreate(
-                    bot_user=referrer, referral=referral, active=False
-                )
-                pass
-            else:
-                # give bonus to referrer
-                referrer: Bot_user = await referral.get_referrer
-                # create subscription
-                subscription: Subscription = await create_subscription(
-                    bot_user=referrer,
-                    referral=referral
-                )
-                # send notification about that bonus given
-                given_bonus = await GetText.on(Text.given_bonus)
-                await send_newsletter(bot, referrer.user_id, given_bonus)
-
-                # give telegram channel access to referrer, if doesn't exist
-                channel_access, created = await give_channel_access(referrer, subscription)
-                if created:
-                    joined_to_channel_text = await GetText.on(Text.joined_to_channel)
-                    markup = await build_keyboard(update, [], 1, back_button=False)
-                    try:
-                        await context.bot.send_message(referrer.user_id, joined_to_channel_text, reply_markup=markup)
-                    except:
-                        None
-        # send video instruction
-        settings = await get_settings()
-        i_rules = InlineKeyboardButton(
-            text="📝 Klub qonun-qoidalari", url=settings.channel_rules_url)
-        await context.bot.send_video(
-            context._user_id,
-            settings.instruction_of_channel_video_id,
-            reply_markup=InlineKeyboardMarkup([[i_rules]])
-            )
-
-        # send success message
-        text = await GetText.on(Text.joined_to_channel)
-        markup = await build_keyboard(update, [], 1, back_button=False)
-        await update_message_reply_text(update, text, reply_markup=markup)
+        await successfully_payment_and_create_subscription(
+            payment, context.bot, bot_user, plan)
 
     elif error:
         # remove card

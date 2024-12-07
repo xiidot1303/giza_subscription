@@ -55,6 +55,8 @@ async def PerformTransaction(id):
                 await account_pay(account, 'payme')
                 # send notification to user
 
+                await successfully_payment_and_create_subscription(account)
+
             except:
                 await cancel_transaction(trans_obj, -1, 10)
                 return None, Errors.CANNOT_PERFORM_OPERATION

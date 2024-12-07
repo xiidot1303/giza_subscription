@@ -1,11 +1,11 @@
 from app.services import *
 from bot.models import Bot_user
-from app.models import Payment
+from app.models import Payment, SubscriptionPlan
 
 
-async def create_payment(bot_user: Bot_user, amount):
+async def create_payment(bot_user: Bot_user, amount, plan: SubscriptionPlan = None):
     obj = await Payment.objects.acreate(
-        bot_user=bot_user, amount=amount
+        bot_user=bot_user, amount=amount, plan=plan
     )
     return obj
 
@@ -25,6 +25,6 @@ async def payment_pay(payment: Payment, payment_system):
 def filter_payed_payments_by_bot_user_list(bot_user: Bot_user):
     query_list = list(Payment.objects.filter(
         bot_user__id=bot_user.id, payed=True
-        ).values()
+    ).values()
     )
     return query_list

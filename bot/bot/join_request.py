@@ -93,7 +93,7 @@ async def select_payment_system(update: Update, context: CustomContext):
     plan: SubscriptionPlan = await get_subscription_plan_by_id(plan_id)
 
     # create payment
-    payment: Payment = await create_payment(bot_user, plan.price)
+    payment: Payment = await create_payment(bot_user, plan.price, plan)
 
     invoice_url = await get_invoice_url(payment.id, payment.amount, payment_system)
     text = "To'lovni amalga oshirish uchun quyidagi havola ustiga bosing 👇"

@@ -3,6 +3,7 @@ from app.services.payment_service import (
     payment_pay as account_pay
 )
 from bot.services import notification_service as notify
+from app.services.channel_access_service import successfully_payment_and_create_subscription
 from app.models import Payment as Account
 from payment.services.payme.subscribe_api import receipts_create_api as get_payme_invoice_id
 

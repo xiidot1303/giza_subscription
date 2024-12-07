@@ -31,6 +31,7 @@ class Payment(models.Model):
     bot_user = models.ForeignKey(
         "bot.Bot_user", null=True, on_delete=models.CASCADE, verbose_name="Пользователь бота"
     )
+    plan = models.ForeignKey(SubscriptionPlan, null=True, blank=True, on_delete=models.PROTECT)
     amount = models.BigIntegerField(null=True, verbose_name="Сумма")
     payment_date = models.DateTimeField(
         default=timezone.now, verbose_name="Дата платежа")
@@ -38,6 +39,16 @@ class Payment(models.Model):
     payment_system = models.CharField(
         null=True, blank=True, max_length=32, verbose_name="Платежная система"
     )
+
+    @property
+    @sync_to_async
+    def get_bot_user(self):
+        return self.bot_user
+
+    @property
+    @sync_to_async
+    def get_plan(self):
+        return self.plan
 
     class Meta:
         verbose_name = "Оплата"

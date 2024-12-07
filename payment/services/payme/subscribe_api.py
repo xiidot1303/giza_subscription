@@ -119,13 +119,14 @@ async def receipts_create_api(payment_id, amount):
     params = {
         "amount": amount * 100,
         "account": {
-            "payment_id": str(payment_id)
+            "account_id": str(payment_id)
         }
     }
     checkout_request = await CheckoutEndpointRequest.create(
         method, params, RequestType.POST
     )
     response = await checkout_request.send()
+    print(response)
     receipt_id = response['result']['receipt']['_id']
     return receipt_id
 
