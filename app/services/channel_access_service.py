@@ -140,18 +140,29 @@ async def successfully_payment_and_create_subscription(
                     await bot.send_message(referrer.user_id, joined_to_channel_text, reply_markup=markup)
                 except:
                     None
-    # # send video instruction
-    # settings = await get_settings()
-    # i_rules = InlineKeyboardButton(
-    #     text="📝 Klub qonun-qoidalari", url=settings.channel_rules_url)
-    # await context.bot.send_video(
-    #     context._user_id,
-    #     settings.instruction_of_channel_video_id,
-    #     reply_markup=InlineKeyboardMarkup([[i_rules]])
-    #     )
-    # send success message
-    text = await GetText.on(Text.joined_to_channel)
-    markup = ReplyKeyboardMarkup(
+    # send video instruction
+    try:
+        settings = await get_settings()
+        i_rules = InlineKeyboardButton(
+            text="📝 Klub qonun-qoidalari", url=settings.channel_rules_url)
+        await bot.send_video(
+            bot_user.user_id,
+            settings.instruction_of_channel_video_id,
+            reply_markup=InlineKeyboardMarkup([[i_rules]])
+        )
+    except:
+        None
+
+    text = "✅ To'lovingiz muvaffaqiyatli qabul qilindi."
+    main_menu_markup = ReplyKeyboardMarkup(
         [[await get_word('main menu', chat_id=bot_user.user_id)]],
         resize_keyboard=True)
-    await bot.send_message(bot_user.user_id, text, reply_markup=markup)
+
+    await bot.send_message(bot_user.user_id, text, reply_markup=main_menu_markup)
+
+    text = await GetText.on(Text.joined_to_channel)
+    join_channel_markup = i_join = InlineKeyboardButton(
+        text=await get_word("join channel", chat_id=bot_user.user_id),
+        url=TG_CHANNEL_INVITE_LINK
+    )
+    await bot.send_message(bot_user.user_id, text, reply_markup=join_channel_markup)
