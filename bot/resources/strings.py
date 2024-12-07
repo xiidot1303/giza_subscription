@@ -54,7 +54,7 @@ lang_dict = {
         """Ваше имя успешно изменено!""",
     ],
 
-    "Pay for plan": ["To'lovni amalga oshirish", ""],
+    "bind card": ["Kartani ulash", ""],
 
     "tariffs": ["📄 Tariflar", ""],
 
@@ -75,9 +75,10 @@ lang_dict = {
 
     "edit card": ["Kartani o'zgartirish", ""],
 
-    "purchase tariff": [
-        "Ushbu tarif bo'yicha kanalga obuna bo'lish uchun to'lovni amalga " \
-            "oshirishingiz kerak.\n\n<code>To'lovni amalga oshirish</code> tugmasiga bosing", 
+    "purchase tariff using bind card": [
+        "Kanalga obuna bo'lish uchun kartangizni ulashingiz va to'lovni amalga " \
+            "oshirishingiz kerak.\n\n<code>Kartani ulash</code> tugmasini bosing\n\n" \
+                "Ortga qaytish uchun /start ustiga bosing", 
         ""
         ],
 
@@ -90,6 +91,28 @@ lang_dict = {
     "registration": ["📝 Ro'yxatdan o'tish", ""],
 
     "change tariff": ["↩️ Tarifni o'zgartirish", ""],
+
+    "subscription types description": [
+        "<b>➖ Obuna turini tanlang:</b>\n\n" \
+            "<code>💳 Kartani orqali</code> - ushbu obuna turini tanlasangiz sizdan karta ma'lumotlaringiz olib qolinadi " \
+                "va bizning sistemaga bog'lanadi. Obuna uchun keyingi to'lov kuni kelganida kartangizdan avtomatik tarzda " \
+                    "tariff uchun to'lov yechib olinadi.\n\n" \
+                        "<code>🔗 Havola orqali</code> - hech qanday karta ma'lumotlarini kiritmagan holda " \
+                            "sizga kelgan havola orqali tarif uchun to'lovni amalga oshirasiz. " \
+                                "Obuna uchun keyingi to'lov kuni kelganida sizga to'lov uchun " \
+                                    "yana shunday havola yuboriladi.", 
+        ""
+        ],
+
+    "binding card": ["💳 Karta orqali", ""],
+
+    "payment via link": ["🔗 Havola orqali", ""],
+
+    "select payment service": ["📲 Qaysi to'lov tizimi orqali to'lovni amalga oshirmoqchisiz?", ""],
+
+    "": ["", ""],
+
+    "": ["", ""],
 
     "": ["", ""],
 

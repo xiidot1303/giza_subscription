@@ -62,17 +62,22 @@ async def main_menu(update: Update, context: CustomContext):
 
     else:
         # go to start message
-        text = await GetText.on(Text.start)
-        i_join = InlineKeyboardButton(
-            text=await get_word("join channel", update),
-            url=TG_CHANNEL_INVITE_LINK
-        )
-        buttons = [i_join]
+        text = await plans_list_string()
+        markup = await tariffs_list_keyboard()
+
+        # text = await GetText.on(Text.start)
+        # i_join = InlineKeyboardButton(
+        #     text=await get_word("join channel", update),
+        #     url=TG_CHANNEL_INVITE_LINK
+        # )
+        # buttons = [i_join]
 
         # set referral page web app
         web_app_menu_button = MenuButtonWebApp(text="Referal",
                                                web_app=WebAppInfo(f"{WEBAPP_URL}/referral/{bot_user.id}"))
         await context.bot.set_chat_menu_button(context._user_id, web_app_menu_button)
+        await update_message_reply_text(update, text, reply_markup=markup)
+        return
 
     markup = InlineKeyboardMarkup([
         [button]

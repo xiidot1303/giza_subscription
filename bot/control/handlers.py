@@ -23,7 +23,7 @@ main_menu = MessageHandler(filters.Text(lang_dict['main menu']), main.start)
 
 login_handler = ConversationHandler(
     entry_points=[
-        MessageHandler(filters.Text(lang_dict['registration']), login._to_the_getting_name)
+        CommandHandler("start", main.start)
     ],
     states={
         GET_NAME: [
@@ -49,7 +49,6 @@ web_app_data_handler = MessageHandler(
     filters.StatusUpdate.WEB_APP_DATA, web_app.web_app_data)
 
 handlers = [
-    CommandHandler("start", main.start),
     login_handler,
     main_menu,
     channel_join_request_handler,
@@ -58,6 +57,10 @@ handlers = [
     MessageHandler(filters.VIDEO, main.get_video_id),
     # Callback query handlers
     CallbackQueryHandler(join_request.plans_list, pattern=".*plans_list.*"),
+    CallbackQueryHandler(join_request.bind_card, pattern="binding_card"),
+    CallbackQueryHandler(join_request.payment_via_link, pattern="payment_via_link"),
+    CallbackQueryHandler(join_request.payment_via_link, pattern="payment_via_link"),
+    CallbackQueryHandler(join_request.select_payment_system, pattern=".*select_payment_system.*"),
     CallbackQueryHandler(join_request.select_plan,
                          pattern=".*subscription_plan.*"),
     CallbackQueryHandler(subscription.cancel_subscription, pattern=".*cancel_subscription.*"),

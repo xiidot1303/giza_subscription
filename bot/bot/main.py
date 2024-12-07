@@ -4,7 +4,7 @@ import logging
 import traceback
 import html
 from config import TG_CHANNEL_INVITE_LINK
-from bot.bot.login import _to_the_getting_name
+from bot.bot.login import _to_the_getting_contact
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -13,25 +13,21 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         start_msg = await get_start_msg(update.effective_message.text)
         # stop if start msg is not available
         if not start_msg:
-            await update_message_reply_text(update, "UTM source is not available")
+            await update_message_reply_text(
+                update, 
+                "Botdan foydalanish uchun maxsus link orqali ro'yxatdan o'tishingiz kerak."
+                )
             return
 
         context.user_data['start_msg'] = start_msg
 
-        settings: Setting = await get_settings()
-        # send hello video note
-        try:
-            await context.bot.send_video_note(context._user_id, video_note=settings.start_video_note_id)
-        except:
-            None
         # send hello message with instruction button
-        i_button = InlineKeyboardButton(
-            text=await get_word("instruction", update),
-            callback_data="start_instruction"
-        )
-        markup = InlineKeyboardMarkup([[i_button]])
-        await context.bot.send_message(context._user_id, await GetText.on(Text.hello), reply_markup=markup)
-        return
+        # i_button = InlineKeyboardButton(
+        #     text=await get_word("instruction", update),
+        #     callback_data="start_instruction"
+        # )
+        # markup = InlineKeyboardMarkup([[i_button]])
+        return await _to_the_getting_contact(update)
 
     await main_menu(update, context)
 

@@ -7,6 +7,7 @@ from telegram import (
     WebAppInfo
 )
 from config import WEBAPP_URL
+from app.services.plan_service import subscription_plans_filter_dict, SubscriptionPlan
 
 
 async def _inline_footer_buttons(update, buttons, back=True, main_menu=True):
@@ -46,9 +47,9 @@ async def settings_keyboard(update):
 
 
 async def build_keyboard(
-        update, button_list, n_cols, back_button=True, 
-        main_menu_button=True, one_time_keyboard=True
-    ):
+    update, button_list, n_cols, back_button=True,
+    main_menu_button=True, one_time_keyboard=True
+):
     # split list by two cols
     button_list_split = [button_list[i:i + n_cols]
                          for i in range(0, len(button_list), n_cols)]
@@ -66,7 +67,8 @@ async def build_keyboard(
     buttons = button_list_split + \
         [footer_buttons] if footer_buttons else button_list_split
 
-    reply_markup = ReplyKeyboardMarkup(buttons, resize_keyboard=True, one_time_keyboard=one_time_keyboard)
+    reply_markup = ReplyKeyboardMarkup(
+        buttons, resize_keyboard=True, one_time_keyboard=one_time_keyboard)
     return reply_markup
 
 
@@ -103,3 +105,18 @@ async def survey_options_keyboard():
     ]
 
     return InlineKeyboardMarkup(i_buttons)
+
+
+async def tariffs_list_keyboard():
+    i_tariff_buttons = [
+        [
+            InlineKeyboardButton(
+                text=plan.name,
+                callback_data=f"subscription_plan--{plan.id}"
+            )
+        ]
+        async for plan in SubscriptionPlan.objects.filter(
+            **subscription_plans_filter_dict).order_by("duration_in_months")
+    ]
+    markup = InlineKeyboardMarkup(i_tariff_buttons)
+    return markup

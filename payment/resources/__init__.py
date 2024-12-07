@@ -1,3 +1,10 @@
+payment_systems = [
+    'Payme',
+    # 'Click',
+    # 'Uzum'
+]
+
+
 payme_ips = [
     "185.234.113.1",
     "185.234.113.2",

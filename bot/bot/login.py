@@ -21,7 +21,7 @@ async def _to_the_getting_contact(update: Update):
         update,
         await get_word("send number", update),
         reply_markup=await reply_keyboard_markup(
-            [[i_contact], [await get_word("back", update)]], one_time_keyboard=True
+            [[i_contact]], one_time_keyboard=True
         )
     )
 
@@ -38,9 +38,10 @@ async def get_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def get_contact(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # get phone number from message
-    phone_number = update.message.contact.phone_number if update.message.contact else update.message.text
-    # get name from user data
-    name = context.user_data['name']
+    try:
+        phone_number = update.message.contact.phone_number if update.message.contact else update.message.text
+    except:
+        phone_number = "+998"
     # get referrer_id from user data
     start_msg = context.user_data.get('start_msg', None)
     referrer_id, utm_source = None, None
@@ -55,7 +56,7 @@ async def get_contact(update: Update, context: ContextTypes.DEFAULT_TYPE):
     bot_user, created = await Bot_user.objects.aget_or_create(
         user_id=context._user_id,
         defaults={
-            "name": name,
+            "name": update.effective_user.first_name,
             "firstname": update.effective_user.first_name,
             "username": update.effective_user.username,
             "phone": phone_number,
@@ -75,4 +76,4 @@ async def get_contact(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    return await _to_the_getting_name(update, context)
+    return await _to_the_getting_contact(update)
