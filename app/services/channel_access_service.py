@@ -15,7 +15,7 @@ from app.services.subscription_service import (
 from bot.services.referral_service import referrals_count_of_bot_user
 from payment.services.card_service import delete_card_of_bot_user, Card, get_card_of_bot_user
 from payment.services.atmos.card_api import remove_card_api as _unlink_card_from_atmos
-from config import TG_CHANNEL_ID
+from config import TG_CHANNEL_ID, TG_CHANNEL_INVITE_LINK
 from bot.utils.bot_functions import bot
 from typing import Tuple
 from telegram.ext import ExtBot
@@ -161,7 +161,7 @@ async def successfully_payment_and_create_subscription(
     await bot.send_message(bot_user.user_id, text, reply_markup=main_menu_markup)
 
     text = await GetText.on(Text.joined_to_channel)
-    join_channel_markup = i_join = InlineKeyboardButton(
+    join_channel_markup = InlineKeyboardButton(
         text=await get_word("join channel", chat_id=bot_user.user_id),
         url=TG_CHANNEL_INVITE_LINK
     )
