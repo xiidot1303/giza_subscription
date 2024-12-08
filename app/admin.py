@@ -25,7 +25,7 @@ class PaymentAdmin(admin.ModelAdmin):
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ('bot_user', 'plan', 'start_date', 'end_date', 'active')
     list_filter = ('active', 'start_date', 'end_date', 'plan')
-    search_fields = ('bot_user__username', 'plan__name')
+    search_fields = ('bot_user__name', 'bot_user__phone', 'plan__name')
     ordering = ('-start_date',)
 
 
