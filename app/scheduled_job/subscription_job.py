@@ -16,10 +16,10 @@ async def check_subscription():
         plan: SubscriptionPlan = await subscription.get_plan
         bot_user: Bot_user = await subscription.get_bot_user
         if plan:
-            card: Card = await get_card_of_bot_user(bot_user)
             # create payment
             payment: Payment = await create_payment(bot_user, plan.price)
             try:
+                card: Card = await get_card_of_bot_user(bot_user)
                 # create receipt
                 transaction_id = await create_transaction_api(payment.id, payment.amount)
                 # pay receipt
@@ -28,16 +28,14 @@ async def check_subscription():
                 transaction_data = await apply_transaction_api(transaction_id)
                 assert transaction_data["result"]["code"] == "OK"
 
+                payment.payed = True
+                await payment.asave()
                 error = None
             except Exception as ex:
                 error = ex
 
             # update payment object because it changed by merchant api
             await payment.arefresh_from_db()
-
-            if DEBUG:
-                payment.payed = True
-                await payment.asave()
 
             markup = None
             if not error and payment.payed:

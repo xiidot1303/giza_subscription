@@ -75,11 +75,14 @@ async def remove_user_from_channel(subscription: Subscription):
         await subscription.asave()
 
         # Cancel a linked card
-        card: Card = await get_card_of_bot_user(bot_user)
-        unlinked = await _unlink_card_from_atmos(card.card_id, card.token)
-        if unlinked == "OK":
-            # Delete Card object
-            await delete_card_of_bot_user(bot_user)
+        try:
+            card: Card = await get_card_of_bot_user(bot_user)
+            unlinked = await _unlink_card_from_atmos(card.card_id, card.token)
+            if unlinked == "OK":
+                # Delete Card object
+                await delete_card_of_bot_user(bot_user)
+        except:
+            None
 
 
 async def has_channel_access(user_id: int | str) -> bool:
