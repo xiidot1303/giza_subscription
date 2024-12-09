@@ -19,6 +19,7 @@ from config import TG_CHANNEL_ID, TG_CHANNEL_INVITE_LINK
 from bot.utils.bot_functions import bot
 from typing import Tuple
 from telegram.ext import ExtBot
+from app.services.setting_service import get_settings
 
 
 async def get_channel_access_of_bot_user(bot_user: Bot_user):
@@ -151,7 +152,7 @@ async def successfully_payment_and_create_subscription(
             reply_markup=InlineKeyboardMarkup([[i_rules]])
         )
     except Exception as ex:
-        print(ex)
+        None
 
     text = "✅ To'lovingiz muvaffaqiyatli qabul qilindi."
     main_menu_markup = ReplyKeyboardMarkup(
