@@ -2,6 +2,7 @@ from payment.services import *
 from payment.resources.payme_responses import Errors, Results
 from payment.utils import time_ts
 from payment.services.payme.transaction import *
+import logging
 
 
 async def CheckPerformTransaction(amount, account_id):
@@ -57,7 +58,8 @@ async def PerformTransaction(id):
                 await successfully_payment_and_create_subscription(account)
                 await account_pay(account, 'payme')
 
-            except:
+            except Exception as ex:
+                logging.error("Exception while succesfully payment:", ex)
                 await cancel_transaction(trans_obj, -1, 10)
                 return None, Errors.CANNOT_PERFORM_OPERATION
             # end transaction
