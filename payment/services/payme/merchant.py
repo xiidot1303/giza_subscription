@@ -3,6 +3,7 @@ from payment.resources.payme_responses import Errors, Results
 from payment.utils import time_ts
 from payment.services.payme.transaction import *
 import logging
+from bot.control.updater import application
 
 
 async def CheckPerformTransaction(amount, account_id):
@@ -54,8 +55,8 @@ async def PerformTransaction(id):
                 if account.payed:
                     assert False
                 # send notification to user
-
-                await successfully_payment_and_create_subscription(account)
+                bot = application.bot
+                await successfully_payment_and_create_subscription(account, bot=bot)
                 await account_pay(account, 'payme')
 
             except Exception as ex:
