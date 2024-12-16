@@ -38,17 +38,24 @@ async def select_plan(update: Update, context: CustomContext):
 
     # get plan
     plan: SubscriptionPlan = await get_subscription_plan_by_id(plan_id)
+    if plan.duration_in_months != 1:
+        callbacks = [
+            ('binding card', 'binding_card'),
+            ('payment via link', 'payment_via_link'),
+            ('change tariff', 'plans_list'),
+        ]
+    else:
+        callbacks = [
+            ('binding card', 'binding_card'),
+            ('change tariff', 'plans_list'),
+        ]
 
     markup = InlineKeyboardMarkup([
         [InlineKeyboardButton(
             text=await get_word(text, update),
             callback_data=callback
         )]
-        for text, callback in [
-            ('binding card', 'binding_card'),
-            ('payment via link', 'payment_via_link'),
-            ('change tariff', 'plans_list'),
-        ]
+        for text, callback in callbacks
     ])
     subscriptions_types_text = await get_word('subscription types description', update)
     tariff_text = f"{subscriptions_types_text}\n\n\n<b>✅ {plan.name} {plan.price} so'm</b>"
@@ -105,4 +112,3 @@ async def select_payment_system(update: Update, context: CustomContext):
     ]])
     await bot_edit_message_text(update, context, text)
     await bot_edit_message_reply_markup(update, context, reply_markup=markup)
-
