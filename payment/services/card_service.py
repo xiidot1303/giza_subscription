@@ -18,8 +18,15 @@ async def update_card_of_bot_user(bot_user: Bot_user, card_info: _CardInfo):
 
 
 async def get_card_of_bot_user(bot_user: Bot_user) -> Card:
-    obj = await Card.objects.aget(bot_user__id=bot_user.id)
-    return obj
+    if obj := await Card.objects.filter(bot_user__id=bot_user.id).afirst():
+        return obj
+    else:
+        obj = Card(
+            number="----------------",
+            expire="----",
+            holder=""
+        )
+        return obj
 
 
 async def delete_card_of_bot_user(bot_user: Bot_user):
