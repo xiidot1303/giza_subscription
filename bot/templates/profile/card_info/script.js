@@ -113,7 +113,7 @@ async function submitVerification() {
             Telegram.WebApp.close();
         } else{
             // send data to api endpoint
-            await fetch(`${apiHost}/profile/update-card`, {
+            await fetch(`${apiHost}profile/update-card`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: requestBody,
