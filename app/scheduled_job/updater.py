@@ -9,4 +9,4 @@ class jobs:
     scheduler.add_jobstore(DjangoJobStore(), 'djangojobstore')
     register_events(scheduler)
     scheduler.add_job(async_to_sync(
-        subscription_job.check_subscription)(), 'interval', minutes=360)
+        subscription_job.check_subscription), 'interval', minutes=360)
