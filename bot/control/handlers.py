@@ -64,6 +64,7 @@ handlers = [
     CallbackQueryHandler(join_request.select_plan,
                          pattern=".*subscription_plan.*"),
     CallbackQueryHandler(subscription.cancel_subscription, pattern=".*cancel_subscription.*"),
+    CallbackQueryHandler(subscription.extend_subscription, pattern=".*extend_subscription.*"),
     CallbackQueryHandler(main.bot_delete_message, pattern="delete_current_message"),
     CallbackQueryHandler(main.start_instruction, pattern="start_instruction"),
     CallbackQueryHandler(survey.get_survey_result, pattern=".*survey.*")

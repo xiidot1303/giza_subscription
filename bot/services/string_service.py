@@ -16,3 +16,10 @@ async def your_subscription_changed_string(old, new, exp_date):
     text = f"<i>{old}</i> tarifi bo'yicha obunangiz bekor qilindi.\n\n" \
         f"Sizning navbatdagi <i>{new}</i> tarifi bo'yicha obunangiz faollashtirildi va {exp_date} gacha amal qiladi."
     return text
+
+
+async def extend_subscription_string(plan: SubscriptionPlan):
+    text = f"Xurmatli foydalanuvchi, sizning obunangiz yakunlanmoqda. Kanalimizda obunani davom ettirmoqchi bo'lsangiz " \
+        f"tarifingiz uchun to'lovni amalga oshiring.\n\nSizning tarifingiz: <b>{plan.name} - {plan.price} so'm</b>\n\n" \
+            f"Ushbu summani bizga biriktirgan kartangizdan yechib olinishini tasdiqlaysizmi?"
+    return text

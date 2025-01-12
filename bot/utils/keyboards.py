@@ -120,3 +120,18 @@ async def tariffs_list_keyboard():
     ]
     markup = InlineKeyboardMarkup(i_tariff_buttons)
     return markup
+
+
+async def extend_or_cancel_subscription_keyboard(subscription_id):
+    i_buttons = [
+        [InlineKeyboardButton(
+            text="✅ Tasdiqlash",
+            callback_data=f"extend_subscription--{subscription_id}"
+        )],
+        [InlineKeyboardButton(
+            text="❌ Obunani bekor qilish",
+            callback_data=f"cancel_subscription--{subscription_id}"
+        )]
+    ]
+    markup = InlineKeyboardMarkup(i_buttons)
+    return markup
