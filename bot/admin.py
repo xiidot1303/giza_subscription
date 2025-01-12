@@ -28,7 +28,7 @@ class MesageAdmin(admin.ModelAdmin):
     list_display_links = None
     fieldsets = (
         ('', {
-            'fields': ['bot_users', 'text', 'photo', 'video', 'file'],
+            'fields': ['bot_users', 'whom', 'text', 'photo', 'video', 'file'],
             'description': 'Выберите пользователей, которым вы хотите отправить сообщение, или просто оставьте поле пустым, чтобы отправить всем пользователям.', 
         }),
 
