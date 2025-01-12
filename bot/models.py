@@ -58,6 +58,12 @@ class Referral(models.Model):
 class Message(models.Model):
     bot_users = models.ManyToManyField(
         'bot.Bot_user', blank=True, related_name='bot_users_list', verbose_name='Пользователи бота')
+    WHOM_CHOICES = [
+        ("purchased", "для тех кто купил"),
+        ("did not extend", "у кого закончилась подписка и не возобновил"),
+        ("started and nothing", "те кто просто нажали кнопку старт и ничего не делали")
+    ]
+    whom = models.CharField(null=True, blank=True, max_length=64, choices=WHOM_CHOICES)
     text = models.TextField(null=True, blank=False,
                             max_length=1024, verbose_name='Текст')
     photo = models.FileField(null=True, blank=True, upload_to="message/photo/", verbose_name='Фото',
