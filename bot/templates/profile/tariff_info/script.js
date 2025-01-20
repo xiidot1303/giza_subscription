@@ -14,7 +14,7 @@ async function cancelSubscription(have_to_cancel) {
     const userId = "{{ bot_user_id }}";
     if (have_to_cancel == true) {
         // send API to cancel subscription
-        await fetch(`${apiHost}subscription/cancel`, {
+        response = await fetch(`${apiHost}subscription/cancel`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -22,6 +22,10 @@ async function cancelSubscription(have_to_cancel) {
                 bot_user_id: userId
             }),
         });
-        Telegram.WebApp.close();
+        const data = await response.json();
+        if (data.success == true) {
+            Telegram.WebApp.close();
+        };
+
     }
 };

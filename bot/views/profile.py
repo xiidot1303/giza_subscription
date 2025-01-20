@@ -63,5 +63,8 @@ class CancelSubscription(APIView):
         # send newsletter to user about cancellation
         text = await get_word("confirm cancellation", chat_id=bot_user_id)
         markup = await cancel_subscription_keyboard(subscription_id)
-        await send_newsletter(bot, bot_user_id, text, reply_markup=markup)
-        return JsonResponse({})
+        result = await send_newsletter(bot, bot_user_id, text, reply_markup=markup)
+        if result:
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False})
