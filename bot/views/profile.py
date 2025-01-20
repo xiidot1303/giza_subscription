@@ -1,6 +1,7 @@
 from app.views import *
 from bot.services import *
 from bot.bot import *
+from bot.control.updater import application as bot_app
 from bot.utils.keyboards import cancel_subscription_keyboard
 from payment.services.card_service import *
 from app.services.channel_access_service import *
@@ -63,7 +64,7 @@ class CancelSubscription(APIView):
         # send newsletter to user about cancellation
         text = await get_word("confirm cancellation", chat_id=bot_user_id)
         markup = await cancel_subscription_keyboard(subscription_id)
-        result = await send_newsletter(bot, bot_user_id, text, reply_markup=markup)
+        result = await send_newsletter(bot_app.bot, bot_user_id, text, reply_markup=markup)
         if result:
             return JsonResponse({"success": True})
         else:
