@@ -3,7 +3,8 @@ from app.services.subscription_service import *
 from app.services.payment_service import *
 from payment.services.atmos.transaction_api import *
 from payment.services.card_service import *
-from bot.utils.bot_functions import send_newsletter, bot
+from bot.utils.bot_functions import send_newsletter
+from bot.control.updater import application
 from config import DEBUG
 from bot.services.text_service import *
 from bot.utils.keyboards import change_card_keyboard
@@ -21,7 +22,7 @@ async def check_subscription():
             days_passed = (timezone.now() - subscription.end_date).days
             if days_passed >= 3:
                 # remove user from telegram channel
-                await remove_user_from_channel(subscription)
+                await remove_user_from_channel(subscription, application.bot)
                 text = await GetText.on(Text.banned)
             else:
                 # check card is available of user
@@ -40,7 +41,7 @@ async def check_subscription():
                 await update_channel_access(subscription, next_subscription)
                 text = await GetText.on(Text.subscription_renewed)
             else:
-                await remove_user_from_channel(subscription)
+                await remove_user_from_channel(subscription, application.bot)
                 text = await GetText.on(Text.banned)
 
-        await send_newsletter(bot, bot_user.user_id, text, reply_markup=markup)
+        await send_newsletter(application.bot, bot_user.user_id, text, reply_markup=markup)

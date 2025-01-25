@@ -16,7 +16,6 @@ from bot.services.referral_service import referrals_count_of_bot_user
 from payment.services.card_service import delete_card_of_bot_user, Card, get_card_of_bot_user
 from payment.services.atmos.card_api import remove_card_api as _unlink_card_from_atmos
 from config import TG_CHANNEL_ID, TG_CHANNEL_INVITE_LINK
-from bot.utils.bot_functions import bot
 from typing import Tuple
 from telegram.ext import ExtBot
 from app.services.setting_service import get_settings
@@ -56,7 +55,7 @@ async def update_channel_access(old_subscription: Subscription, new_subscription
     await channel_access.asave()
 
 
-async def remove_user_from_channel(subscription: Subscription):
+async def remove_user_from_channel(subscription: Subscription, bot: Bot):
     bot_user = await subscription.get_bot_user
     # kick user from channel without banning
     is_user_banned: bool = await bot.unban_chat_member(

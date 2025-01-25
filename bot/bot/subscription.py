@@ -72,7 +72,7 @@ async def cancel_subscription(update: Update, context: CustomContext):
         )
         await update_message_reply_text(update, text)
     else:
-        await remove_user_from_channel(subscription)
+        await remove_user_from_channel(subscription, context.bot)
         # send message about successfully deactivated subscription
         text = await get_word('successfully deactivated subscription', update)
         await update_message_reply_text(update, text)
