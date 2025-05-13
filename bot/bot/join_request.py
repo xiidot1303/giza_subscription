@@ -38,17 +38,12 @@ async def select_plan(update: Update, context: CustomContext):
 
     # get plan
     plan: SubscriptionPlan = await get_subscription_plan_by_id(plan_id)
-    if plan.duration_in_months != 1:
-        callbacks = [
-            ('binding card', 'binding_card'),
-            ('payment via link', 'payment_via_link'),
-            ('change tariff', 'plans_list'),
-        ]
-    else:
-        callbacks = [
-            ('binding card', 'binding_card'),
-            ('change tariff', 'plans_list'),
-        ]
+    callbacks = [
+        # ('binding card', 'binding_card'),
+        ('payment via link', 'payment_via_link'),
+        ('change tariff', 'plans_list'),
+    ]
+
 
     markup = InlineKeyboardMarkup([
         [InlineKeyboardButton(
