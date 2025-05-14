@@ -94,9 +94,6 @@ lang_dict = {
 
     "subscription types description": [
         "<b>➖ Obuna turini tanlang:</b>\n\n" \
-            "<code>💳 Kartani orqali</code> - ushbu obuna turini tanlasangiz sizdan karta ma'lumotlaringiz olib qolinadi " \
-                "va bizning sistemaga bog'lanadi. Obuna uchun keyingi to'lov kuni kelganida kartangizdan avtomatik tarzda " \
-                    "tariff uchun to'lov yechib olinadi.\n\n" \
                         "<code>🔗 Havola orqali</code> - hech qanday karta ma'lumotlarini kiritmagan holda " \
                             "sizga kelgan havola orqali tarif uchun to'lovni amalga oshirasiz. " \
                                 "Obuna uchun keyingi to'lov kuni kelganida sizga to'lov uchun " \
